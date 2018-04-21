@@ -5,6 +5,8 @@
 
 TARGET_BOARD_PLATFORM := msmnile
 TARGET_BOOTLOADER_BOARD_NAME := msmnile
+TARGET_BOARD_TYPE := auto
+TARGET_BOARD_SUFFIX := _au
 
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
@@ -23,8 +25,10 @@ BOARD_SECCOMP_POLICY := device/qcom/$(TARGET_BOARD_PLATFORM)/seccomp
 TARGET_NO_BOOTLOADER := false
 TARGET_USES_UEFI := true
 TARGET_NO_KERNEL := false
+
+TARGET_USES_IOPHAL := true
 BOARD_PRESIL_BUILD := true
--include $(QCPATH)/common/msmnile/BoardConfigVendor.mk
+-include $(QCPATH)/common/msmnile_au/BoardConfigVendor.mk
 
 # Some framework code requires this to enable BT
 BOARD_HAVE_BLUETOOTH := false
@@ -56,13 +60,13 @@ endif
 #Enable split vendor image
 ENABLE_VENDOR_IMAGE := true
 ifeq ($(ENABLE_VENDOR_IMAGE), true)
-TARGET_RECOVERY_FSTAB := device/qcom/msmnile/recovery_vendor_variant.fstab
+TARGET_RECOVERY_FSTAB := device/qcom/msmnile_au/recovery_vendor_variant.fstab
 BOARD_VENDORIMAGE_PARTITION_SIZE := 1073741824
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 TARGET_COPY_OUT_VENDOR := vendor
 BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
 else
-TARGET_RECOVERY_FSTAB := device/qcom/msmnile/recovery.fstab
+TARGET_RECOVERY_FSTAB := device/qcom/msmnile_au/recovery.fstab
 endif
 TARGET_USERIMAGES_USE_EXT4 := true
 BOARD_BOOTIMAGE_PARTITION_SIZE := 0x04000000
@@ -97,8 +101,8 @@ BOARD_VENDOR_KERNEL_MODULES := \
     $(KERNEL_MODULES_OUT)/audio_native.ko \
     $(KERNEL_MODULES_OUT)/audio_machine_msmnile.ko \
     $(KERNEL_MODULES_OUT)/wil6210.ko \
-    $(KERNEL_MODULES_OUT)/msm_11ad_proxy.ko
-#    $(KERNEL_MODULES_OUT)/qca_cld3_wlan.ko \
+    $(KERNEL_MODULES_OUT)/msm_11ad_proxy.ko \
+    $(KERNEL_MODULES_OUT)/qca_cld3_wlan.ko
 #    $(KERNEL_MODULES_OUT)/rdbg.ko
 
 TARGET_USES_ION := true

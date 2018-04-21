@@ -3,16 +3,16 @@ BOARD_AVB_ENABLE := true
 
 $(call inherit-product, device/qcom/common/common64.mk)
 
-PRODUCT_NAME := msmnileau
-PRODUCT_DEVICE := msmnileau
+PRODUCT_NAME := msmnile_au
+PRODUCT_DEVICE := msmnile_au
 PRODUCT_BRAND := Android
-PRODUCT_MODEL := msmnile for arm64
+PRODUCT_MODEL := msmnile_au for arm64
 
 #Initial bringup flags
 TARGET_USES_AOSP := true
 TARGET_USES_AOSP_FOR_AUDIO := false
 TARGET_USES_QCOM_BSP := false
-#BOARD_HAVE_QCOM_FM := true
+BOARD_HAVE_QCOM_FM := true
 
 #Default vendor image configuration
 ifeq ($(ENABLE_VENDOR_IMAGE),)
@@ -21,7 +21,7 @@ endif
 ifeq ($(ENABLE_VENDOR_IMAGE), true)
 #Comment on msm8998 tree says that QTIC does not
 # yet support system/vendor split. So disabling it
-# for msmnileau as well
+# for msmnile_au as well
 #TARGET_USES_QTIC := false
 #TARGET_USES_QTIC_EXTENSION := false
 
@@ -42,8 +42,8 @@ PRODUCT_PACKAGES += libGLES_android
 
 # Video seccomp policy files
 PRODUCT_COPY_FILES += \
-    device/qcom/msmnileau/seccomp/mediacodec-seccomp.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediacodec.policy \
-    device/qcom/msmnileau/seccomp/mediaextractor-seccomp.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediaextractor.policy
+    device/qcom/msmnile_au/seccomp/mediacodec-seccomp.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediacodec.policy \
+    device/qcom/msmnile_au/seccomp/mediaextractor-seccomp.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediaextractor.policy
 
 PRODUCT_BOOT_JARS += tcmiface
 PRODUCT_BOOT_JARS += telephony-ext
@@ -64,17 +64,17 @@ endif
 
 # Video codec configuration files
 ifeq ($(TARGET_ENABLE_QC_AV_ENHANCEMENTS), true)
-PRODUCT_COPY_FILES += device/qcom/msmnileau/media_profiles.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles_V1_0.xml
+PRODUCT_COPY_FILES += device/qcom/msmnile_au/media_profiles.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles_V1_0.xml
 
-PRODUCT_COPY_FILES += device/qcom/msmnileau/media_codecs.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs.xml
+PRODUCT_COPY_FILES += device/qcom/msmnile_au/media_codecs.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs.xml
 
-PRODUCT_COPY_FILES += device/qcom/msmnileau/media_codecs_performance.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_performance.xml
+PRODUCT_COPY_FILES += device/qcom/msmnile_au/media_codecs_performance.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_performance.xml
 endif #TARGET_ENABLE_QC_AV_ENHANCEMENTS
 
 PRODUCT_PACKAGES += android.hardware.media.omx@1.0-impl
 
 # Audio configuration file
--include $(TOPDIR)hardware/qcom/audio/configs/msmnile/msmnile.mk
+-include $(TOPDIR)hardware/qcom/audio/configs/msmnile_au/msmnile_au.mk
 
 #Audio DLKM
 AUDIO_DLKM := audio_apr.ko
@@ -128,7 +128,7 @@ PRODUCT_COPY_FILES += \
 
 # Adding vendor manifest
 PRODUCT_COPY_FILES += \
-    device/qcom/msmnileau/vintf.xml:$(TARGET_COPY_OUT_VENDOR)/manifest.xml
+    device/qcom/msmnile_au/vintf.xml:$(TARGET_COPY_OUT_VENDOR)/manifest.xml
 
 #ANT+ stack
 PRODUCT_PACKAGES += \
@@ -153,10 +153,10 @@ PRODUCT_PACKAGES += \
 
 # FBE support
 PRODUCT_COPY_FILES += \
-    device/qcom/msmnileau/init.qti.qseecomd.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.qti.qseecomd.sh
+    device/qcom/msmnile_au/init.qti.qseecomd.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.qti.qseecomd.sh
 
 # MSM IRQ Balancer configuration file
-PRODUCT_COPY_FILES += device/qcom/msmnileau/msm_irqbalance.conf:$(TARGET_COPY_OUT_VENDOR)/etc/msm_irqbalance.conf
+PRODUCT_COPY_FILES += device/qcom/msmnile_au/msm_irqbalance.conf:$(TARGET_COPY_OUT_VENDOR)/etc/msm_irqbalance.conf
 
 # Camera configuration file. Shared by passthrough/binderized camera HAL
 PRODUCT_PACKAGES += camera.device@3.2-impl
@@ -165,6 +165,11 @@ PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-impl
 # Enable binderized camera HAL
 PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-service
 
+# Vibrator
+PRODUCT_PACKAGES += \
+    android.hardware.vibrator@1.0-impl \
+    android.hardware.vibrator@1.0-service \
+
 # WLAN host driver
 ifneq ($(WLAN_CHIPSET),)
 PRODUCT_PACKAGES += $(WLAN_CHIPSET)_wlan.ko
@@ -172,8 +177,8 @@ endif
 
 # WLAN driver configuration file
 PRODUCT_COPY_FILES += \
-    device/qcom/msmnile/WCNSS_qcom_cfg.ini:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/WCNSS_qcom_cfg.ini \
-    device/qcom/msmnile/wifi_concurrency_cfg.txt:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/wifi_concurrency_cfg.txt
+    device/qcom/msmnile_au/WCNSS_qcom_cfg.ini:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/WCNSS_qcom_cfg.ini \
+    device/qcom/msmnile_au/wifi_concurrency_cfg.txt:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/wifi_concurrency_cfg.txt
 
 # MIDI feature
 PRODUCT_COPY_FILES += \
@@ -190,7 +195,7 @@ PRODUCT_PACKAGES += \
 
 # Sensor conf files
 PRODUCT_COPY_FILES += \
-    device/qcom/msmnile/sensors/hals.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/hals.conf \
+    device/qcom/msmnile_au/sensors/hals.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/hals.conf \
     frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:system/etc/permissions/android.hardware.sensor.accelerometer.xml \
     frameworks/native/data/etc/android.hardware.sensor.compass.xml:system/etc/permissions/android.hardware.sensor.compass.xml \
     frameworks/native/data/etc/android.hardware.sensor.gyroscope.xml:system/etc/permissions/android.hardware.sensor.gyroscope.xml \
@@ -216,7 +221,9 @@ PRODUCT_COPY_FILES += \
 PRODUCT_FULL_TREBLE_OVERRIDE := true
 PRODUCT_VENDOR_MOVE_ENABLED := true
 
-KMGK_USE_QTI_SERVICE := false
+KMGK_USE_QTI_SERVICE := true
 
 # Enable flag to support slow devices
 TARGET_PRESIL_SLOW_BOARD := true
+
+ENABLE_VENDOR_RIL_SERVICE := true

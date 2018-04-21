@@ -1,2 +1,2 @@
 PRODUCT_MAKEFILES := \
-	$(LOCAL_DIR)/msmnileau.mk
+	$(LOCAL_DIR)/msmnile_au.mk
