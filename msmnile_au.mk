@@ -2,6 +2,7 @@
 BOARD_AVB_ENABLE := true
 
 $(call inherit-product, device/qcom/common/common64.mk)
+$(call inherit-product, packages/services/Car/car_product/build/car.mk)
 
 PRODUCT_NAME := msmnile_au
 PRODUCT_DEVICE := msmnile_au
