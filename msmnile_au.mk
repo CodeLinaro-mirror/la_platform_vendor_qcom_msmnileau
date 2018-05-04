@@ -241,6 +241,29 @@ ENABLE_VENDOR_RIL_SERVICE := true
 #----------------------------------------------------------------------
 include device/qcom/wlan/msmnile/wlan.mk
 
+# CAN utils
+PRODUCT_PACKAGES += candump \
+                    cansend \
+                    bcmserver \
+                    can-calc-bit-timing \
+                    canbusload \
+                    canfdtest \
+                    cangen \
+                    cangw \
+                    canlogserver \
+                    canplayer \
+                    cansniffer \
+                    isotpdump \
+                    isotprecv \
+                    isotpsend \
+                    isotpserver \
+                    isotptun \
+                    log2asc \
+                    log2long \
+                    slcan_attach \
+                    slcand \
+                    slcanpty
+
 # Vehicle Networks
 PRODUCT_PACKAGES += canflasher \
                     mpc5746c_firmware_A.bin \
