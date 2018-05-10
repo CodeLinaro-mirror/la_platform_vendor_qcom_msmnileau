@@ -28,6 +28,21 @@ ifeq ($(ENABLE_VENDOR_IMAGE), true)
 
 endif
 TARGET_KERNEL_VERSION := 4.14
+
+#Enable llvm support for kernel
+KERNEL_LLVM_SUPPORT := true
+
+#Enable sd-llvm suppport for kernel
+KERNEL_SD_LLVM_SUPPORT := true
+
+TARGET_USES_NQ_NFC := true
+ifeq ($(TARGET_USES_NQ_NFC),true)
+PRODUCT_COPY_FILES += \
+    vendor/nxp/opensource/external/libnfc-nci/halimpl/libnfc-nci.conf:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-nci.conf \
+    vendor/nxp/opensource/external/libnfc-nci/halimpl/libnfc-brcm.conf:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-brcm.conf \
+    vendor/nxp/opensource/external/libnfc-nci/halimpl/libnfc-brcm_NCI2_0.conf:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-brcm_NCI2_0.conf
+endif
+
 # default is nosdcard, S/W button enabled in resource
 PRODUCT_CHARACTERISTICS := nosdcard
 
@@ -57,7 +72,7 @@ endif #BOARD_HAVE_QCOM_FM
 TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
 
 TARGET_DISABLE_DASH := true
-TARGET_DISABLE_QTI_VPP := true
+TARGET_DISABLE_QTI_VPP := false
 
 ifneq ($(TARGET_DISABLE_DASH), true)
     PRODUCT_BOOT_JARS += qcmediaplayer
@@ -65,7 +80,7 @@ endif
 
 # Video codec configuration files
 ifeq ($(TARGET_ENABLE_QC_AV_ENHANCEMENTS), true)
-PRODUCT_COPY_FILES += device/qcom/msmnile_au/media_profiles.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles_V1_0.xml
+PRODUCT_COPY_FILES += device/qcom/msmnile_au/media_profiles.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles_vendor.xml
 
 PRODUCT_COPY_FILES += device/qcom/msmnile_au/media_codecs.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs.xml
 
@@ -154,7 +169,8 @@ PRODUCT_PACKAGES += \
 
 # FBE support
 PRODUCT_COPY_FILES += \
-    device/qcom/msmnile_au/init.qti.qseecomd.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.qti.qseecomd.sh
+    device/qcom/msmnile_au/init.qti.qseecomd.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.qti.qseecomd.sh \
+    device/qcom/msmnile_au/init.qti.getbootdevice.sh:$(TARGET_COPY_OUT_VENDOR)/bin/init.qti.getbootdevice.sh
 
 # MSM IRQ Balancer configuration file
 PRODUCT_COPY_FILES += device/qcom/msmnile_au/msm_irqbalance.conf:$(TARGET_COPY_OUT_VENDOR)/etc/msm_irqbalance.conf
@@ -175,6 +191,11 @@ PRODUCT_PACKAGES += \
 ifneq ($(WLAN_CHIPSET),)
 PRODUCT_PACKAGES += $(WLAN_CHIPSET)_wlan.ko
 endif
+
+# system prop for Bluetooth SOC type
+PRODUCT_PROPERTY_OVERRIDES += \
+    qcom.bluetooth.soc=cherokee \
+    vendor.qcom.bluetooth.soc=cherokee
 
 # WLAN driver configuration file
 PRODUCT_COPY_FILES += \
