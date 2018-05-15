@@ -10,6 +10,7 @@ PRODUCT_BRAND := Android
 PRODUCT_MODEL := msmnile_au for arm64
 
 #Initial bringup flags
+TARGET_BOARD_AUTO := true
 TARGET_USES_AOSP := true
 TARGET_USES_AOSP_FOR_AUDIO := false
 TARGET_USES_QCOM_BSP := false
