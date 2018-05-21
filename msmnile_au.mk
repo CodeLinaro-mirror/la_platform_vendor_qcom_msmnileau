@@ -244,3 +244,8 @@ ENABLE_KM_4_0 := true
 TARGET_PRESIL_SLOW_BOARD := true
 
 ENABLE_VENDOR_RIL_SERVICE := true
+
+# Vehicle Networks
+PRODUCT_PACKAGES += canflasher \
+                    mpc5746c_firmware_A.bin \
+                    mpc5746c_firmware_B.bin
