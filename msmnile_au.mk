@@ -24,8 +24,8 @@ ifeq ($(ENABLE_VENDOR_IMAGE), true)
 #Comment on msm8998 tree says that QTIC does not
 # yet support system/vendor split. So disabling it
 # for msmnile_au as well
-#TARGET_USES_QTIC := false
-#TARGET_USES_QTIC_EXTENSION := false
+TARGET_USES_QTIC := false
+TARGET_USES_QTIC_EXTENSION := false
 
 endif
 TARGET_KERNEL_VERSION := 4.14
@@ -138,10 +138,6 @@ PRODUCT_PACKAGES += \
     android.hardware.health@1.0-convert \
     android.hardware.health@1.0-service \
     libhealthd.msm
-
-# Fingerprint feature
-PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.hardware.fingerprint.xml:system/etc/permissions/android.hardware.fingerprint.xml \
 
 # Adding vendor manifest
 PRODUCT_COPY_FILES += \
