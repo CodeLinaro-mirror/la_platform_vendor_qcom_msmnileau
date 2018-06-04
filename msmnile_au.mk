@@ -173,11 +173,11 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += device/qcom/msmnile_au/msm_irqbalance.conf:$(TARGET_COPY_OUT_VENDOR)/etc/msm_irqbalance.conf
 
 # Camera configuration file. Shared by passthrough/binderized camera HAL
-PRODUCT_PACKAGES += camera.device@3.2-impl
-PRODUCT_PACKAGES += camera.device@1.0-impl
-PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-impl
+#PRODUCT_PACKAGES += camera.device@3.2-impl
+#PRODUCT_PACKAGES += camera.device@1.0-impl
+#PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-impl
 # Enable binderized camera HAL
-PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-service
+#PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-service
 
 # WLAN host driver
 ifneq ($(WLAN_CHIPSET),)
