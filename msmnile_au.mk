@@ -1,20 +1,21 @@
 # Enable AVB 2.0
 BOARD_AVB_ENABLE := true
+TARGET_BOARD_AUTO := true
+TARGET_USES_QTIC := false
+TARGET_USES_QTIC_EXTENSION := false
 
 $(call inherit-product, device/qcom/common/common64.mk)
 $(call inherit-product, packages/services/Car/car_product/build/car.mk)
 
 PRODUCT_NAME := msmnile_au
 PRODUCT_DEVICE := msmnile_au
-PRODUCT_BRAND := Android
+PRODUCT_BRAND := qti
 PRODUCT_MODEL := msmnile_au for arm64
 
 #Initial bringup flags
-TARGET_BOARD_AUTO := true
 TARGET_USES_AOSP := true
 TARGET_USES_AOSP_FOR_AUDIO := false
 TARGET_USES_QCOM_BSP := false
-BOARD_HAVE_QCOM_FM := true
 
 #Default vendor image configuration
 ifeq ($(ENABLE_VENDOR_IMAGE),)
@@ -24,8 +25,6 @@ ifeq ($(ENABLE_VENDOR_IMAGE), true)
 #Comment on msm8998 tree says that QTIC does not
 # yet support system/vendor split. So disabling it
 # for msmnile_au as well
-TARGET_USES_QTIC := false
-TARGET_USES_QTIC_EXTENSION := false
 
 endif
 TARGET_KERNEL_VERSION := 4.14
@@ -49,13 +48,11 @@ PRODUCT_CHARACTERISTICS := nosdcard
 
 BOARD_FRP_PARTITION_NAME := frp
 
-# WLAN chipset
-WLAN_CHIPSET := qca_cld3
-
 #Android EGL implementation
 PRODUCT_PACKAGES += libGLES_android
 
 -include $(QCPATH)/common/config/qtic-config.mk
+-include hardware/qcom/display/config/msmnile.mk
 
 # Video seccomp policy files
 PRODUCT_COPY_FILES += \
@@ -66,9 +63,6 @@ PRODUCT_BOOT_JARS += tcmiface
 PRODUCT_BOOT_JARS += telephony-ext
 PRODUCT_PACKAGES += telephony-ext
 
-ifeq ($(strip $(BOARD_HAVE_QCOM_FM)),true)
-PRODUCT_BOOT_JARS += qcom.fmradio
-endif #BOARD_HAVE_QCOM_FM
 
 TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
 
@@ -77,6 +71,10 @@ TARGET_DISABLE_QTI_VPP := false
 
 ifneq ($(TARGET_DISABLE_DASH), true)
     PRODUCT_BOOT_JARS += qcmediaplayer
+endif
+
+ifneq ($(strip $(QCPATH)),)
+    PRODUCT_BOOT_JARS += WfdCommon
 endif
 
 # Video codec configuration files
@@ -140,8 +138,10 @@ PRODUCT_PACKAGES += \
     libhealthd.msm
 
 # Adding vendor manifest
-PRODUCT_COPY_FILES += \
-    device/qcom/msmnile_au/vintf.xml:$(TARGET_COPY_OUT_VENDOR)/manifest.xml
+
+DEVICE_MANIFEST_FILE := device/qcom/msmnile/manifest.xml
+DEVICE_MATRIX_FILE   := device/qcom/common/compatibility_matrix.xml
+
 
 #ANT+ stack
 PRODUCT_PACKAGES += \
@@ -152,15 +152,6 @@ PRODUCT_PACKAGES += \
 
 # Display/Graphics
 PRODUCT_PACKAGES += \
-    android.hardware.graphics.allocator@2.0-impl \
-    android.hardware.graphics.allocator@2.0-service \
-    android.hardware.graphics.mapper@2.0-impl \
-    android.hardware.graphics.composer@2.1-impl \
-    android.hardware.graphics.composer@2.1-service \
-    android.hardware.memtrack@1.0-impl \
-    android.hardware.memtrack@1.0-service \
-    android.hardware.light@2.0-impl \
-    android.hardware.light@2.0-service \
     android.hardware.configstore@1.0-service \
     android.hardware.broadcastradio@1.0-impl
 
@@ -173,39 +164,30 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += device/qcom/msmnile_au/msm_irqbalance.conf:$(TARGET_COPY_OUT_VENDOR)/etc/msm_irqbalance.conf
 
 # Camera configuration file. Shared by passthrough/binderized camera HAL
-#PRODUCT_PACKAGES += camera.device@3.2-impl
-#PRODUCT_PACKAGES += camera.device@1.0-impl
-#PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-impl
+PRODUCT_PACKAGES += camera.device@3.2-impl
+PRODUCT_PACKAGES += camera.device@1.0-impl
+PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-impl
 # Enable binderized camera HAL
-#PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-service
+PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-service_64
 
-# WLAN host driver
-ifneq ($(WLAN_CHIPSET),)
-PRODUCT_PACKAGES += $(WLAN_CHIPSET)_wlan.ko
-endif
+# Vibrator
+PRODUCT_PACKAGES += \
+    android.hardware.vibrator@1.0-impl \
+    android.hardware.vibrator@1.0-service \
+
+# Context hub HAL
+PRODUCT_PACKAGES += \
+    android.hardware.contexthub@1.0-impl.generic \
+    android.hardware.contexthub@1.0-service
 
 # system prop for Bluetooth SOC type
 PRODUCT_PROPERTY_OVERRIDES += \
     qcom.bluetooth.soc=cherokee \
     vendor.qcom.bluetooth.soc=cherokee
 
-# WLAN driver configuration file
-PRODUCT_COPY_FILES += \
-    device/qcom/msmnile_au/WCNSS_qcom_cfg.ini:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/WCNSS_qcom_cfg.ini \
-    device/qcom/msmnile_au/wifi_concurrency_cfg.txt:$(TARGET_COPY_OUT_VENDOR)/etc/wifi/wifi_concurrency_cfg.txt
-
 # MIDI feature
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.midi.xml:system/etc/permissions/android.software.midi.xml
-
-PRODUCT_PACKAGES += \
-    wpa_supplicant_overlay.conf \
-    p2p_supplicant_overlay.conf
-
-#for wlan
-PRODUCT_PACKAGES += \
-    wificond \
-    wifilogd
 
 # Sensor conf files
 PRODUCT_COPY_FILES += \
@@ -234,6 +216,7 @@ PRODUCT_COPY_FILES += \
 #Enable full treble flag
 PRODUCT_FULL_TREBLE_OVERRIDE := true
 PRODUCT_VENDOR_MOVE_ENABLED := true
+PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
 
 KMGK_USE_QTI_SERVICE := true
 
@@ -245,7 +228,7 @@ TARGET_PRESIL_SLOW_BOARD := true
 
 ENABLE_VENDOR_RIL_SERVICE := true
 
-# Vehicle Networks
-PRODUCT_PACKAGES += canflasher \
-                    mpc5746c_firmware_A.bin \
-                    mpc5746c_firmware_B.bin
+#----------------------------------------------------------------------
+# wlan specific
+#----------------------------------------------------------------------
+include device/qcom/wlan/msmnile/wlan.mk
