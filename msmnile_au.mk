@@ -5,7 +5,8 @@ TARGET_USES_QTIC := false
 TARGET_USES_QTIC_EXTENSION := false
 
 $(call inherit-product, device/qcom/common/common64.mk)
-$(call inherit-product, packages/services/Car/car_product/build/car.mk)
+$(call inherit-product, frameworks/native/build/phone-xhdpi-2048-dalvik-heap.mk)
+#$(call inherit-product, packages/services/Car/car_product/build/car.mk)
 
 PRODUCT_NAME := msmnile_au
 PRODUCT_DEVICE := msmnile_au
