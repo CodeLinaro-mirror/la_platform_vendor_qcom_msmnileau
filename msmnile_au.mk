@@ -83,13 +83,15 @@ PRODUCT_COPY_FILES += device/qcom/msmnile_au/media_profiles.xml:$(TARGET_COPY_OU
 
 PRODUCT_COPY_FILES += device/qcom/msmnile_au/media_codecs.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs.xml
 
+PRODUCT_COPY_FILES += device/qcom/msmnile_au/media_codecs_vendor_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_vendor_audio.xml
+
 PRODUCT_COPY_FILES += device/qcom/msmnile_au/media_codecs_performance.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_performance.xml
 endif #TARGET_ENABLE_QC_AV_ENHANCEMENTS
 
 PRODUCT_PACKAGES += android.hardware.media.omx@1.0-impl
 
 # Audio configuration file
--include $(TOPDIR)hardware/qcom/audio/configs/msmnile_au/msmnile_au.mk
+-include $(TOPDIR)hardware/qcom/audio/configs/msmnile/msmnile.mk
 
 #Audio DLKM
 AUDIO_DLKM := audio_apr.ko
@@ -129,6 +131,8 @@ PRODUCT_PACKAGES += update_engine \
 
 #Boot control HAL test app
 PRODUCT_PACKAGES_DEBUG += bootctl
+
+DEVICE_FRAMEWORK_MANIFEST_FILE := device/qcom/msmnile_au/framework_manifest.xml
 
 #Healthd packages
 PRODUCT_PACKAGES += \
