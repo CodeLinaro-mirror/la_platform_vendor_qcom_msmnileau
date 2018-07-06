@@ -102,8 +102,8 @@ BOARD_VENDOR_KERNEL_MODULES := \
     $(KERNEL_MODULES_OUT)/audio_native.ko \
     $(KERNEL_MODULES_OUT)/audio_machine_msmnile.ko \
     $(KERNEL_MODULES_OUT)/wil6210.ko \
-    $(KERNEL_MODULES_OUT)/msm_11ad_proxy.ko
-#    $(KERNEL_MODULES_OUT)/rdbg.ko
+    $(KERNEL_MODULES_OUT)/msm_11ad_proxy.ko \
+    $(KERNEL_MODULES_OUT)/rdbg.ko
 
 # install lkdtm only for userdebug and eng build variants
 ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
@@ -115,7 +115,7 @@ endif
 TARGET_USES_ION := true
 TARGET_USES_NEW_ION_API :=true
 TARGET_USES_QCOM_BSP := false
-BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 earlycon=msm_geni_serial,0xa90000 androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 androidboot.usbcontroller=a600000.dwc3 swiotlb=2048 firmware_class.path=/vendor/firmware_mnt/image androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 earlycon=msm_geni_serial,0xa90000 androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 androidboot.usbcontroller=a600000.dwc3 swiotlb=2048 firmware_class.path=/vendor/firmware_mnt/image
 
 BOARD_EGL_CFG := device/qcom/$(TARGET_BOARD_PLATFORM)/egl.cfg
 

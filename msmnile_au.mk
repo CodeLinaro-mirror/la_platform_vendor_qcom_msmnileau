@@ -194,6 +194,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.midi.xml:system/etc/permissions/android.software.midi.xml
 
+# USB default HAL
+PRODUCT_PACKAGES += \
+    android.hardware.usb@1.0-service
+
 # Sensor conf files
 PRODUCT_COPY_FILES += \
     device/qcom/msmnile_au/sensors/hals.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/hals.conf \
@@ -227,6 +231,8 @@ KMGK_USE_QTI_SERVICE := true
 
 #Enable KEYMASTER 4.0
 ENABLE_KM_4_0 := true
+
+DEVICE_PACKAGE_OVERLAYS += device/qcom/msmnile/overlay
 
 # Enable flag to support slow devices
 TARGET_PRESIL_SLOW_BOARD := true
