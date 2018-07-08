@@ -19,16 +19,10 @@ endif
 # Compile Linux Kernel
 #----------------------------------------------------------------------
 ifeq ($(KERNEL_DEFCONFIG),)
-     KERNEL_DEFCONFIG := $(shell ls ./kernel/msm-4.14/arch/arm64/configs/ | grep sa8...-auto_defconfig)
+     KERNEL_DEFCONFIG := $(shell ls ./kernel/msm-4.14/arch/arm64/configs/ | grep sa8..._defconfig)
 endif
 ifeq ($(KERNEL_DEFCONFIG),)
      KERNEL_DEFCONFIG := $(shell ls ./kernel/msm-4.14/arch/arm64/configs/ | grep sm8...-auto_defconfig)
-endif
-ifeq ($(KERNEL_DEFCONFIG),)
-     KERNEL_DEFCONFIG := $(shell ls ./kernel/msm-4.14/arch/arm64/configs/vendor | grep sa8...-auto_defconfig)
-endif
-ifeq ($(KERNEL_DEFCONFIG),)
-     KERNEL_DEFCONFIG := $(shell ls ./kernel/msm-4.14/arch/arm64/configs/vendor | grep sm8...-auto_defconfig)
 endif
 
 ifeq ($(TARGET_KERNEL_SOURCE),)
