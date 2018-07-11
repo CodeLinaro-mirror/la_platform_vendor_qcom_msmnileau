@@ -243,3 +243,8 @@ ENABLE_VENDOR_RIL_SERVICE := true
 # wlan specific
 #----------------------------------------------------------------------
 include device/qcom/wlan/msmnile/wlan.mk
+
+# Vehicle Networks
+PRODUCT_PACKAGES += canflasher \
+                    mpc5746c_firmware_A.bin \
+                    mpc5746c_firmware_B.bin
