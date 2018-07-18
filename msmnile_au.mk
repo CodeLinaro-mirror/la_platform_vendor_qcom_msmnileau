@@ -1,12 +1,10 @@
 # Enable AVB 2.0
 BOARD_AVB_ENABLE := true
 TARGET_BOARD_AUTO := true
-TARGET_USES_QTIC := false
-TARGET_USES_QTIC_EXTENSION := false
 
 $(call inherit-product, device/qcom/common/common64.mk)
 $(call inherit-product, frameworks/native/build/phone-xhdpi-2048-dalvik-heap.mk)
-#$(call inherit-product, packages/services/Car/car_product/build/car.mk)
+$(call inherit-product, packages/services/Car/car_product/build/car.mk)
 
 PRODUCT_NAME := msmnile_au
 PRODUCT_DEVICE := msmnile_au
@@ -25,7 +23,9 @@ endif
 ifeq ($(ENABLE_VENDOR_IMAGE), true)
 #Comment on msm8998 tree says that QTIC does not
 # yet support system/vendor split. So disabling it
-# for msmnile_au as well
+# for msmnile as well
+#TARGET_USES_QTIC := false
+#TARGET_USES_QTIC_EXTENSION := false
 
 endif
 TARGET_KERNEL_VERSION := 4.14
@@ -36,7 +36,7 @@ KERNEL_LLVM_SUPPORT := true
 #Enable sd-llvm suppport for kernel
 KERNEL_SD_LLVM_SUPPORT := true
 
-TARGET_USES_NQ_NFC := true
+TARGET_USES_NQ_NFC := false
 ifeq ($(TARGET_USES_NQ_NFC),true)
 PRODUCT_COPY_FILES += \
     vendor/nxp/opensource/external/libnfc-nci/halimpl/libnfc-nci.conf:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-nci.conf \
@@ -78,6 +78,10 @@ ifneq ($(strip $(QCPATH)),)
     PRODUCT_BOOT_JARS += WfdCommon
 endif
 
+ifneq ($(strip $(QCPATH)),)
+    PRODUCT_BOOT_JARS += libprotobuf-java_mls
+endif
+
 # Video codec configuration files
 ifeq ($(TARGET_ENABLE_QC_AV_ENHANCEMENTS), true)
 PRODUCT_COPY_FILES += device/qcom/msmnile/media_profiles.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles_vendor.xml
@@ -88,6 +92,7 @@ PRODUCT_COPY_FILES += device/qcom/msmnile/media_codecs_vendor_audio.xml:$(TARGET
 
 PRODUCT_COPY_FILES += device/qcom/msmnile/media_codecs_performance.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_performance.xml
 endif #TARGET_ENABLE_QC_AV_ENHANCEMENTS
+PRODUCT_COPY_FILES += hardware/qcom/media/conf_files/msmnile/system_properties.xml:$(TARGET_COPY_OUT_VENDOR)/etc/system_properties.xml
 
 PRODUCT_PACKAGES += android.hardware.media.omx@1.0-impl
 
@@ -144,7 +149,7 @@ PRODUCT_PACKAGES += \
 
 # Adding vendor manifest
 
-DEVICE_MANIFEST_FILE := device/qcom/msmnile/manifest.xml
+DEVICE_MANIFEST_FILE := device/qcom/msmnile_au/manifest.xml
 DEVICE_MATRIX_FILE   := device/qcom/common/compatibility_matrix.xml
 
 
@@ -169,16 +174,16 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += device/qcom/msmnile/msm_irqbalance.conf:$(TARGET_COPY_OUT_VENDOR)/etc/msm_irqbalance.conf
 
 # Camera configuration file. Shared by passthrough/binderized camera HAL
-PRODUCT_PACKAGES += camera.device@3.2-impl
-PRODUCT_PACKAGES += camera.device@1.0-impl
-PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-impl
+#PRODUCT_PACKAGES += camera.device@3.2-impl
+#PRODUCT_PACKAGES += camera.device@1.0-impl
+#PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-impl
 # Enable binderized camera HAL
-PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-service_64
+#PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-service_64
 
 # Vibrator
-PRODUCT_PACKAGES += \
-    android.hardware.vibrator@1.0-impl \
-    android.hardware.vibrator@1.0-service \
+#PRODUCT_PACKAGES += \
+#    android.hardware.vibrator@1.0-impl \
+#    android.hardware.vibrator@1.0-service \
 
 # Context hub HAL
 PRODUCT_PACKAGES += \
@@ -186,9 +191,9 @@ PRODUCT_PACKAGES += \
     android.hardware.contexthub@1.0-service
 
 # system prop for Bluetooth SOC type
-PRODUCT_PROPERTY_OVERRIDES += \
-    qcom.bluetooth.soc=cherokee \
-    vendor.qcom.bluetooth.soc=cherokee
+#PRODUCT_PROPERTY_OVERRIDES += \
+#    qcom.bluetooth.soc=cherokee \
+#    vendor.qcom.bluetooth.soc=cherokee
 
 # MIDI feature
 PRODUCT_COPY_FILES += \
@@ -222,6 +227,10 @@ KERNEL_MODULES_OUT := out/target/product/$(PRODUCT_NAME)/$(KERNEL_MODULES_INSTAL
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.opengles.aep.xml:system/etc/permissions/android.hardware.opengles.aep.xml
 
+#Exclude vibrator from InputManager
+PRODUCT_COPY_FILES += \
+    device/qcom/msmnile/excluded-input-devices.xml:system/etc/excluded-input-devices.xml
+
 #Enable full treble flag
 PRODUCT_FULL_TREBLE_OVERRIDE := true
 PRODUCT_VENDOR_MOVE_ENABLED := true
@@ -247,4 +256,6 @@ include device/qcom/wlan/msmnile/wlan.mk
 # Vehicle Networks
 PRODUCT_PACKAGES += canflasher \
                     mpc5746c_firmware_A.bin \
-                    mpc5746c_firmware_B.bin
+                    mpc5746c_firmware_B.bin \
+                    vendor.qti.hardware.automotive.vehicle@1.0-service \
+                    android.hardware.automotive.vehicle@2.0-manager-lib-shared

@@ -67,7 +67,6 @@ on post-fs-data
     mkdir /tombstones/wcnss 0771 system system
     mkdir /tombstones/dsps 0771 system system
     mkdir /data/vendor/hbtp 0750 system system
-    mkdir /data/misc/seemp 0700 system system
     mkdir /data/vendor/tloc 0700 system drmrpc
     mkdir /data/vendor/nnhal 0700 system system
 
@@ -111,7 +110,7 @@ on boot
     setprop sys.usb.configfs 1
 
 #Load WLAN driver
-#    insmod /vendor/lib/modules/qca_cld3_wlan.ko
+    insmod /vendor/lib/modules/qca_cld3_wlan.ko
 
 #pd-mapper
 service vendor.pd_mapper /vendor/bin/pd-mapper
@@ -166,15 +165,15 @@ service vendor.thermal-engine /vendor/bin/thermal-engine
    group root
 
 
-service vendor.adsprpcd /vendor/bin/adsprpcd
-   class main
-   user root
-   group media
+#service vendor.adsprpcd /vendor/bin/adsprpcd
+#   class main
+#   user root
+#   group media
 
-service vendor.adsprpcd_audiopd /vendor/bin/adsprpcd audiopd
-   class main
-   user media
-   group media
+#service vendor.adsprpcd_audiopd /vendor/bin/adsprpcd audiopd
+#   class main
+#   user media
+#   group media
 
 service vendor.cdsprpcd /vendor/bin/cdsprpcd
    class main
@@ -227,22 +226,15 @@ service vendor.ims_rtp_daemon /vendor/bin/ims_rtp_daemon
    class main
    user system
    group radio diag inet log
-   disabled
 
 on property:vendor.ims.DATA_DAEMON_STATUS=1
-    start vendor.ims_rtp_daemon
+    restart vendor.ims_rtp_daemon
 
 service vendor.energy-awareness /vendor/bin/energy-awareness
     class main
     user system
     group system
     oneshot
-
-service seempd /system/bin/seempd
-    class late_start
-    user system
-    group system sdcard_rw
-    socket seempdw dgram 0666 system system
 
 service vendor.hvdcp_opti /vendor/bin/hvdcp_opti
     class main
