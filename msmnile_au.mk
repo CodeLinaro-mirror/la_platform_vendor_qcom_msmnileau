@@ -191,9 +191,9 @@ PRODUCT_PACKAGES += \
     android.hardware.contexthub@1.0-service
 
 # system prop for Bluetooth SOC type
-#PRODUCT_PROPERTY_OVERRIDES += \
-#    qcom.bluetooth.soc=cherokee \
-#    vendor.qcom.bluetooth.soc=cherokee
+PRODUCT_PROPERTY_OVERRIDES += \
+    qcom.bluetooth.soc=rome \
+    vendor.qcom.bluetooth.soc=rome
 
 # MIDI feature
 PRODUCT_COPY_FILES += \
