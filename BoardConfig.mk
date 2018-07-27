@@ -189,4 +189,4 @@ include device/qcom/wlan/msmnile/BoardConfigWlan.mk
 endif
 
 #Enable VNDK Compliance
-#BOARD_VNDK_VERSION:=current
+BOARD_VNDK_VERSION:=current
