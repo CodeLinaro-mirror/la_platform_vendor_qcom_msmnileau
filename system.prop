@@ -82,7 +82,8 @@ qcom.bluetooth.soc=rome
 ro.bluetooth.emb_wp_mode=false
 ro.bluetooth.wipower=false
 
-persist.service.bt.a2dp.sink=true
+persist.vendor.service.bt.a2dp.sink=true
+persist.vendor.btstack.enable.splita2dp=false
 
 #
 #snapdragon value add features
