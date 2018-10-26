@@ -177,15 +177,15 @@ service vendor.thermal-engine /vendor/bin/thermal-engine
    group root
 
 
-#service vendor.adsprpcd /vendor/bin/adsprpcd
-#   class main
-#   user root
-#   group media
+service vendor.adsprpcd /vendor/bin/adsprpcd
+   class main
+   user root
+   group media
 
-#service vendor.adsprpcd_audiopd /vendor/bin/adsprpcd audiopd
-#   class main
-#   user media
-#   group media
+service vendor.adsprpcd_audiopd /vendor/bin/adsprpcd audiopd
+   class main
+   user media
+   group media
 
 service vendor.cdsprpcd /vendor/bin/cdsprpcd
    class main
