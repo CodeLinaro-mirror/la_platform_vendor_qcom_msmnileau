@@ -202,6 +202,10 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.sensor.relative_humidity.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.relative_humidity.xml \
     frameworks/native/data/etc/android.hardware.sensor.hifi_sensors.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.hifi_sensors.xml
 
+PRODUCT_PACKAGES += \
+       openavb_harness \
+       gptp \
+       mrpd
 
 # Kernel modules install path
 KERNEL_MODULES_INSTALL := dlkm
