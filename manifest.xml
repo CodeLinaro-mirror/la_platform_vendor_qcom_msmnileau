@@ -117,7 +117,7 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <hal format="hidl">
         <name>vendor.display.config</name>
         <transport>hwbinder</transport>
-        <version>1.3</version>
+        <version>1.5</version>
         <interface>
             <name>IDisplayConfig</name>
             <instance>default</instance>
@@ -144,7 +144,7 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <hal format="hidl">
         <name>android.hardware.configstore</name>
         <transport>hwbinder</transport>
-        <version>1.0</version>
+        <version>1.1</version>
         <interface>
             <name>ISurfaceFlingerConfigs</name>
             <instance>default</instance>
@@ -179,24 +179,6 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         </interface>
     </hal>
     <hal format="hidl">
-        <name>vendor.qti.hardware.improvetouch.gesturemanager</name>
-        <transport>hwbinder</transport>
-        <version>1.0</version>
-        <interface>
-            <name>IGestureManager</name>
-            <instance>GestureManagerService</instance>
-        </interface>
-    </hal>
-    <hal format="hidl">
-        <name>vendor.qti.hardware.improvetouch.blobmanager</name>
-        <transport>hwbinder</transport>
-        <version>1.0</version>
-        <interface>
-            <name>IBlobManager</name>
-            <instance>BlobManagerService</instance>
-        </interface>
-    </hal>
-    <hal format="hidl">
         <name>android.hardware.power</name>
         <transport>hwbinder</transport>
         <version>1.0</version>
@@ -212,15 +194,6 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         <interface>
             <name>ISensors</name>
             <instance>default</instance>
-        </interface>
-    </hal>
-    <hal format="hidl">
-        <name>android.hardware.camera.provider</name>
-        <transport>hwbinder</transport>
-        <version>2.4</version>
-        <interface>
-            <name>ICameraProvider</name>
-            <instance>legacy/0</instance>
         </interface>
     </hal>
     <!-- keymaster -->
@@ -358,17 +331,6 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             <instance>Uim0</instance>
             <instance>Uim1</instance>
         </interface>
-    </hal>
-    <!-- radio config -->
-    <hal format="hidl">
-        <name>vendor.qti.hardware.radio.config</name>
-           <transport>hwbinder</transport>
-           <version>1.0</version>
-           <interface>
-               <name>IConfig</name>
-               <instance>radioconfig0</instance>
-               <instance>radioconfig1</instance>
-           </interface>
     </hal>
     <!-- legacy qtiradio service -->
     <hal format="hidl">
@@ -594,7 +556,7 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <hal format="hidl">
         <name>android.hardware.radio</name>
         <transport>hwbinder</transport>
-        <version>1.0</version>
+        <version>1.2</version>
         <interface>
             <name>IRadio</name>
             <instance>slot1</instance>
@@ -613,7 +575,7 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
        <version>1.0</version>
        <interface>
            <name>IRadioConfig</name>
-           <instance>radioconfig</instance>
+           <instance>default</instance>
        </interface>
     </hal>
     <!--UICC secure element -->
@@ -628,22 +590,11 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
            <instance>eSE1</instance>
        </interface>
     </hal>
-    <!-- RIL OEM HOOK -->
-    <hal format="hidl">
-        <name>android.hardware.radio.deprecated</name>
-        <transport>hwbinder</transport>
-        <version>1.0</version>
-        <interface>
-            <name>IOemHook</name>
-            <instance>slot1</instance>
-            <instance>slot2</instance>
-        </interface>
-    </hal>
     <!-- VPP Service -->
     <hal format="hidl">
         <name>vendor.qti.hardware.vpp</name>
         <transport>hwbinder</transport>
-        <version>1.1</version>
+        <version>1.2</version>
         <interface>
             <name>IHidlVppService</name>
             <instance>vppService</instance>
@@ -680,16 +631,6 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         <version>1.0</version>
         <interface>
             <name>IAlarm</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-    <!--  Wipower  -->
-    <hal format="hidl">
-        <name>vendor.qti.hardware.wipower</name>
-        <transport>hwbinder</transport>
-        <version>1.0</version>
-        <interface>
-            <name>IWipower</name>
             <instance>default</instance>
         </interface>
     </hal>

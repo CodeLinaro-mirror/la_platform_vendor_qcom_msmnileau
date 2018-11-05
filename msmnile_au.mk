@@ -2,8 +2,15 @@
 BOARD_AVB_ENABLE := true
 TARGET_BOARD_AUTO := true
 
+TARGET_DEFINES_DALVIK_HEAP := true
 $(call inherit-product, device/qcom/common/common64.mk)
-$(call inherit-product, frameworks/native/build/phone-xhdpi-2048-dalvik-heap.mk)
+#Inherit all except heap growth limit from phone-xhdpi-2048-dalvik-heap.mk
+PRODUCT_PROPERTY_OVERRIDES  += \
+	dalvik.vm.heapstartsize=8m \
+	dalvik.vm.heapsize=512m \
+	dalvik.vm.heaptargetutilization=0.75 \
+	dalvik.vm.heapminfree=512k \
+	dalvik.vm.heapmaxfree=8m
 $(call inherit-product, packages/services/Car/car_product/build/car.mk)
 
 PRODUCT_NAME := msmnile_au
@@ -128,19 +135,17 @@ PRODUCT_PACKAGES += update_engine \
 #Boot control HAL test app
 PRODUCT_PACKAGES_DEBUG += bootctl
 
-DEVICE_FRAMEWORK_MANIFEST_FILE := device/qcom/msmnile/framework_manifest.xml
 
 #Healthd packages
 PRODUCT_PACKAGES += \
-    android.hardware.health@1.0-impl \
-    android.hardware.health@1.0-convert \
-    android.hardware.health@1.0-service \
     libhealthd.msm
 
-# Adding vendor manifest
+
 
 DEVICE_MANIFEST_FILE := device/qcom/msmnile_au/manifest.xml
 DEVICE_MATRIX_FILE   := device/qcom/common/compatibility_matrix.xml
+DEVICE_FRAMEWORK_MANIFEST_FILE := device/qcom/msmnile_au/framework_manifest.xml
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := device/qcom/msmnile_au/vendor_framework_compatibility_matrix.xml
 
 
 #ANT+ stack
@@ -162,12 +167,6 @@ PRODUCT_COPY_FILES += \
 # MSM IRQ Balancer configuration file
 PRODUCT_COPY_FILES += device/qcom/msmnile/msm_irqbalance.conf:$(TARGET_COPY_OUT_VENDOR)/etc/msm_irqbalance.conf
 
-# Camera configuration file. Shared by passthrough/binderized camera HAL
-#PRODUCT_PACKAGES += camera.device@3.2-impl
-#PRODUCT_PACKAGES += camera.device@1.0-impl
-#PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-impl
-# Enable binderized camera HAL
-#PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-service_64
 
 
 # Context hub HAL
