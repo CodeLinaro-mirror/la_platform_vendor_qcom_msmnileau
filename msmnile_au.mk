@@ -1,6 +1,14 @@
 # Enable AVB 2.0
 BOARD_AVB_ENABLE := true
 TARGET_BOARD_AUTO := true
+TARGET_USES_AOSP := true
+TARGET_USES_AOSP_FOR_AUDIO := false
+TARGET_USES_QCOM_BSP := false
+TARGET_NO_TELEPHONY := true
+TARGET_NO_QC_PARSER := true
+TARGET_NO_QTI_MPGEN := true
+TARGET_USES_QTIC := false
+TARGET_USES_QTIC_EXTENSION := false
 
 TARGET_DEFINES_DALVIK_HEAP := true
 $(call inherit-product, device/qcom/common/common64.mk)
@@ -19,29 +27,19 @@ PRODUCT_BRAND := qti
 PRODUCT_MODEL := msmnile_au for arm64
 
 #Initial bringup flags
-TARGET_USES_AOSP := false
-TARGET_USES_AOSP_FOR_AUDIO := false
-TARGET_USES_QCOM_BSP := false
 
 #Default vendor image configuration
 ifeq ($(ENABLE_VENDOR_IMAGE),)
 ENABLE_VENDOR_IMAGE := false
 endif
-ifeq ($(ENABLE_VENDOR_IMAGE), true)
-#Comment on msm8998 tree says that QTIC does not
-# yet support system/vendor split. So disabling it
-# for msmnile as well
-#TARGET_USES_QTIC := false
-#TARGET_USES_QTIC_EXTENSION := false
 
-endif
 TARGET_KERNEL_VERSION := 4.14
 
 #Enable llvm support for kernel
 KERNEL_LLVM_SUPPORT := true
 
 #Enable sd-llvm suppport for kernel
-KERNEL_SD_LLVM_SUPPORT := true
+KERNEL_SD_LLVM_SUPPORT := false
 
 # default is nosdcard, S/W button enabled in resource
 PRODUCT_CHARACTERISTICS := nosdcard
@@ -73,7 +71,7 @@ ifneq ($(TARGET_DISABLE_DASH), true)
     PRODUCT_BOOT_JARS += qcmediaplayer
 endif
 
-ifneq ($(strip $(QCPATH)),)
+ifeq ($(TARGET_NO_QTI_WFD),)
     PRODUCT_BOOT_JARS += WfdCommon
 endif
 
@@ -185,21 +183,6 @@ PRODUCT_COPY_FILES += \
 # USB default HAL
 PRODUCT_PACKAGES += \
     android.hardware.usb@1.0-service
-
-# Sensor conf files
-PRODUCT_COPY_FILES += \
-    device/qcom/msmnile/sensors/hals.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/hals.conf \
-    frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.accelerometer.xml \
-    frameworks/native/data/etc/android.hardware.sensor.compass.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.compass.xml \
-    frameworks/native/data/etc/android.hardware.sensor.gyroscope.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.gyroscope.xml \
-    frameworks/native/data/etc/android.hardware.sensor.light.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.light.xml \
-    frameworks/native/data/etc/android.hardware.sensor.proximity.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.proximity.xml \
-    frameworks/native/data/etc/android.hardware.sensor.barometer.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.barometer.xml \
-    frameworks/native/data/etc/android.hardware.sensor.stepcounter.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.stepcounter.xml \
-    frameworks/native/data/etc/android.hardware.sensor.stepdetector.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.stepdetector.xml \
-    frameworks/native/data/etc/android.hardware.sensor.ambient_temperature.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.ambient_temperature.xml \
-    frameworks/native/data/etc/android.hardware.sensor.relative_humidity.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.relative_humidity.xml \
-    frameworks/native/data/etc/android.hardware.sensor.hifi_sensors.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.hifi_sensors.xml
 
 PRODUCT_PACKAGES += \
        openavb_harness \
