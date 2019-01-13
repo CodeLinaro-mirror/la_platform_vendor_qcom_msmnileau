@@ -9,6 +9,7 @@ TARGET_NO_QC_PARSER := true
 TARGET_NO_QTI_MPGEN := true
 TARGET_USES_QTIC := false
 TARGET_USES_QTIC_EXTENSION := false
+ENABLE_HYP := false
 
 TARGET_DEFINES_DALVIK_HEAP := true
 $(call inherit-product, device/qcom/common/common64.mk)
