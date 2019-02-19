@@ -222,7 +222,9 @@ ENABLE_VENDOR_RIL_SERVICE := true
 #----------------------------------------------------------------------
 # wlan specific
 #----------------------------------------------------------------------
-include device/qcom/wlan/msmnile/wlan.mk
+# Multiple chips
+TARGET_WLAN_CHIP := qca6174 qca6390
+include device/qcom/wlan/msmnile_au/wlan.mk
 
 # CAN utils
 PRODUCT_PACKAGES += candump \
