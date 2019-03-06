@@ -212,7 +212,7 @@ KMGK_USE_QTI_SERVICE := true
 #Enable KEYMASTER 4.0
 ENABLE_KM_4_0 := true
 
-DEVICE_PACKAGE_OVERLAYS += device/qcom/msmnile/overlay
+DEVICE_PACKAGE_OVERLAYS += device/qcom/msmnile_au/overlay
 
 # Enable flag to support slow devices
 TARGET_PRESIL_SLOW_BOARD := true
