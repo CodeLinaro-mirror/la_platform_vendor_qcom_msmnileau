@@ -259,3 +259,6 @@ PRODUCT_PACKAGES += android.hardware.thermal@1.0-impl \
 # Enable STA+SAP+P2P
 WIFI_HIDL_FEATURE_DUAL_INTERFACE := true
 QC_WIFI_HIDL_FEATURE_STA_SAP_P2P := true
+
+PRODUCT_PACKAGES += car_power_daemon
+PRODUCT_PACKAGES += car_power_test
