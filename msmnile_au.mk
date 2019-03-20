@@ -10,6 +10,8 @@ TARGET_NO_QTI_MPGEN := true
 TARGET_USES_QTIC := false
 TARGET_USES_QTIC_EXTENSION := false
 ENABLE_HYP := false
+ENABLE_CAR_POWER_MANAGER := true
+BOARD_HAS_QCOM_WLAN := true
 
 TARGET_DEFINES_DALVIK_HEAP := true
 $(call inherit-product, device/qcom/common/common64.mk)
