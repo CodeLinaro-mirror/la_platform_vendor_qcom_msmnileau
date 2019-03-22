@@ -15,6 +15,17 @@ $(BUILT_TARGET_FILES_PACKAGE): $(INSTALLED_BOOTLOADER_MODULE)
 droidcore: $(INSTALLED_BOOTLOADER_MODULE)
 endif
 
+#----------------------------------------------------------------------
+# Compile Linux Kernel
+#----------------------------------------------------------------------
+ifeq ($(KERNEL_DEFCONFIG),)
+    ifeq ($(TARGET_BUILD_VARIANT),user)
+	KERNEL_DEFCONFIG := vendor/sa8155-perf_defconfig
+    else
+        KERNEL_DEFCONFIG := vendor/sa8155_defconfig
+    endif
+endif
+
 ifeq ($(TARGET_KERNEL_SOURCE),)
      TARGET_KERNEL_SOURCE := kernel
 endif
