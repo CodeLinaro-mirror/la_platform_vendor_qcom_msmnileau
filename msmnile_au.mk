@@ -13,6 +13,8 @@ TARGET_USES_AOSP_FOR_WLAN := false
 ENABLE_HYP := false
 ENABLE_CAR_POWER_MANAGER := true
 BOARD_HAS_QCOM_WLAN := true
+BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := default
+BOARD_VENDOR_QCOM_LOC_PDK_FEATURE_SET := false
 
 TARGET_DEFINES_DALVIK_HEAP := true
 $(call inherit-product, device/qcom/common/common64.mk)
