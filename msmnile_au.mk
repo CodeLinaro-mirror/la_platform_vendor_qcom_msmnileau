@@ -104,6 +104,10 @@ PRODUCT_PACKAGES += android.hardware.media.omx@1.0-impl
 # Audio configuration file
 -include $(TOPDIR)hardware/qcom/audio/configs/msmnile_au/msmnile_au.mk
 
+# Display configuration file
+PRODUCT_COPY_FILES += \
+    $(TOPDIR)hardware/qcom/display/config/qdcm_calib_data_default.xml:$(TARGET_COPY_OUT_VENDOR)/etc/qdcm_calib_data_ext_video_mode_dsi_bridge.xml
+
 #Audio DLKM
 AUDIO_DLKM := audio_apr.ko
 AUDIO_DLKM += audio_snd_event.ko
