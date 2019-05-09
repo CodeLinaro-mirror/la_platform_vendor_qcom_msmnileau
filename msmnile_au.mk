@@ -2,19 +2,21 @@
 BOARD_AVB_ENABLE := true
 TARGET_BOARD_AUTO := true
 TARGET_USES_AOSP := true
-TARGET_USES_AOSP_FOR_AUDIO := false
+TARGET_USES_AOSP_FOR_AUDIO := true
 TARGET_USES_QCOM_BSP := false
 TARGET_NO_TELEPHONY := true
-TARGET_NO_QC_PARSER := false
+TARGET_NO_QC_PARSER := true
 TARGET_NO_QTI_MPGEN := true
 TARGET_USES_QTIC := false
 TARGET_USES_QTIC_EXTENSION := false
-TARGET_USES_AOSP_FOR_WLAN := false
 ENABLE_HYP := false
-ENABLE_CAR_POWER_MANAGER := true
-BOARD_HAS_QCOM_WLAN := true
-BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := default
+BOARD_HAS_QCOM_WLAN := false
+TARGET_NO_QTI_WFD := true
+BOARD_HAVE_QCOM_FM := false
+TARGET_DISABLE_PERF_OPTIMIATIONS := true
 BOARD_VENDOR_QCOM_LOC_PDK_FEATURE_SET := false
+TARGET_ENABLE_QC_AV_ENHANCEMENTS := false
+TARGET_USES_AOSP_FOR_WLAN = true
 
 TARGET_DEFINES_DALVIK_HEAP := true
 $(call inherit-product, device/qcom/common/common64.mk)
@@ -56,19 +58,17 @@ BOARD_FRP_PARTITION_NAME := frp
 PRODUCT_PACKAGES += libGLES_android
 
 -include $(QCPATH)/common/config/qtic-config.mk
--include hardware/qcom/display/config/msmnile.mk
 
 # Video seccomp policy files
-PRODUCT_COPY_FILES += \
-    device/qcom/msmnile/seccomp/mediacodec-seccomp.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediacodec.policy \
-    device/qcom/msmnile/seccomp/mediaextractor-seccomp.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediaextractor.policy
+#PRODUCT_COPY_FILES += \
+#    device/qcom/msmnile/seccomp/mediacodec-seccomp.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediacodec.policy \
+#    device/qcom/msmnile/seccomp/mediaextractor-seccomp.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediaextractor.policy
 
 PRODUCT_BOOT_JARS += tcmiface
 PRODUCT_BOOT_JARS += telephony-ext
 PRODUCT_PACKAGES += telephony-ext
 
 
-TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
 
 TARGET_DISABLE_DASH := true
 TARGET_DISABLE_QTI_VPP := false
@@ -102,11 +102,11 @@ PRODUCT_COPY_FILES += hardware/qcom/media/conf_files/msmnile/system_properties.x
 PRODUCT_PACKAGES += android.hardware.media.omx@1.0-impl
 
 # Audio configuration file
--include $(TOPDIR)hardware/qcom/audio/configs/msmnile_au/msmnile_au.mk
+-include $(TOPDIR)vendor/qcom/opensource/audio-hal/primary-hal/configs/msmnile_au/msmnile_au.mk
 
 #Audio DLKM
 AUDIO_DLKM := audio_apr.ko
-AUDIO_DLKM += audio_snd_event.ko
+#AUDIO_DLKM += audio_snd_event.ko
 AUDIO_DLKM += audio_q6_notifier.ko
 AUDIO_DLKM += audio_adsp_loader.ko
 AUDIO_DLKM += audio_q6.ko
@@ -124,9 +124,11 @@ PRODUCT_PACKAGES += update_engine \
     update_engine_client \
     update_verifier \
     bootctrl.msmnile \
-    brillo_update_payload \
     android.hardware.boot@1.0-impl \
     android.hardware.boot@1.0-service
+
+PRODUCT_HOST_PACKAGES += \
+	brillo_update_payload
 
 #Boot control HAL test app
 PRODUCT_PACKAGES_DEBUG += bootctl
@@ -141,7 +143,7 @@ PRODUCT_PACKAGES += \
 DEVICE_MANIFEST_FILE := device/qcom/msmnile_au/manifest.xml
 DEVICE_MATRIX_FILE   := device/qcom/common/compatibility_matrix.xml
 DEVICE_FRAMEWORK_MANIFEST_FILE := device/qcom/msmnile_au/framework_manifest.xml
-DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := device/qcom/msmnile_au/vendor_framework_compatibility_matrix.xml
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := vendor/qcom/opensource/core-utils/vendor_framework_compatibility_matrix.xml
 
 
 #ANT+ stack
@@ -153,7 +155,7 @@ PRODUCT_PACKAGES += \
 
 # Display/Graphics
 PRODUCT_PACKAGES += \
-    android.hardware.configstore@1.0-service \
+    android.hardware.configstore@1.2-service \
     android.hardware.broadcastradio@1.0-impl
 
 # FBE support
@@ -178,10 +180,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     android.hardware.usb@1.0-service
 
-PRODUCT_PACKAGES += \
-       openavb_harness \
-       gptp \
-       mrpd
+#PRODUCT_PACKAGES += \
+#       openavb_harness \
+#       gptp \
+#       mrpd
 
 # Kernel modules install path
 KERNEL_MODULES_INSTALL := dlkm
@@ -205,6 +207,9 @@ KMGK_USE_QTI_SERVICE := true
 #Enable KEYMASTER 4.0
 ENABLE_KM_4_0 := true
 
+#Enable vndk-sp Libraries
+PRODUCT_PACKAGES += vndk_package
+
 DEVICE_PACKAGE_OVERLAYS += device/qcom/msmnile_au/overlay
 
 # Enable flag to support slow devices
@@ -217,7 +222,9 @@ ENABLE_VENDOR_RIL_SERVICE := true
 #----------------------------------------------------------------------
 # Multiple chips
 TARGET_WLAN_CHIP := qca6174 qca6390
-include device/qcom/wlan/msmnile_au/wlan.mk
+#include device/qcom/wlan/msmnile_au/wlan.mk
+
+
 
 # CAN utils
 PRODUCT_PACKAGES += candump \
@@ -255,3 +262,13 @@ PRODUCT_PACKAGES += android.hardware.thermal@1.0-impl \
 # Enable STA+SAP+P2P
 WIFI_HIDL_FEATURE_DUAL_INTERFACE := true
 QC_WIFI_HIDL_FEATURE_STA_SAP_P2P := true
+TARGET_MOUNT_POINTS_SYMLINKS := false
+
+###################################################################################
+# This is the End of target.mk file.
+# Now, Pickup other split product.mk files:
+###################################################################################
+# TODO: Relocate the system product.mk files pickup into qssi lunch, once it is up.
+$(call inherit-product-if-exists, vendor/qcom/defs/product-defs/system/*.mk)
+$(call inherit-product-if-exists, vendor/qcom/defs/product-defs/vendor/*.mk)
+###################################################################################
