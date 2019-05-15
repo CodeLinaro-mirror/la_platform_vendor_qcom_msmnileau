@@ -20,7 +20,7 @@ endif
 #----------------------------------------------------------------------
 ifeq ($(KERNEL_DEFCONFIG),)
     ifeq ($(TARGET_BUILD_VARIANT),user)
-	KERNEL_DEFCONFIG := vendor/sa8155-perf_defconfig
+        KERNEL_DEFCONFIG := vendor/sa8155-perf_defconfig
     else
         KERNEL_DEFCONFIG := vendor/sa8155_defconfig
     endif
