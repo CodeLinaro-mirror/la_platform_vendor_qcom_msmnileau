@@ -103,11 +103,11 @@ PRODUCT_COPY_FILES += hardware/qcom/media/conf_files/msmnile/system_properties.x
 PRODUCT_PACKAGES += android.hardware.media.omx@1.0-impl
 
 # Audio configuration file
--include $(TOPDIR)vendor/qcom/opensource/audio-hal/primary-hal/configs/msmnile_au/msmnile_au.mk
+-include $(TOPDIR)hardware/qcom/audio/configs/msmnile_au/msmnile_au.mk
 
 #Audio DLKM
 AUDIO_DLKM := audio_apr.ko
-#AUDIO_DLKM += audio_snd_event.ko
+AUDIO_DLKM += audio_snd_event.ko
 AUDIO_DLKM += audio_q6_notifier.ko
 AUDIO_DLKM += audio_adsp_loader.ko
 AUDIO_DLKM += audio_q6.ko
