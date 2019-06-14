@@ -181,10 +181,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     android.hardware.usb@1.0-service
 
-#PRODUCT_PACKAGES += \
-#       openavb_harness \
-#       gptp \
-#       mrpd
+PRODUCT_PACKAGES += \
+       openavb_harness \
+       gptp \
+       mrpd
 
 # Kernel modules install path
 KERNEL_MODULES_INSTALL := dlkm
