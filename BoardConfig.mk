@@ -94,7 +94,11 @@ BOARD_FLASH_BLOCK_SIZE := 131072 # (BOARD_KERNEL_PAGESIZE * 64)
 # Compile Linux Kernel
 #----------------------------------------------------------------------
 ifeq ($(KERNEL_DEFCONFIG),)
-     KERNEL_DEFCONFIG := $(shell ls ./kernel/msm-4.14/arch/arm64/configs/vendor/ | grep sa8..._defconfig)
+  ifeq ($(TARGET_BUILD_VARIANT),user)
+     KERNEL_DEFCONFIG := $(shell ls ./kernel/msm-4.14/arch/arm64/configs/vendor/ | grep sa8155-perf_defconfig)
+  else
+     KERNEL_DEFCONFIG := $(shell ls ./kernel/msm-4.14/arch/arm64/configs/vendor/ | grep sa8155_defconfig)
+  endif
 endif
 
 BOARD_VENDOR_KERNEL_MODULES := \
@@ -123,7 +127,7 @@ BOARD_VENDOR_KERNEL_MODULES += $(shell ls $(KERNEL_MODULES_OUT)/*.ko)
 TARGET_USES_ION := true
 TARGET_USES_NEW_ION_API :=true
 TARGET_USES_QCOM_BSP := false
-BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 earlycon=msm_geni_serial,0xa90000 androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=2048 firmware_class.path=/vendor/firmware_mnt/image loop.max_part=7 androidboot.usbcontroller=a600000.dwc3 androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 earlycon=msm_geni_serial,0xa90000 androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=2048 firmware_class.path=/vendor/firmware_mnt/image loop.max_part=7 androidboot.usbcontroller=a600000.dwc3
 
 BOARD_EGL_CFG := device/qcom/$(TARGET_BOARD_PLATFORM)/egl.cfg
 
