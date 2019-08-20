@@ -73,7 +73,7 @@ on post-fs-data
     mkdir /data/vendor/nnhal 0700 system system
 
     #Create folder for ais_server
-    mkdir /data/vendor/camera 0770 system camera
+    mkdir /dev/socket/camera 0770 system camera
 
 # For cpusets initialize for Silver Only first and then Silver + Gold
 # Silver Only configuration cannot work with 0-7
@@ -223,7 +223,8 @@ service vendor.cdsprpcd /vendor/bin/cdsprpcd
 service audiod /vendor/bin/audiod
     class main
     user system
-    group system
+    group system wakelock
+    capabilities BLOCK_SUSPEND
 
 ## imsdatadaemon starts with root and UID will be downgraded to SYSTEM.
 service vendor.imsqmidaemon /vendor/bin/imsqmidaemon
@@ -310,3 +311,11 @@ service smcinvoked /system/bin/smcinvoked
 #Start EMAC ethernet driver
 on boot
     insmod /vendor/lib/modules/emac_dwc_eqos.ko
+
+service carpowerd /vendor/bin/car_power_daemon
+    user root
+    group root system inet
+    disabled
+
+on property:sys.boot_completed=1
+    start carpowerd
