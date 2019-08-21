@@ -24,9 +24,7 @@ PRODUCT_PROPERTY_OVERRIDES  += \
 	dalvik.vm.heapsize=512m \
 	dalvik.vm.heaptargetutilization=0.75 \
 	dalvik.vm.heapminfree=512k \
-	dalvik.vm.heapmaxfree=8m \
-    vendor.gatekeeper.disable_spu=true
-
+	dalvik.vm.heapmaxfree=8m
 $(call inherit-product, packages/services/Car/car_product/build/car.mk)
 
 PRODUCT_NAME := msmnile_au
@@ -60,11 +58,10 @@ PRODUCT_PACKAGES += libGLES_android
 -include $(QCPATH)/common/config/qtic-config.mk
 -include hardware/qcom/display/config/msmnile.mk
 
-# Video seccomp policy files and strongbox_keystore file
+# Video seccomp policy files
 PRODUCT_COPY_FILES += \
     device/qcom/msmnile/seccomp/mediacodec-seccomp.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediacodec.policy \
-    device/qcom/msmnile/seccomp/mediaextractor-seccomp.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediaextractor.policy \
-    frameworks/native/data/etc/android.hardware.strongbox_keystore.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.strongbox_keystore.xml
+    device/qcom/msmnile/seccomp/mediaextractor-seccomp.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediaextractor.policy
 
 PRODUCT_BOOT_JARS += tcmiface
 PRODUCT_BOOT_JARS += telephony-ext
@@ -265,6 +262,3 @@ PRODUCT_PACKAGES += android.hardware.thermal@1.0-impl \
 # Enable STA+SAP+P2P
 WIFI_HIDL_FEATURE_DUAL_INTERFACE := true
 QC_WIFI_HIDL_FEATURE_STA_SAP_P2P := true
-
-#disable strongbox keymaster
-ENABLE_STRONGBOX_KM := false
