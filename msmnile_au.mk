@@ -119,6 +119,9 @@ AUDIO_DLKM += audio_native.ko
 AUDIO_DLKM += audio_machine_msmnile.ko
 PRODUCT_PACKAGES += $(AUDIO_DLKM)
 
+# HS-I2S DLKM
+PRODUCT_PACKAGES += hsi2s.ko
+
 PRODUCT_PACKAGES += fs_config_files
 
 #A/B related packages
@@ -135,11 +138,13 @@ PRODUCT_HOST_PACKAGES += \
 #Boot control HAL test app
 PRODUCT_PACKAGES_DEBUG += bootctl
 
-
 #Healthd packages
 PRODUCT_PACKAGES += \
     libhealthd.msm
 
+# MTMD enablement
+PRODUCT_COPY_FILES += \
+    device/qcom/msmnile_au/input-port-associations.xml:$(TARGET_COPY_OUT_VENDOR)/etc/input-port-associations.xml
 
 
 DEVICE_MANIFEST_FILE := device/qcom/msmnile_au/manifest.xml
