@@ -234,6 +234,10 @@ TARGET_WLAN_CHIP := qca6174 qca6390 qcn7605
 include device/qcom/wlan/msmnile_au/wlan.mk
 endif
 
+#for Emac
+PRODUCT_PACKAGES += \
+    emac_perf_settings.sh
+
 # CAN utils
 PRODUCT_PACKAGES += candump \
                     cansend \

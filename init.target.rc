@@ -62,6 +62,11 @@ on post-fs
     start vendor.spdaemon
     start vendor.sec_nvm
 
+#emac
+service emac_perf_setting /system/vendor/bin/sh /data/emac/emac_perf_settings.sh
+    user root
+    oneshot
+
 on post-fs-data
     mkdir /vendor/data/tombstones 0771 system system
     mkdir /tombstones/modem 0771 system system
