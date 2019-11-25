@@ -2,10 +2,6 @@
 #
 # Product-specific compile-time definitions.
 #
-
-# TODO(b/124534788): Temporarily allow eng and debug LOCAL_MODULE_TAGS
-BUILD_BROKEN_ENG_DEBUG_TAGS:=true
-
 ### Dynamic partition Handling
 ifneq ($(strip $(BOARD_DYNAMIC_PARTITION_ENABLE)),true)
   ifeq ($(ENABLE_VENDOR_IMAGE), true)
@@ -69,8 +65,6 @@ TARGET_NO_KERNEL := false
 TARGET_USES_IOPHAL := true
 
 BUILD_BROKEN_DUP_RULES := true
-BUILD_BROKEN_DUP_COPY_HEADERS=true
-BUILD_BROKEN_ANDROIDMK_EXPORTS=true
 BUILD_BROKEN_PHONY_TARGETS := true
 
 -include $(QCPATH)/common/msmnile_au/BoardConfigVendor.mk
