@@ -29,7 +29,9 @@ PRODUCT_PROPERTY_OVERRIDES  += \
 	dalvik.vm.heapsize=512m \
 	dalvik.vm.heaptargetutilization=0.75 \
 	dalvik.vm.heapminfree=512k \
-	dalvik.vm.heapmaxfree=8m
+	dalvik.vm.heapmaxfree=8m \
+	vendor.gatekeeper.disable_spu = true
+
 $(call inherit-product, packages/services/Car/car_product/build/car.mk)
 
 PRODUCT_NAME := msmnile_au
