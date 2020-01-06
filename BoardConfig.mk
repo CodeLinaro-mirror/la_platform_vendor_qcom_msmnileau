@@ -102,12 +102,7 @@ ifneq ($(AB_OTA_UPDATER),true)
     TARGET_RECOVERY_UPDATER_LIBS += librecovery_updater_msm
 endif
 
-ifneq ($(strip $(BOARD_DYNAMIC_PARTITION_ENABLE)),true)
-  TARGET_RECOVERY_FSTAB := device/qcom/msmnile/fstab.qcom
-else
-  TARGET_RECOVERY_FSTAB := device/qcom/msmnile/fstab.qcom
-endif
-
+TARGET_RECOVERY_FSTAB := device/qcom/msmnile_au/fstab.qcom
 
 #Enable split vendor image
 ENABLE_VENDOR_IMAGE := true
