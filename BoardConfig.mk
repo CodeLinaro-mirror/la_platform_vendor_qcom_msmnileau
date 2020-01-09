@@ -2,10 +2,6 @@
 #
 # Product-specific compile-time definitions.
 #
-
-# TODO(b/124534788): Temporarily allow eng and debug LOCAL_MODULE_TAGS
-BUILD_BROKEN_ENG_DEBUG_TAGS:=true
-
 TARGET_BOARD_PLATFORM := msmnile
 TARGET_BOOTLOADER_BOARD_NAME := msmnile
 export TARGET_BOARD_TYPE := auto
@@ -36,8 +32,6 @@ TARGET_NO_KERNEL := false
 TARGET_USES_IOPHAL := true
 
 BUILD_BROKEN_DUP_RULES := true
-BUILD_BROKEN_DUP_COPY_HEADERS=true
-BUILD_BROKEN_ANDROIDMK_EXPORTS=true
 BUILD_BROKEN_PHONY_TARGETS := true
 
 -include $(QCPATH)/common/msmnile_au/BoardConfigVendor.mk
@@ -132,7 +126,7 @@ BOARD_VENDOR_KERNEL_MODULES += $(shell ls $(KERNEL_MODULES_OUT)/*.ko)
 TARGET_USES_ION := true
 TARGET_USES_NEW_ION_API :=true
 TARGET_USES_QCOM_BSP := false
-BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 earlycon=msm_geni_serial,0xa90000 androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=2048 firmware_class.path=/vendor/firmware_mnt/image loop.max_part=7 androidboot.usbcontroller=a600000.dwc3 androidboot.selinux=enforcing hibernate=nocompress noswap_randomize
+BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 earlycon=msm_geni_serial,0xa90000 androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=2048 firmware_class.path=/vendor/firmware_mnt/image loop.max_part=7 androidboot.usbcontroller=a600000.dwc3 androidboot.recover_usb=1 androidboot.selinux=enforcing hibernate=nocompress noswap_randomize
 
 BOARD_EGL_CFG := device/qcom/$(TARGET_BOARD_PLATFORM)/egl.cfg
 
@@ -225,3 +219,8 @@ BOARD_VNDK_VERSION:=current
 -include vendor/qcom/defs/board-defs/system/*.mk
 -include vendor/qcom/defs/board-defs/vendor/*.mk
 #################################################################################
+
+#Flag for Early Ethernet
+IS_EARLY_ETH_ENABLED := 1
+
+include $(TOPDIR)device/qcom/msmnile_au/early_eth.mk
