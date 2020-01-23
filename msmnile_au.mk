@@ -74,6 +74,26 @@ PRODUCT_MODEL := msmnile_au for arm64
 
 #Initial bringup flags
 
+ifneq (,$(filter true, $(TARGET_FWK_SUPPORTS_FULL_VALUEADDS)$(TARGET_BOARD_AUTO)))
+  $(warning "Compiling with full value-added framework or for AUTO Platform")
+else
+  $(warning "Compiling without full value-added framework - enabling GENERIC_ODM_IMAGE")
+  GENERIC_ODM_IMAGE := true
+endif
+
+# Enable Codec2.0 HAL as default for pure AOSP variants.
+# WA till ODM properties start taking effect
+ifeq ($(GENERIC_ODM_IMAGE),true)
+  $(warning "Forcing codec2.0 for generic odm build variant")
+  PRODUCT_PROPERTY_OVERRIDES += debug.media.codec2=2
+  PRODUCT_PROPERTY_OVERRIDES += debug.stagefright.ccodec=4
+  PRODUCT_PROPERTY_OVERRIDES += debug.stagefright.omx_default_rank=1000
+else
+  $(warning "Enabling codec2.0 SW only for non-generic odm build variant")
+  #Rank OMX SW codecs lower than OMX HW codecs
+  PRODUCT_PROPERTY_OVERRIDES += debug.stagefright.omx_default_rank.sw-audio=1
+  PRODUCT_PROPERTY_OVERRIDES += debug.stagefright.omx_default_rank=0
+endif
 #Default vendor image configuration
 ifeq ($(ENABLE_VENDOR_IMAGE),)
 ENABLE_VENDOR_IMAGE := false
