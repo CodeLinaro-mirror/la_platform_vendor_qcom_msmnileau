@@ -49,6 +49,7 @@ on early-init
     start acdb_loader_service
     write /sys/kernel/debug/bootkpi/kpi_values "M - audio_hal_plugin_service Start"
     start audio_hal_plugin_service
+    start esplash
 
 service ais_server /system/vendor/bin/ais_server
     class core
@@ -103,6 +104,13 @@ on post-fs
     write /dev/ipa 1
     start vendor.spdaemon
     start vendor.sec_nvm
+
+service esplash /vendor/bin/esplash
+    class core
+    user system
+    group system
+    oneshot
+    disabled
 
 on post-fs-data
     mkdir /vendor/data/tombstones 0771 system system
