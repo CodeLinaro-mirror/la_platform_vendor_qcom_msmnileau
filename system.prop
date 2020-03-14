@@ -75,7 +75,7 @@ telephony.lteOnCdmaDevice=1
 persist.fuse_sdcard=true
 
 #system prop for Bluetooth SOC type
-vendor.qcom.bluetooth.soc=hastings
+vendor.qcom.bluetooth.soc=rome
 
 #system prop for wipower support
 ro.bluetooth.emb_wp_mode=false
@@ -195,3 +195,11 @@ vendor.display.builtin_mirroring=true
 vendor.display.builtin_baseid_and_size=5,3
 vendor.display.pluggable_baseid_and_size=1,4
 vendor.display.virtual_baseid_and_size=8,1
+
+# Enable car power manager for LPM(LowPowerMode)
+persist.vendor.car.lpm=true
+
+# set BT AVRCP prop to false
+persist.bluetooth.enablenewavrcp=false
+#disable Telephony
+ro.radio.noril=true
