@@ -199,7 +199,7 @@ PRODUCT_PACKAGES += \
 
 # Display/Graphics
 PRODUCT_PACKAGES += \
-    android.hardware.configstore@1.2-service \
+    android.hardware.configstore@1.1-service \
     android.hardware.broadcastradio@1.0-impl
 
 
