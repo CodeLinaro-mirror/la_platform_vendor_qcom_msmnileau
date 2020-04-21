@@ -191,11 +191,11 @@ DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := vendor/qcom/opensource/core-utils/
 
 
 #ANT+ stack
-PRODUCT_PACKAGES += \
-    AntHalService \
-    libantradio \
-    antradio_app \
-    libvolumelistener
+#PRODUCT_PACKAGES += \
+#    AntHalService \
+#    libantradio \
+#    antradio_app \
+#    libvolumelistener
 
 # Display/Graphics
 PRODUCT_PACKAGES += \
