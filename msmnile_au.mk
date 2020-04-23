@@ -12,7 +12,7 @@ TARGET_NO_QTI_MPGEN := true
 TARGET_USES_QTIC := false
 TARGET_USES_QTIC_EXTENSION := false
 ENABLE_HYP := false
-BOARD_HAS_QCOM_WLAN := false
+BOARD_HAS_QCOM_WLAN := true
 TARGET_NO_QTI_WFD := true
 BOARD_HAVE_QCOM_FM := false
 TARGET_DISABLE_PERF_OPTIMIATIONS := true
@@ -300,6 +300,9 @@ PRODUCT_PACKAGES += canflasher \
 #Thermal
 PRODUCT_PACKAGES += android.hardware.thermal@1.0-impl \
                     android.hardware.thermal@1.0-service
+
+#add vndservicemanager for surfaceflinger crash
+PRODUCT_PACKAGES += vndservicemanager
 
 TARGET_MOUNT_POINTS_SYMLINKS := false
 
