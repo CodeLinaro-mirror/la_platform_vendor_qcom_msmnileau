@@ -87,6 +87,8 @@ persist.vendor.btstack.enable.splita2dp=false
 persist.vendor.service.bdroid.sibs=false
 
 #system prop for Hardware type Automotive
+#system prop for setting sensor hal
+ro.hardware.sensors=msmnile.asm_auto
 ro.hardware.type=automotive
 
 #
