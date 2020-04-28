@@ -223,6 +223,9 @@ TARGET_USES_GRALLOC1 := true
 # Enable sensor multi HAL
 USE_SENSOR_MULTI_HAL := false
 
+# Enable sensor Version V_1
+USE_SENSOR_HAL_VER := 1.0
+
 #Add non-hlos files to ota packages
 ADD_RADIO_FILES := true
 
