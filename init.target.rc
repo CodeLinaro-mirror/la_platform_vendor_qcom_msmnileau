@@ -179,7 +179,7 @@ on property:init.svc.media=running
 
 #declaring AIS service to be started after boot complete
 service ais_v4l2_proxy /vendor/bin/ais_v4l2_proxy
-    user root
+    user system
     group camera input graphics system
     disabled
 
