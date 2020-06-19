@@ -262,4 +262,4 @@ BUILD_BROKEN_USES_BUILD_HOST_STATIC_LIBRARY := true
 -include vendor/qcom/defs/board-defs/system/*.mk
 -include vendor/qcom/defs/board-defs/vendor/*.mk
 #################################################################################
-include device/qcom/sepolicy/SEPolicy.mk
+include device/qcom/sepolicy_vndr/SEPolicy.mk
