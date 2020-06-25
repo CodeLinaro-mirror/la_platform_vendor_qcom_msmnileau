@@ -226,6 +226,10 @@ PRODUCT_COPY_FILES += device/qcom/msmnile/msm_irqbalance.conf:$(TARGET_COPY_OUT_
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.midi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.midi.xml
 
+# OEM unlock feature
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.telephony.carrierlock.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.telephony.carrierlock.xml
+
 # USB default HAL
 PRODUCT_PACKAGES += \
     android.hardware.usb@1.0-service
@@ -310,6 +314,32 @@ PRODUCT_PACKAGES += canflasher \
 #Thermal
 PRODUCT_PACKAGES += android.hardware.thermal@1.0-impl \
                     android.hardware.thermal@1.0-service
+
+#add for camera
+ENABLE_V4L2_CAMERA := false
+ifeq ($(ENABLE_V4L2_CAMERA), true)
+PRODUCT_PACKAGES += v4l2loopback.ko
+
+# Camera configuration file. Shared by passthrough/binderized camera HAL
+PRODUCT_PACKAGES += camera.device@1.0-impl
+PRODUCT_PACKAGES += camera.device@3.2-impl
+PRODUCT_PACKAGES += camera.device@3.3-impl
+PRODUCT_PACKAGES += camera.device@3.4-impl
+PRODUCT_PACKAGES += camera.device@3.4-external-impl
+PRODUCT_PACKAGES += camera.device@3.5-impl
+PRODUCT_PACKAGES += camera.device@3.5-external-impl
+PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-external
+PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-legacy
+PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-impl
+# Enable binderized camera HAL
+PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-service
+
+USE_CAMERA_V4L2_AUTO_HAL := true
+PRODUCT_PROPERTY_OVERRIDES += ro.hardware.camera=v4l2
+PRODUCT_PACKAGES += camera.v4l2
+PRODUCT_PACKAGES += ais_v4l2loopback_config.xml
+PRODUCT_PACKAGES += ais_v4l2_proxy
+endif
 
 TARGET_MOUNT_POINTS_SYMLINKS := false
 
