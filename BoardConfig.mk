@@ -41,7 +41,7 @@ TARGET_BOARD_PLATFORM := msmnile
 TARGET_BOOTLOADER_BOARD_NAME := msmnile
 export TARGET_BOARD_TYPE := auto
 TARGET_BOARD_SUFFIX := _au
-BOARD_SUPPORTS_EARLY_INIT := true
+BOARD_SUPPORTS_EARLY_INIT := false
 ifeq ($(BOARD_SUPPORTS_EARLY_INIT),true)
 export CONFIG_EARLY_INIT := true
 endif
@@ -154,12 +154,26 @@ BOARD_VENDOR_KERNEL_MODULES := \
     $(KERNEL_MODULES_OUT)/v4l2loopback.ko \
     $(KERNEL_MODULES_OUT)/msm_11ad_proxy.ko \
     $(KERNEL_MODULES_OUT)/emac_dwc_eqos.ko \
-    $(KERNEL_MODULES_OUT)/hsi2s.ko
+    $(KERNEL_MODULES_OUT)/hsi2s.ko \
+    $(KERNEL_MODULES_OUT)/br_netfilter.ko \
+    $(KERNEL_MODULES_OUT)/gspca_main.ko \
+    $(KERNEL_MODULES_OUT)/lcd.ko \
+    $(KERNEL_MODULES_OUT)/mmc_test.ko \
+    $(KERNEL_MODULES_OUT)/mpq-adapter.ko \
+    $(KERNEL_MODULES_OUT)/mpq-dmx-hw-plugin.ko \
+    $(KERNEL_MODULES_OUT)/msm-geni-ir.ko \
+    $(KERNEL_MODULES_OUT)/tspp.ko \
+
 
 # install lkdtm only for userdebug and eng build variants
 ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
     ifeq (,$(findstring perf_defconfig, $(KERNEL_DEFCONFIG)))
-        BOARD_VENDOR_KERNEL_MODULES += $(KERNEL_MODULES_OUT)/lkdtm.ko
+        BOARD_VENDOR_KERNEL_MODULES += $(KERNEL_MODULES_OUT)/lkdtm.ko \
+                                       $(KERNEL_MODULES_OUT)/rcutorture.ko \
+                                       $(KERNEL_MODULES_OUT)/test_user_copy.ko \
+                                       $(KERNEL_MODULES_OUT)/torture.ko \
+                                       $(KERNEL_MODULES_OUT)/atomic64_test.ko \
+                                       $(KERNEL_MODULES_OUT)/locktorture.ko
     endif
 endif
 
