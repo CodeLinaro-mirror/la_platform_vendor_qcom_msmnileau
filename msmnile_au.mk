@@ -316,7 +316,7 @@ PRODUCT_PACKAGES += android.hardware.thermal@1.0-impl \
                     android.hardware.thermal@1.0-service
 
 #add for camera
-ENABLE_V4L2_CAMERA := false
+ENABLE_V4L2_CAMERA := true
 ifeq ($(ENABLE_V4L2_CAMERA), true)
 PRODUCT_PACKAGES += v4l2loopback.ko
 
