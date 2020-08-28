@@ -206,6 +206,9 @@ PRODUCT_PACKAGES += \
     android.hardware.configstore@1.1-service \
     android.hardware.broadcastradio@1.0-impl
 
+# Automotive display service
+PRODUCT_PACKAGES += android.frameworks.automotive.display@1.0-service
+
 # MSM IRQ Balancer configuration file
 PRODUCT_COPY_FILES += device/qcom/msmnile/msm_irqbalance.conf:$(TARGET_COPY_OUT_VENDOR)/etc/msm_irqbalance.conf
 
@@ -257,11 +260,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_FULL_TREBLE_OVERRIDE := true
 PRODUCT_VENDOR_MOVE_ENABLED := true
 PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
-
-KMGK_USE_QTI_SERVICE := true
-
-#Enable KEYMASTER 4.0
-ENABLE_KM_4_0 := true
 
 SHIPPING_API_LEVEL := 30
 PRODUCT_SHIPPING_API_LEVEL := 30
