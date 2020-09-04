@@ -11,7 +11,7 @@ TARGET_NO_QTI_MPGEN := true
 TARGET_USES_QTIC := false
 TARGET_USES_QTIC_EXTENSION := false
 ENABLE_HYP := false
-BOARD_HAS_QCOM_WLAN := true
+BOARD_HAS_QCOM_WLAN := false
 TARGET_NO_QTI_WFD := true
 BOARD_HAVE_QCOM_FM := false
 TARGET_DISABLE_PERF_OPTIMIATIONS := true
@@ -75,13 +75,15 @@ ifeq ($(ENABLE_VENDOR_IMAGE),)
 ENABLE_VENDOR_IMAGE := false
 endif
 
-TARGET_KERNEL_VERSION := 4.14
+TARGET_KERNEL_VERSION := 5.4
+
+TARGET_HAS_GENERIC_KERNEL_HEADERS := true
 
 #Enable llvm support for kernel
 KERNEL_LLVM_SUPPORT := true
 
 #Enable sd-llvm suppport for kernel
-KERNEL_SD_LLVM_SUPPORT := false
+KERNEL_SD_LLVM_SUPPORT := true
 
 # default is nosdcard, S/W button enabled in resource
 PRODUCT_CHARACTERISTICS := nosdcard
@@ -138,7 +140,7 @@ PRODUCT_COPY_FILES += device/qcom/msmnile/media_codecs_vendor_audio.xml:$(TARGET
 PRODUCT_COPY_FILES += device/qcom/msmnile/media_codecs_performance.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_performance.xml
 endif #TARGET_ENABLE_QC_AV_ENHANCEMENTS
 
-PRODUCT_COPY_FILES += hardware/qcom/media/conf_files/msmnile/system_properties.xml:$(TARGET_COPY_OUT_VENDOR)/etc/system_properties.xml
+#PRODUCT_COPY_FILES += hardware/qcom/media/conf_files/msmnile/system_properties.xml:$(TARGET_COPY_OUT_VENDOR)/etc/system_properties.xml
 
 PRODUCT_PACKAGES += android.hardware.media.omx@1.0-impl
 
@@ -206,8 +208,6 @@ PRODUCT_PACKAGES += \
     android.hardware.configstore@1.1-service \
     android.hardware.broadcastradio@1.0-impl
 
-# Automotive display service
-PRODUCT_PACKAGES += android.frameworks.automotive.display@1.0-service
 
 # MSM IRQ Balancer configuration file
 PRODUCT_COPY_FILES += device/qcom/msmnile/msm_irqbalance.conf:$(TARGET_COPY_OUT_VENDOR)/etc/msm_irqbalance.conf
@@ -224,29 +224,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.telephony.carrierlock.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.telephony.carrierlock.xml
 
-# USB default HAL
-PRODUCT_PACKAGES += \
-    android.hardware.usb@1.0-service
-
 PRODUCT_PACKAGES += \
        openavb_harness \
        gptp \
        mrpd
-
-# Sensor conf files
-PRODUCT_COPY_FILES += \
-    device/qcom/msmnile_au/sensors/hals.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/hals.conf \
-    frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.accelerometer.xml \
-    frameworks/native/data/etc/android.hardware.sensor.compass.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.compass.xml \
-    frameworks/native/data/etc/android.hardware.sensor.gyroscope.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.gyroscope.xml \
-    frameworks/native/data/etc/android.hardware.sensor.light.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.light.xml \
-    frameworks/native/data/etc/android.hardware.sensor.proximity.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.proximity.xml \
-    frameworks/native/data/etc/android.hardware.sensor.barometer.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.barometer.xml \
-    frameworks/native/data/etc/android.hardware.sensor.stepcounter.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.stepcounter.xml \
-    frameworks/native/data/etc/android.hardware.sensor.stepdetector.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.stepdetector.xml \
-    frameworks/native/data/etc/android.hardware.sensor.ambient_temperature.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.ambient_temperature.xml \
-    frameworks/native/data/etc/android.hardware.sensor.relative_humidity.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.relative_humidity.xml \
-    frameworks/native/data/etc/android.hardware.sensor.hifi_sensors.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.hifi_sensors.xml
 
 # Kernel modules install path
 KERNEL_MODULES_INSTALL := dlkm
@@ -261,8 +242,10 @@ PRODUCT_FULL_TREBLE_OVERRIDE := true
 PRODUCT_VENDOR_MOVE_ENABLED := true
 PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
 
-SHIPPING_API_LEVEL := 30
-PRODUCT_SHIPPING_API_LEVEL := 30
+KMGK_USE_QTI_SERVICE := true
+
+#Enable KEYMASTER 4.0
+ENABLE_KM_4_0 := true
 
 #Enable vndk-sp Libraries
 PRODUCT_PACKAGES += vndk_package

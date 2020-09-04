@@ -73,7 +73,18 @@ USE_OPENGL_RENDERER := true
 BOARD_USE_LEGACY_UI := true
 
 # Set Header version for bootimage
+#Disable appended dtb
+TARGET_KERNEL_APPEND_DTB := false
+
+# Set Header version for bootimage
+ifneq ($(strip $(TARGET_KERNEL_APPEND_DTB)),true)
+#Enable dtb in boot image and Set Header version
+BOARD_INCLUDE_DTB_IN_BOOTIMG := true
+BOARD_BOOTIMG_HEADER_VERSION := 2
+else
 BOARD_BOOTIMG_HEADER_VERSION := 1
+endif
+
 BOARD_MKBOOTIMG_ARGS := --header_version $(BOARD_BOOTIMG_HEADER_VERSION)
 
 # Defines for enabling A/B builds
@@ -116,37 +127,26 @@ BOARD_BOOTIMAGE_PARTITION_SIZE := 0x06000000
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 10737418240
 BOARD_PERSISTIMAGE_PARTITION_SIZE := 33554432
 BOARD_METADATAIMAGE_PARTITION_SIZE := 16777216
-BOARD_PREBUILT_DTBOIMAGE := out/target/product/msmnile/prebuilt_dtbo.img
+BOARD_PREBUILT_DTBOIMAGE := out/target/product/msmnile_au/prebuilt_dtbo.img
 BOARD_DTBOIMG_PARTITION_SIZE := 0x0800000
 BOARD_PERSISTIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_FLASH_BLOCK_SIZE := 131072 # (BOARD_KERNEL_PAGESIZE * 64)
 
-#----------------------------------------------------------------------
-# Compile Linux Kernel
-#----------------------------------------------------------------------
-ifeq ($(KERNEL_DEFCONFIG),)
-  ifeq ($(TARGET_BUILD_VARIANT),user)
-     KERNEL_DEFCONFIG := $(shell ls ./kernel/msm-4.14/arch/arm64/configs/vendor/ | grep sa8155-perf_defconfig)
-  else
-     KERNEL_DEFCONFIG := $(shell ls ./kernel/msm-4.14/arch/arm64/configs/vendor/ | grep sa8155_defconfig)
-  endif
-endif
-
-BOARD_VENDOR_KERNEL_MODULES := \
-    $(KERNEL_MODULES_OUT)/audio_apr.ko \
-    $(KERNEL_MODULES_OUT)/audio_snd_event.ko \
-    $(KERNEL_MODULES_OUT)/audio_q6_notifier.ko \
-    $(KERNEL_MODULES_OUT)/audio_adsp_loader.ko \
-    $(KERNEL_MODULES_OUT)/audio_q6.ko \
-    $(KERNEL_MODULES_OUT)/audio_platform.ko \
-    $(KERNEL_MODULES_OUT)/audio_hdmi.ko \
-    $(KERNEL_MODULES_OUT)/audio_stub.ko \
-    $(KERNEL_MODULES_OUT)/audio_native.ko \
-    $(KERNEL_MODULES_OUT)/audio_machine_msmnile.ko \
-    $(KERNEL_MODULES_OUT)/wil6210.ko \
-    $(KERNEL_MODULES_OUT)/msm_11ad_proxy.ko \
-    $(KERNEL_MODULES_OUT)/emac_dwc_eqos.ko \
-    $(KERNEL_MODULES_OUT)/hsi2s.ko
+#BOARD_VENDOR_KERNEL_MODULES := \
+#    $(KERNEL_MODULES_OUT)/audio_apr.ko \
+#    $(KERNEL_MODULES_OUT)/audio_snd_event.ko \
+#    $(KERNEL_MODULES_OUT)/audio_q6_notifier.ko \
+#    $(KERNEL_MODULES_OUT)/audio_adsp_loader.ko \
+#    $(KERNEL_MODULES_OUT)/audio_q6.ko \
+#    $(KERNEL_MODULES_OUT)/audio_platform.ko \
+#    $(KERNEL_MODULES_OUT)/audio_hdmi.ko \
+#    $(KERNEL_MODULES_OUT)/audio_stub.ko \
+#    $(KERNEL_MODULES_OUT)/audio_native.ko \
+#    $(KERNEL_MODULES_OUT)/audio_machine_msmnile.ko \
+#    $(KERNEL_MODULES_OUT)/wil6210.ko \
+#    $(KERNEL_MODULES_OUT)/msm_11ad_proxy.ko \
+#    $(KERNEL_MODULES_OUT)/emac_dwc_eqos.ko \
+#    $(KERNEL_MODULES_OUT)/hsi2s.ko
 
 # install lkdtm only for userdebug and eng build variants
 ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
@@ -161,7 +161,7 @@ BOARD_VENDOR_KERNEL_MODULES += $(shell ls $(KERNEL_MODULES_OUT)/*.ko)
 TARGET_USES_ION := true
 TARGET_USES_NEW_ION_API :=true
 TARGET_USES_QCOM_BSP := false
-BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 earlycon=msm_geni_serial,0xa90000 androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=2048 firmware_class.path=/vendor/firmware_mnt/image loop.max_part=7 androidboot.usbcontroller=a600000.dwc3 androidboot.recover_usb=1 androidboot.selinux=enforcing hibernate=nocompress noswap_randomize
+BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 earlycon=msm_geni_serial,0xa90000 androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=2048 firmware_class.path=/vendor/firmware_mnt/image loop.max_part=7 androidboot.usbcontroller=a600000.dwc3 androidboot.recover_usb=1 androidboot.selinux=permissive hibernate=nocompress noswap_randomize
 
 BOARD_EGL_CFG := device/qcom/$(TARGET_BOARD_PLATFORM)/egl.cfg
 
@@ -174,7 +174,7 @@ TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_HEADER_ARCH := arm64
 TARGET_KERNEL_CROSS_COMPILE_PREFIX := $(shell pwd)/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-androidkernel-
 
-KERN_CONF_PATH := kernel/msm-4.14/arch/arm64/configs/vendor/
+KERN_CONF_PATH := kernel/msm-5.4/arch/arm64/configs/vendor/
 KERN_CONF_FILE := $(shell ls $(KERN_CONF_PATH) | grep sa8..._defconfig)
 KERNEL_UNCOMPRESSED_DEFCONFIG := $(shell grep "CONFIG_BUILD_ARM64_UNCOMPRESSED_KERNEL=y" $(KERN_CONF_PATH)$(KERN_CONF_FILE))
 ifeq ($(KERNEL_UNCOMPRESSED_DEFCONFIG),)
@@ -193,7 +193,7 @@ TARGET_NO_RPC := true
 TARGET_PLATFORM_DEVICE_BASE := /devices/soc.0/
 TARGET_INIT_VENDOR_LIB := libinit_msm
 
-TARGET_KERNEL_APPEND_DTB := true
+
 TARGET_COMPILE_WITH_MSM_KERNEL := true
 
 #Enable PD locater/notifier
@@ -219,9 +219,6 @@ TARGET_USES_GRALLOC1 := true
 # Enable sensor multi HAL
 USE_SENSOR_MULTI_HAL := false
 
-# Enable sensor Version V_1
-USE_SENSOR_HAL_VER := 1.0
-
 #Add non-hlos files to ota packages
 ADD_RADIO_FILES := true
 
@@ -234,6 +231,13 @@ TARGET_USES_INTERACTION_BOOST := true
 #Enable DRM plugins 64 bit compilation
 TARGET_ENABLE_MEDIADRM_64 := true
 
+#namespace definition for librecovery_updater
+#differentiate legacy 'sg' or 'bsg' framework
+SOONG_CONFIG_NAMESPACES += ufsbsg
+SOONG_CONFIG_ufsbsg += ufsframework
+SOONG_CONFIG_ufsbsg_ufsframework := bsg
+
+
 #----------------------------------------------------------------------
 # wlan specific
 #----------------------------------------------------------------------
@@ -243,7 +247,7 @@ endif
 
 #Flag to enable System SDK Requirements.
 #All vendor APK will be compiled against system_current API set.
-BOARD_SYSTEMSDK_VERSIONS:=30
+BOARD_SYSTEMSDK_VERSIONS:=29
 
 #Enable VNDK Compliance
 BOARD_VNDK_VERSION:=current

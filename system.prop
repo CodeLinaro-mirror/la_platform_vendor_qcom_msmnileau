@@ -65,9 +65,6 @@ ro.opengles.version=196610
 # system property for maximum number of HFP client connections
 bt.max.hfpclient.connections=1
 
-# system property for hfpclient sco s4 settings
-persist.bluetooth.hfpclient.sco_s4_supported=true
-
 #
 # System props for telephony
 # System prop to turn on CdmaLTEPhone always
@@ -90,8 +87,6 @@ persist.vendor.btstack.enable.splita2dp=false
 persist.vendor.service.bdroid.sibs=false
 
 #system prop for Hardware type Automotive
-#system prop for setting sensor hal
-ro.hardware.sensors=msmnile.asm_auto
 ro.hardware.type=automotive
 
 #
@@ -208,6 +203,3 @@ persist.vendor.car.lpm=true
 persist.bluetooth.enablenewavrcp=false
 #disable Telephony
 ro.radio.noril=true
-
-# default wifi country code
-ro.boot.wificountrycode=us
