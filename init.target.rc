@@ -42,6 +42,7 @@ on early-init
     write /sys/kernel/debug/bootkpi/kpi_values "M - adsprpcd Start"
     start vendor.adsprpcd
     start vendor.adsprpcd_audiopd
+    start audiod
     write /sys/kernel/debug/bootkpi/kpi_values "M - acdb_loader_service Start"
     start acdb_loader_service
     write /sys/kernel/debug/bootkpi/kpi_values "M - audio_hal_plugin_service Start"
