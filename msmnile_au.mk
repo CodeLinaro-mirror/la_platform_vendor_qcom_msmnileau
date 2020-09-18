@@ -119,6 +119,10 @@ endif
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.ethernet.xml:system/etc/permissions/android.hardware.ethernet.xml
 
+# Copy the testscripts from the qssi folder as it was moved to QSSI folder.
+PRODUCT_COPY_FILES += \
+    device/qcom/qssi/init.qcom.testscripts.sh:system/etc/init.qcom.testscripts.sh
+
 #Audio sample file for early services
 PRODUCT_COPY_FILES += device/qcom/msmnile_au/bike_bell.wav:$(TARGET_COPY_OUT_VENDOR)/etc/bike_bell.wav
 
@@ -202,6 +206,9 @@ PRODUCT_PACKAGES += \
     android.hardware.configstore@1.1-service \
     android.hardware.broadcastradio@1.0-impl
 
+# Automotive display service
+PRODUCT_PACKAGES += android.frameworks.automotive.display@1.0-service
+
 # MSM IRQ Balancer configuration file
 PRODUCT_COPY_FILES += device/qcom/msmnile/msm_irqbalance.conf:$(TARGET_COPY_OUT_VENDOR)/etc/msm_irqbalance.conf
 
@@ -253,6 +260,9 @@ PRODUCT_COPY_FILES += \
 PRODUCT_FULL_TREBLE_OVERRIDE := true
 PRODUCT_VENDOR_MOVE_ENABLED := true
 PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
+
+SHIPPING_API_LEVEL := 30
+PRODUCT_SHIPPING_API_LEVEL := 30
 
 #Enable vndk-sp Libraries
 PRODUCT_PACKAGES += vndk_package
@@ -309,6 +319,28 @@ PRODUCT_PACKAGES += canflasher \
 
 #add vndservicemanager for surfaceflinger crash
 PRODUCT_PACKAGES += vndservicemanager
+
+#add for camera
+ENABLE_V4L2_CAMERA := true
+ifeq ($(ENABLE_V4L2_CAMERA), true)
+
+# Camera configuration file. Shared by passthrough/binderized camera HAL
+PRODUCT_PACKAGES += camera.device@1.0-impl
+PRODUCT_PACKAGES += camera.device@3.2-impl
+PRODUCT_PACKAGES += camera.device@3.3-impl
+PRODUCT_PACKAGES += camera.device@3.4-impl
+PRODUCT_PACKAGES += camera.device@3.4-external-impl
+PRODUCT_PACKAGES += camera.device@3.5-impl
+PRODUCT_PACKAGES += camera.device@3.5-external-impl
+PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-external
+PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-legacy
+PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-impl
+# Enable binderized camera HAL
+PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-service
+
+PRODUCT_PROPERTY_OVERRIDES += ro.hardware.camera=v4l2
+PRODUCT_PACKAGES += camera.v4l2
+endif
 
 TARGET_MOUNT_POINTS_SYMLINKS := false
 
