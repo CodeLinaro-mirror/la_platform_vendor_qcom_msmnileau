@@ -302,6 +302,8 @@ PRODUCT_PACKAGES += canflasher \
 
 #add vndservicemanager for surfaceflinger crash
 PRODUCT_PACKAGES += vndservicemanager
+SHIPPING_API_LEVEL := 30
+PRODUCT_SHIPPING_API_LEVEL := 30
 
 #add for camera
 ENABLE_V4L2_CAMERA := true
