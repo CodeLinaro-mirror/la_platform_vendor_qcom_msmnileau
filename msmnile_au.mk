@@ -80,7 +80,7 @@ TARGET_HAS_GENERIC_KERNEL_HEADERS := true
 KERNEL_LLVM_SUPPORT := true
 
 #Enable sd-llvm suppport for kernel
-KERNEL_SD_LLVM_SUPPORT := true
+KERNEL_SD_LLVM_SUPPORT := false
 
 # diag-router
 TARGET_HAS_DIAG_ROUTER := true
