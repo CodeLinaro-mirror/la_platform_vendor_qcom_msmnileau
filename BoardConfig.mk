@@ -150,9 +150,20 @@ BOARD_FLASH_BLOCK_SIZE := 131072 # (BOARD_KERNEL_PAGESIZE * 64)
 #    $(KERNEL_MODULES_OUT)/emac_dwc_eqos.ko \
 #    $(KERNEL_MODULES_OUT)/hsi2s.ko
 
+#----------------------------------------------------------------------
+# Compile Linux Kernel
+#----------------------------------------------------------------------
+ifeq ($(KERNEL_DEFCONFIG),)
+    ifeq ($(TARGET_BUILD_VARIANT),user)
+        KERNEL_DEFCONFIG := gen3auto-qgki_defconfig
+    else
+        KERNEL_DEFCONFIG := gen3auto-qgki-debug_defconfig
+    endif
+endif
+
 # install lkdtm only for userdebug and eng build variants
 ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
-    ifeq (,$(findstring perf_defconfig, $(KERNEL_DEFCONFIG)))
+    ifeq (,$(findstring qgki_defconfig, $(KERNEL_DEFCONFIG)))
         BOARD_VENDOR_KERNEL_MODULES += $(KERNEL_MODULES_OUT)/lkdtm.ko
     endif
 endif
