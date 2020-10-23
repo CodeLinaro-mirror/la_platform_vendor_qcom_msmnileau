@@ -134,7 +134,8 @@ BOARD_DTBOIMG_PARTITION_SIZE := 0x0800000
 BOARD_PERSISTIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_FLASH_BLOCK_SIZE := 131072 # (BOARD_KERNEL_PAGESIZE * 64)
 
-#BOARD_VENDOR_KERNEL_MODULES := \
+BOARD_VENDOR_KERNEL_MODULES := \
+     $(KERNEL_MODULES_OUT)/hsi2s.ko
 #    $(KERNEL_MODULES_OUT)/audio_apr.ko \
 #    $(KERNEL_MODULES_OUT)/audio_snd_event.ko \
 #    $(KERNEL_MODULES_OUT)/audio_q6_notifier.ko \
@@ -148,7 +149,6 @@ BOARD_FLASH_BLOCK_SIZE := 131072 # (BOARD_KERNEL_PAGESIZE * 64)
 #    $(KERNEL_MODULES_OUT)/wil6210.ko \
 #    $(KERNEL_MODULES_OUT)/msm_11ad_proxy.ko \
 #    $(KERNEL_MODULES_OUT)/emac_dwc_eqos.ko \
-#    $(KERNEL_MODULES_OUT)/hsi2s.ko
 
 #----------------------------------------------------------------------
 # Compile Linux Kernel
