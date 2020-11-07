@@ -302,6 +302,8 @@ PRODUCT_PACKAGES += canflasher \
 
 #add vndservicemanager for surfaceflinger crash
 PRODUCT_PACKAGES += vndservicemanager
+SHIPPING_API_LEVEL := 30
+PRODUCT_SHIPPING_API_LEVEL := 30
 
 #add for camera
 ENABLE_V4L2_CAMERA := true
@@ -326,6 +328,12 @@ PRODUCT_PACKAGES += camera.v4l2
 endif
 
 TARGET_MOUNT_POINTS_SYMLINKS := false
+
+PRODUCT_PACKAGES += android.hardware.dumpstate@1.1-service.example \
+                    android.hardware.thermal@2.0-service.mock \
+
+PRODUCT_PACKAGES += android.hardware.health@2.1-service \
+                    android.hardware.health@2.1-impl \
 
 ###################################################################################
 # This is the End of target.mk file.
