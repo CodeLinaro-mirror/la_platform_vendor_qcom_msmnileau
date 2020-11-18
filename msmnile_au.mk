@@ -338,6 +338,9 @@ endif
 
 TARGET_MOUNT_POINTS_SYMLINKS := false
 
+# Enable incremental FS feature
+PRODUCT_PROPERTY_OVERRIDES += ro.incremental.enable=1
+
 ###################################################################################
 # This is the End of target.mk file.
 # Now, Pickup other split product.mk files:
