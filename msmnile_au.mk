@@ -172,8 +172,12 @@ PRODUCT_PACKAGES += update_engine \
     update_engine_client \
     update_verifier \
     bootctrl.msmnile \
-    android.hardware.boot@1.0-impl \
-    android.hardware.boot@1.0-service
+    android.hardware.boot@1.1-impl-qti \
+    android.hardware.boot@1.1-impl-qti.recovery \
+    android.hardware.boot@1.1-service
+
+PRODUCT_PACKAGES += \
+    update_engine_sideload
 
 PRODUCT_HOST_PACKAGES += \
 	brillo_update_payload
@@ -242,11 +246,6 @@ PRODUCT_FULL_TREBLE_OVERRIDE := true
 PRODUCT_VENDOR_MOVE_ENABLED := true
 PRODUCT_COMPATIBLE_PROPERTY_OVERRIDE := true
 
-KMGK_USE_QTI_SERVICE := true
-
-#Enable KEYMASTER 4.0
-ENABLE_KM_4_0 := true
-
 #Enable vndk-sp Libraries
 PRODUCT_PACKAGES += vndk_package
 
@@ -302,6 +301,8 @@ PRODUCT_PACKAGES += canflasher \
 
 #add vndservicemanager for surfaceflinger crash
 PRODUCT_PACKAGES += vndservicemanager
+SHIPPING_API_LEVEL := 30
+PRODUCT_SHIPPING_API_LEVEL := 30
 
 #add for camera
 ENABLE_V4L2_CAMERA := true
@@ -326,6 +327,12 @@ PRODUCT_PACKAGES += camera.v4l2
 endif
 
 TARGET_MOUNT_POINTS_SYMLINKS := false
+
+PRODUCT_PACKAGES += android.hardware.dumpstate@1.1-service.example \
+                    android.hardware.thermal@2.0-service.mock \
+
+PRODUCT_PACKAGES += android.hardware.health@2.1-service \
+                    android.hardware.health@2.1-impl \
 
 ###################################################################################
 # This is the End of target.mk file.
