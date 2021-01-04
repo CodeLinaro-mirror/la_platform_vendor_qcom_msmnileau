@@ -67,8 +67,8 @@ BUILD_BROKEN_DUP_RULES := true
 -include $(QCPATH)/common/msmnile_au/BoardConfigVendor.mk
 
 # Some framework code requires this to enable BT
-BOARD_HAVE_BLUETOOTH := true
-BOARD_USES_WIPOWER := true
+BOARD_HAVE_BLUETOOTH := false
+BOARD_USES_WIPOWER := false
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/qcom/common/automotive
 
 USE_OPENGL_RENDERER := true
