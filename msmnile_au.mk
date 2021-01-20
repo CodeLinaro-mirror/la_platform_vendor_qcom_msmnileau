@@ -337,6 +337,10 @@ PRODUCT_PACKAGES += android.hardware.dumpstate@1.1-service.example \
 PRODUCT_PACKAGES += android.hardware.health@2.1-service \
                     android.hardware.health@2.1-impl \
 
+PRODUCT_PACKAGES += android.hardware.neuralnetworks@1.0.vendor \
+                    android.hardware.neuralnetworks@1.1.vendor \
+                    android.hardware.neuralnetworks@1.2.vendor \
+                    android.hardware.neuralnetworks@1.3.vendor
 ###################################################################################
 # This is the End of target.mk file.
 # Now, Pickup other split product.mk files:
