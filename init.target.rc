@@ -46,6 +46,7 @@ on early-init
     start vendor.adsprpcd_audiopd
     start audiod
     start esplash
+    chmod 0777 /sys/power/pm_silentmode_kernel_state
 
 service ais_server /system/vendor/bin/ais_server
     class core
