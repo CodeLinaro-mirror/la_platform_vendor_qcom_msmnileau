@@ -194,6 +194,11 @@ PRODUCT_PACKAGES += \
     wificond \
     wifilogd
 
+#sysprofiler
+PRODUCT_PACKAGES += libsysprofiler \
+    sysprofiler_app \
+    sysprofiler_interface
+
 # Sensor conf files
 PRODUCT_COPY_FILES += \
     device/qcom/msmnile_au/sensors/hals.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/hals.conf \
