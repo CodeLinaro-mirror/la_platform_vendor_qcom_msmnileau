@@ -102,8 +102,6 @@ PRODUCT_PACKAGES += libGLES_android
 #    device/qcom/msmnile/seccomp/mediaextractor-seccomp.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediaextractor.policy
 
 PRODUCT_BOOT_JARS += tcmiface
-PRODUCT_BOOT_JARS += telephony-ext
-PRODUCT_PACKAGES += telephony-ext
 
 
 
@@ -225,9 +223,6 @@ PRODUCT_SHIPPING_API_LEVEL := 31
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.midi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.midi.xml
 
-# OEM unlock feature
-PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.hardware.telephony.carrierlock.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.telephony.carrierlock.xml
 
 PRODUCT_PACKAGES += \
        openavb_harness \
