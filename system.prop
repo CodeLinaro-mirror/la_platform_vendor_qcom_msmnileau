@@ -209,3 +209,5 @@ ro.radio.noril=true
 
 # default wifi country code
 ro.boot.wificountrycode=us
+
+ro.surface_flinger.protected_contents=true
