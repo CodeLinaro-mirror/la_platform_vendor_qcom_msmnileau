@@ -367,6 +367,8 @@ PRODUCT_PACKAGES += android.hardware.health@2.1-service \
 
 #add libnbaio for avenhancement
 PRODUCT_PACKAGES += libnbaio
+# privapp-permissions whitelisting (To Fix CTS :privappPermissionsMustBeEnforced)
+PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
 
 ###################################################################################
 # This is the End of target.mk file.
