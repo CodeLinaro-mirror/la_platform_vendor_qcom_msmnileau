@@ -26,6 +26,10 @@ BOARD_BUILD_SUPER_IMAGE_BY_DEFAULT := true
 PRODUCT_BUILD_SUPER_PARTITION := true
 PRODUCT_PACKAGES += fastbootd
 
+# Mismatch in the uses-library tags between build system and the manifest leads
+# to soong APK manifest_check tool errors. Enable the flag to fix this.
+RELAX_USES_LIBRARY_CHECK := true
+
 BOARD_AVB_VBMETA_SYSTEM := system
 BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
 BOARD_AVB_VBMETA_SYSTEM_ALGORITHM := SHA256_RSA2048
