@@ -1,4 +1,12 @@
 ENABLE_AB ?= true
+# Enable virtual-ab by default
+ifeq ($(ENABLE_AB), true)
+  ENABLE_VIRTUAL_AB ?= true
+endif
+ifeq ($(ENABLE_VIRTUAL_AB), true)
+  $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota.mk)
+endif
+
 # Enable AVB 2.0
 BOARD_AVB_ENABLE := true
 TARGET_BOARD_AUTO := true
@@ -9,7 +17,7 @@ TARGET_NO_TELEPHONY := true
 TARGET_USES_QTIC := false
 TARGET_USES_QTIC_EXTENSION := false
 ENABLE_HYP := false
-BOARD_HAS_QCOM_WLAN := false
+BOARD_HAS_QCOM_WLAN := true
 TARGET_NO_QTI_WFD := true
 BOARD_HAVE_QCOM_FM := false
 BOARD_VENDOR_QCOM_LOC_PDK_FEATURE_SET := false
@@ -274,6 +282,9 @@ endif
 PRODUCT_PACKAGES += \
     emac_perf_settings.sh
 
+#for Emac
+PRODUCT_PACKAGES += emac_rps_settings.sh
+
 # CAN utils
 PRODUCT_PACKAGES += candump \
                     cansend \
@@ -339,6 +350,10 @@ PRODUCT_PACKAGES += android.hardware.dumpstate@1.1-service.example \
 PRODUCT_PACKAGES += android.hardware.health@2.1-service \
                     android.hardware.health@2.1-impl \
 
+PRODUCT_PACKAGES += android.hardware.neuralnetworks@1.0.vendor \
+                    android.hardware.neuralnetworks@1.1.vendor \
+                    android.hardware.neuralnetworks@1.2.vendor \
+                    android.hardware.neuralnetworks@1.3.vendor
 ###################################################################################
 # This is the End of target.mk file.
 # Now, Pickup other split product.mk files:
