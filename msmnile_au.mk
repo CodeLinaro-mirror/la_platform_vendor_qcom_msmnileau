@@ -354,6 +354,9 @@ PRODUCT_PACKAGES += android.hardware.dumpstate@1.1-service.example \
 PRODUCT_PACKAGES += android.hardware.health@2.1-service \
                     android.hardware.health@2.1-impl \
 
+#add libnbaio for avenhancement
+PRODUCT_PACKAGES += libnbaio
+
 ###################################################################################
 # This is the End of target.mk file.
 # Now, Pickup other split product.mk files:
