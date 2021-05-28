@@ -99,6 +99,9 @@ KERNEL_SD_LLVM_SUPPORT := false
 # diag-router
 TARGET_HAS_DIAG_ROUTER := true
 
+# Target uses DIAG_MDM2 instance to collect WLAN fw diag logs
+PRODUCT_PROPERTY_OVERRIDES += vendor.usb.diag_mdm.inst.name=diag_mdm2
+
 # default is nosdcard, S/W button enabled in resource
 PRODUCT_CHARACTERISTICS := nosdcard
 
