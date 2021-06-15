@@ -115,7 +115,10 @@ PRODUCT_PACKAGES += libGLES_android
 
 PRODUCT_BOOT_JARS += tcmiface
 
-
+ifneq ($(TARGET_NO_TELEPHONY), true)
+ PRODUCT_BOOT_JARS += telephony-ext
+ PRODUCT_PACKAGES += telephony-ext
+endif
 
 TARGET_DISABLE_DASH := true
 TARGET_DISABLE_QTI_VPP := false
