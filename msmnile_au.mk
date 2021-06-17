@@ -230,11 +230,6 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 #    antradio_app \
 #    libvolumelistener
 
-# Display/Graphics
-PRODUCT_PACKAGES += \
-    android.hardware.configstore@1.1-service \
-    android.hardware.broadcastradio@1.0-impl
-
 # Automotive display service
 PRODUCT_PACKAGES += android.frameworks.automotive.display@1.0-service
 
@@ -369,6 +364,9 @@ PRODUCT_PACKAGES += android.hardware.neuralnetworks@1.0.vendor \
                     android.hardware.neuralnetworks@1.1.vendor \
                     android.hardware.neuralnetworks@1.2.vendor \
                     android.hardware.neuralnetworks@1.3.vendor
+
+PRODUCT_ENFORCE_RRO_TARGETS := framework-res
+
 ###################################################################################
 # This is the End of target.mk file.
 # Now, Pickup other split product.mk files:
