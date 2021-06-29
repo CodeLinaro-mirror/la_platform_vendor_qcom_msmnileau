@@ -3,6 +3,8 @@
 # Product-specific compile-time definitions.
 #
 
+#Generate DTBO image
+BOARD_KERNEL_SEPARATED_DTBO := true
 
 ### Dynamic partition Handling
 ifneq ($(strip $(BOARD_DYNAMIC_PARTITION_ENABLE)),true)
@@ -29,10 +31,11 @@ else
   BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := system vendor
   BOARD_RECOVERYIMAGE_PARTITION_SIZE := 67108864
   BOARD_EXT4_SHARE_DUP_BLOCKS := true
-  ifeq ($(BOARD_KERNEL_SEPARATED_DTBO),true)
+endif
+
+ifeq ($(BOARD_KERNEL_SEPARATED_DTBO),true)
     # Enable DTBO for recovery image
     BOARD_INCLUDE_RECOVERY_DTBO := true
-  endif
 endif
 ### Dynamic partition Handling
 TARGET_BOARD_PLATFORM := msmnile
@@ -78,15 +81,14 @@ BOARD_USE_LEGACY_UI := true
 #Disable appended dtb
 TARGET_KERNEL_APPEND_DTB := false
 
-# Set Header version for bootimage
-ifneq ($(strip $(TARGET_KERNEL_APPEND_DTB)),true)
-#Enable dtb in boot image and Set Header version
+#Enable dtb in boot image and boot image header version 3 support.
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
-BOARD_BOOT_HEADER_VERSION := 3
-else
-BOARD_BOOT_HEADER_VERSION := 1
+ifeq ($(ENABLE_AB), true)
+BOARD_USES_RECOVERY_AS_BOOT := true
+TARGET_NO_RECOVERY := true
 endif
 
+BOARD_BOOT_HEADER_VERSION := 3
 BOARD_MKBOOTIMG_ARGS := --header_version $(BOARD_BOOT_HEADER_VERSION)
 
 # Defines for enabling A/B builds
@@ -234,9 +236,6 @@ USE_SENSOR_HAL_VER := 1.0
 
 #Add non-hlos files to ota packages
 ADD_RADIO_FILES := true
-
-#Generate DTBO image
-BOARD_KERNEL_SEPARATED_DTBO := true
 
 #Enable INTERACTION_BOOST
 TARGET_USES_INTERACTION_BOOST := true
