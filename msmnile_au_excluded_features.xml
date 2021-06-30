@@ -18,4 +18,21 @@
 <permissions>
     <!-- This should be used to exclude this feature from msmnile_gvmq targets.-->
     <unavailable-feature name="android.software.ipsec_tunnels" />
+    <unavailable-feature name="android.hardware.sensor.accelerometer" />
+    <unavailable-feature name="android.hardware.sensor.compass" />
+    <unavailable-feature name="android.hardware.sensor.light" />
+    <unavailable-feature name="android.hardware.sensor.proximity" />
+    <unavailable-feature name="android.hardware.location.network" />
+    <unavailable-feature name="android.hardware.screen.portrait" />
+    <unavailable-feature name="android.software.picture_in_picture" />
+    <unavailable-feature name="android.hardware.telephony" />
+    <unavailable-feature name="android.hardware.telephony.carrierlock" />
+    <unavailable-feature name="android.hardware.telephony.cdma" />
+    <unavailable-feature name="android.hardware.telephony.gsm" />
+    <unavailable-feature name="android.hardware.telephony.ims" />
+    <unavailable-feature name="android.hardware.camera.flash" />
+    <unavailable-feature name="android.hardware.camera.front" />
+    <unavailable-feature name="android.hardware.wifi.aware" />
+    <unavailable-feature name="android.hardware.wifi.passpoint" />
+    <unavailable-feature name="android.hardware.wifi.rtt" />
 </permissions>
