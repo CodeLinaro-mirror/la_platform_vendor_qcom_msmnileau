@@ -63,7 +63,7 @@ TARGET_NO_KERNEL := false
 TARGET_USES_IOPHAL := true
 
 BUILD_BROKEN_DUP_RULES := true
-
+TARGET_DUMMY_VENDOR_BOOT := true
 -include $(QCPATH)/common/msmnile_au/BoardConfigVendor.mk
 
 # Some framework code requires this to enable BT
