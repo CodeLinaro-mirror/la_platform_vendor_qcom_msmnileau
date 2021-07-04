@@ -1,5 +1,13 @@
 ALLOW_MISSING_DEPENDENCIES := true
 ENABLE_AB ?= true
+# Enable virtual-ab by default
+ifeq ($(ENABLE_AB), true)
+  ENABLE_VIRTUAL_AB ?= true
+endif
+ifeq ($(ENABLE_VIRTUAL_AB), true)
+  $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota.mk)
+endif
+
 # Enable AVB 2.0
 BOARD_AVB_ENABLE := true
 TARGET_BOARD_AUTO := true
@@ -37,9 +45,9 @@ BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
 BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX_LOCATION := 2
 
 ifeq ($(ENABLE_AB), true)
-PRODUCT_COPY_FILES += $(LOCAL_PATH)/fstab_AB_dynamic_partition_variant.qti:$(TARGET_COPY_OUT_RAMDISK)/fstab.qcom
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/fstab_AB_dynamic_partition_variant.qti:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.qcom
 else
-PRODUCT_COPY_FILES += $(LOCAL_PATH)/fstab_non_AB_dynamic_partition_variant.qti:$(TARGET_COPY_OUT_RAMDISK)/fstab.qcom
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/fstab_non_AB_dynamic_partition_variant.qti:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.qcom
 endif
 endif
 #PRODUCT_BUILD_SYSTEM_IMAGE := true
@@ -51,7 +59,7 @@ PRODUCT_BUILD_PRODUCT_SERVICES_IMAGE := false
 PRODUCT_BUILD_CACHE_IMAGE := false
 PRODUCT_BUILD_RAMDISK_IMAGE := true
 PRODUCT_BUILD_USERDATA_IMAGE := true
-
+PRODUCT_BUILD_VENDOR_BOOT_IMAGE := true
 
 
 TARGET_DEFINES_DALVIK_HEAP := true
@@ -64,6 +72,7 @@ PRODUCT_PROPERTY_OVERRIDES  += \
 	dalvik.vm.heapminfree=512k \
 	dalvik.vm.heapmaxfree=8m
 $(call inherit-product, packages/services/Car/car_product/build/car.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 
 PRODUCT_NAME := msmnile_au
 PRODUCT_DEVICE := msmnile_au
@@ -90,6 +99,9 @@ KERNEL_SD_LLVM_SUPPORT := false
 # diag-router
 TARGET_HAS_DIAG_ROUTER := true
 
+# Target uses DIAG_MDM2 instance to collect WLAN fw diag logs
+PRODUCT_PROPERTY_OVERRIDES += vendor.usb.diag_mdm.inst.name=diag_mdm2
+
 # default is nosdcard, S/W button enabled in resource
 PRODUCT_CHARACTERISTICS := nosdcard
 
@@ -107,7 +119,10 @@ PRODUCT_PACKAGES += libGLES_android
 
 PRODUCT_BOOT_JARS += tcmiface
 
-
+ifneq ($(TARGET_NO_TELEPHONY), true)
+ PRODUCT_BOOT_JARS += telephony-ext
+ PRODUCT_PACKAGES += telephony-ext
+endif
 
 TARGET_DISABLE_DASH := true
 TARGET_DISABLE_QTI_VPP := false
@@ -163,6 +178,12 @@ AUDIO_DLKM += audio_native.ko
 AUDIO_DLKM += audio_machine_msmnile.ko
 PRODUCT_PACKAGES += $(AUDIO_DLKM)
 
+PCIE_DLKM := pci_msm_drv
+PRODUCT_PACKAGES += $(PCIE_DLKM)
+
+CNSS_DLKM := cnss2
+PRODUCT_PACKAGES += $(CNSS_DLKM)
+
 # HS-I2S DLKM
 PRODUCT_PACKAGES += hsi2s.ko
 # HS-I2S test app
@@ -175,8 +196,12 @@ PRODUCT_PACKAGES += update_engine \
     update_engine_client \
     update_verifier \
     bootctrl.msmnile \
-    android.hardware.boot@1.0-impl \
-    android.hardware.boot@1.0-service
+    android.hardware.boot@1.1-impl-qti \
+    android.hardware.boot@1.1-impl-qti.recovery \
+    android.hardware.boot@1.1-service
+
+PRODUCT_PACKAGES += \
+    update_engine_sideload
 
 PRODUCT_HOST_PACKAGES += \
 	brillo_update_payload
@@ -207,11 +232,6 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 #    libantradio \
 #    antradio_app \
 #    libvolumelistener
-
-# Display/Graphics
-PRODUCT_PACKAGES += \
-    android.hardware.configstore@1.1-service \
-    android.hardware.broadcastradio@1.0-impl
 
 # Automotive display service
 PRODUCT_PACKAGES += android.frameworks.automotive.display@1.0-service
@@ -347,6 +367,9 @@ PRODUCT_PACKAGES += android.hardware.neuralnetworks@1.0.vendor \
                     android.hardware.neuralnetworks@1.1.vendor \
                     android.hardware.neuralnetworks@1.2.vendor \
                     android.hardware.neuralnetworks@1.3.vendor
+
+PRODUCT_ENFORCE_RRO_TARGETS := framework-res
+
 ###################################################################################
 # This is the End of target.mk file.
 # Now, Pickup other split product.mk files:
