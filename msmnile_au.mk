@@ -74,6 +74,8 @@ PRODUCT_BRAND := qti
 PRODUCT_MODEL := msmnile_au for arm64
 
 #Initial bringup flags
+PRODUCT_PROPERTY_OVERRIDES += \
+   ro.incremental.enable=yes
 
 #Default vendor image configuration
 ifeq ($(ENABLE_VENDOR_IMAGE),)
