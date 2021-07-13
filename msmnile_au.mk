@@ -73,6 +73,9 @@ PRODUCT_DEVICE := msmnile_au
 PRODUCT_BRAND := qti
 PRODUCT_MODEL := msmnile_au for arm64
 
+PRODUCT_PROPERTY_OVERRIDES += \
+   ro.incremental.enable=yes
+
 ifeq ($(TARGET_FWK_SUPPORTS_FULL_VALUEADDS),true)
   $(warning "Compiling with full value-added framework")
 else
