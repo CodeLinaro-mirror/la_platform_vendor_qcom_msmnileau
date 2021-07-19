@@ -17,7 +17,6 @@
 
 <permissions>
     <!-- This should be used to exclude this feature from msmnile_gvmq targets.-->
-    <unavailable-feature name="android.software.ipsec_tunnels" />
     <unavailable-feature name="android.hardware.sensor.accelerometer" />
     <unavailable-feature name="android.hardware.sensor.compass" />
     <unavailable-feature name="android.hardware.sensor.light" />
