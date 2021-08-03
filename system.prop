@@ -199,3 +199,6 @@ persist.vendor.car.lpm=true
 persist.bluetooth.enablenewavrcp=false
 #disable Telephony
 ro.radio.noril=true
+
+# default wifi country code
+ro.boot.wificountrycode=us

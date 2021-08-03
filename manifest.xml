@@ -182,11 +182,10 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <hal format="hidl">
        <name>android.hardware.keymaster</name>
        <transport>hwbinder</transport>
-       <version>4.0</version>
+       <version>4.1</version>
        <interface>
            <name>IKeymasterDevice</name>
            <instance>default</instance>
-           <instance>strongbox</instance>
        </interface>
     </hal>
     <!-- gatekeeper -->
@@ -199,6 +198,20 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
            <instance>default</instance>
        </interface>
    </hal>
+    <!-- Default HAL service -->
+    <hal format="hidl">
+        <name>android.hardware.drm</name>
+        <transport>hwbinder</transport>
+        <version>1.3</version>
+        <interface>
+            <name>ICryptoFactory</name>
+            <instance>default</instance>
+        </interface>
+        <interface>
+            <name>IDrmFactory</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
     <!-- gnss -->
     <hal format="hidl">
         <name>android.hardware.gnss</name>
@@ -305,15 +318,6 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         </interface>
     </hal>
     <hal format="hidl">
-        <name>vendor.qti.data.factory</name>
-        <transport>hwbinder</transport>
-        <version>2.1</version>
-        <interface>
-            <name>IFactory</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-    <hal format="hidl">
         <name>vendor.qti.esepowermanager</name>
         <transport>hwbinder</transport>
         <version>1.1</version>
@@ -393,74 +397,6 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         <version>1.1</version>
         <interface>
             <name>IFactory</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-    <!-- Tether Offload -->
-    <hal format="hidl">
-      <name>android.hardware.tetheroffload.config</name>
-      <transport>hwbinder</transport>
-      <version>1.0</version>
-      <interface>
-          <name>IOffloadConfig</name>
-          <instance>default</instance>
-      </interface>
-    </hal>
-
-    <hal format="hidl">
-      <name>android.hardware.tetheroffload.control</name>
-      <transport>hwbinder</transport>
-      <version>1.0</version>
-      <interface>
-          <name>IOffloadControl</name>
-          <instance>default</instance>
-      </interface>
-    </hal>
-    <hal format="hidl">
-        <name>vendor.qti.hardware.data.iwlan</name>
-        <transport>hwbinder</transport>
-        <version>1.0</version>
-        <interface>
-            <name>IIWlan</name>
-            <instance>slot1</instance>
-            <instance>slot2</instance>
-        </interface>
-    </hal>
-    <hal format="hidl">
-        <name>vendor.qti.hardware.data.connection</name>
-        <transport>hwbinder</transport>
-        <version>1.1</version>
-        <interface>
-            <name>IDataConnection</name>
-            <instance>slot1</instance>
-            <instance>slot2</instance>
-        </interface>
-    </hal>
-    <hal format="hidl">
-        <name>vendor.qti.hardware.cacert</name>
-        <transport>hwbinder</transport>
-        <version>1.0</version>
-        <interface>
-            <name>IService</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-    <!-- NFC HAL service -->
-    <hal format="hidl">
-        <name>android.hardware.nfc</name>
-        <transport>hwbinder</transport>
-        <version>1.2</version>
-        <interface>
-            <name>INfc</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-    <hal format="hidl">
-        <name>vendor.nxp.hardware.nfc</name>
-        <transport>hwbinder</transport>
-        <version>2.0</version>
-        <interface>
-            <name>INqNfc</name>
             <instance>default</instance>
         </interface>
     </hal>
@@ -623,34 +559,6 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         <version>1.0</version>
         <interface>
             <name>IAudioControl</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-    <hal format="hidl">
-        <name>vendor.qti.hardware.qccvndhal</name>
-        <transport>hwbinder</transport>
-        <version>1.0</version>
-        <interface>
-            <name>IQccvndhal</name>
-            <instance>qccvndhal</instance>
-        </interface>
-    </hal>
-    <hal format="hidl">
-        <name>android.hardware.automotive.evs</name>
-        <transport>hwbinder</transport>
-        <impl level="generic"></impl>
-        <version>1.1</version>
-        <interface>
-            <name>IEvsEnumerator</name>
-            <instance>EvsEnumeratorHw</instance>
-        </interface>
-    </hal>
-    <hal format="hidl">
-        <name>vendor.qti.automotive.qcarcam</name>
-        <transport>hwbinder</transport>
-        <version>1.0</version>
-        <interface>
-            <name>IQcarCamera</name>
             <instance>default</instance>
         </interface>
     </hal>
