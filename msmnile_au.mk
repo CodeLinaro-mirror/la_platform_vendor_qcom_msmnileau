@@ -122,6 +122,9 @@ BOARD_FRP_PARTITION_NAME := frp
 #Android EGL implementation
 PRODUCT_PACKAGES += libGLES_android
 
+# Memtrack HAL deprecated. Replaced with AIDL for target-level 6.
+ENABLE_MEMTRACK_AIDL_HAL := true
+
 -include $(QCPATH)/common/config/qtic-config.mk
 
 # Video seccomp policy files
