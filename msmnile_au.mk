@@ -1,3 +1,8 @@
+TARGET_BOARD_PLATFORM := msmnile
+TARGET_BOOTLOADER_BOARD_NAME := msmnile
+TARGET_BOARD_TYPE := auto
+TARGET_BOARD_SUFFIX := _au
+
 ALLOW_MISSING_DEPENDENCIES := true
 ENABLE_AB ?= true
 # Enable virtual-ab by default

@@ -38,10 +38,6 @@ ifeq ($(BOARD_KERNEL_SEPARATED_DTBO),true)
     BOARD_INCLUDE_RECOVERY_DTBO := true
 endif
 ### Dynamic partition Handling
-TARGET_BOARD_PLATFORM := msmnile
-TARGET_BOOTLOADER_BOARD_NAME := msmnile
-TARGET_BOARD_TYPE := auto
-TARGET_BOARD_SUFFIX := _au
 
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
