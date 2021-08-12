@@ -80,6 +80,7 @@ on early-init
     write /sys/kernel/boot_kpi/kpi_values "M - adsprpcd Start"
     start vendor.adsprpcd
     start vendor.adsprpcd_audiopd
+    start audiod
     start esplash
 
 service ais_server /system/vendor/bin/ais_server
