@@ -25,6 +25,7 @@ TARGET_ENABLE_QC_AV_ENHANCEMENTS := false
 TARGET_FWK_SUPPORTS_AV_VALUEADDS := true
 TARGET_USES_AOSP_FOR_WLAN := false
 ENABLE_CAR_POWER_MANAGER := true
+TARGET_USES_GAS := true
 # Dynamic-partition enabled by default
 BOARD_DYNAMIC_PARTITION_ENABLE := true
 ifeq ($(strip $(BOARD_DYNAMIC_PARTITION_ENABLE)),true)
@@ -73,6 +74,9 @@ PRODUCT_DEVICE := msmnile_au
 PRODUCT_BRAND := qti
 PRODUCT_MODEL := msmnile_au for arm64
 
+PRODUCT_PROPERTY_OVERRIDES += \
+   ro.incremental.enable=yes
+
 ifeq ($(TARGET_FWK_SUPPORTS_FULL_VALUEADDS),true)
   $(warning "Compiling with full value-added framework")
 else
@@ -97,6 +101,9 @@ KERNEL_SD_LLVM_SUPPORT := false
 
 # diag-router
 TARGET_HAS_DIAG_ROUTER := true
+
+# Target uses DIAG_MDM2 instance to collect WLAN fw diag logs
+PRODUCT_PROPERTY_OVERRIDES += vendor.usb.diag_mdm.inst.name=diag_mdm2
 
 # default is nosdcard, S/W button enabled in resource
 PRODUCT_CHARACTERISTICS := nosdcard
@@ -173,6 +180,12 @@ AUDIO_DLKM += audio_native.ko
 AUDIO_DLKM += audio_machine_msmnile.ko
 PRODUCT_PACKAGES += $(AUDIO_DLKM)
 
+PCIE_DLKM := pci_msm_drv
+PRODUCT_PACKAGES += $(PCIE_DLKM)
+
+CNSS_DLKM := cnss2
+PRODUCT_PACKAGES += $(CNSS_DLKM)
+
 # HS-I2S DLKM
 PRODUCT_PACKAGES += hsi2s.ko
 # HS-I2S test app
@@ -202,6 +215,9 @@ PRODUCT_PACKAGES_DEBUG += bootctl
 PRODUCT_PACKAGES += \
     libhealthd.msm
 
+PRODUCT_COPY_FILES += \
+    device/qcom/msmnile_au/task_profiles.json:$(TARGET_COPY_OUT_VENDOR)/etc/task_profiles.json
+
 # MTMD enablement
 PRODUCT_COPY_FILES += \
     device/qcom/msmnile_au/input-port-associations.xml:$(TARGET_COPY_OUT_VENDOR)/etc/input-port-associations.xml \
@@ -225,9 +241,10 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 
 # Display/Graphics
 PRODUCT_PACKAGES += \
-    android.hardware.configstore@1.1-service \
     android.hardware.broadcastradio@1.0-impl
 
+# Automotive display service
+PRODUCT_PACKAGES += android.frameworks.automotive.display@1.0-service
 
 # MSM IRQ Balancer configuration file
 PRODUCT_COPY_FILES += device/qcom/msmnile/msm_irqbalance.conf:$(TARGET_COPY_OUT_VENDOR)/etc/msm_irqbalance.conf
@@ -353,6 +370,11 @@ PRODUCT_PACKAGES += android.hardware.dumpstate@1.1-service.example \
 
 PRODUCT_PACKAGES += android.hardware.health@2.1-service \
                     android.hardware.health@2.1-impl \
+
+#add libnbaio for avenhancement
+PRODUCT_PACKAGES += libnbaio
+# privapp-permissions whitelisting (To Fix CTS :privappPermissionsMustBeEnforced)
+PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
 
 ###################################################################################
 # This is the End of target.mk file.
