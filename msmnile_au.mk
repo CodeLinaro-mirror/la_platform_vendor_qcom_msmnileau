@@ -170,9 +170,16 @@ AUDIO_DLKM += audio_native.ko
 AUDIO_DLKM += audio_machine_msmnile.ko
 PRODUCT_PACKAGES += $(AUDIO_DLKM)
 
+# PCIE
 PCIE_DLKM := pci_msm_drv
 PRODUCT_PACKAGES += $(PCIE_DLKM)
 
+# STMMAC
+STMMAC_DLKM += dwmac-qcom-eth.ko
+PRODUCT_PACKAGES += $(STMMAC_DLKM)
+
+
+#CNSS
 CNSS_DLKM := cnss2
 PRODUCT_PACKAGES += $(CNSS_DLKM)
 
@@ -368,6 +375,7 @@ PRODUCT_PACKAGES += android.hardware.neuralnetworks@1.0.vendor \
                     android.hardware.neuralnetworks@1.1.vendor \
                     android.hardware.neuralnetworks@1.2.vendor \
                     android.hardware.neuralnetworks@1.3.vendor
+
 
 # privapp-permissions whitelisting (To Fix CTS :privappPermissionsMustBeEnforced)
 PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
