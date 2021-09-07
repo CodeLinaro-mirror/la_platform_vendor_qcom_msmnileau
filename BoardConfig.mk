@@ -187,9 +187,8 @@ TARGET_KERNEL_HEADER_ARCH := arm64
 TARGET_KERNEL_CROSS_COMPILE_PREFIX := $(shell pwd)/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-androidkernel-
 
 KERN_PATH := kernel/msm-5.4/
-$(shell rm -f $(KERN_PATH)gen_headers_arm64.bp $(KERN_PATH)gen_headers_arm.bp)
-$(shell cp $(KERN_PATH)gen_headers_arm64_auto.bp $(KERN_PATH)gen_headers_arm64.bp)
-$(shell cp $(KERN_PATH)gen_headers_arm_auto.bp $(KERN_PATH)gen_headers_arm.bp)
+$(shell if ! [ -L $(KERN_PATH)gen_headers_arm64.bp ]; then rm $(KERN_PATH)gen_headers_arm64.bp && ln -s gen_headers_arm64_auto.bp $(KERN_PATH)gen_headers_arm64.bp; fi)
+$(shell if ! [ -L $(KERN_PATH)gen_headers_arm.bp ]; then rm $(KERN_PATH)gen_headers_arm.bp && ln -s gen_headers_arm_auto.bp $(KERN_PATH)gen_headers_arm.bp; fi)
 
 MAX_EGL_CACHE_KEY_SIZE := 12*1024
 MAX_EGL_CACHE_SIZE := 2048*1024
