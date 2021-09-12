@@ -91,7 +91,6 @@ on post-fs
 
     start vendor.qseecomd
     exec - system system -- /vendor/bin/init.qti.qseecomd.sh
-    write /dev/ipa 1
     start vendor.spdaemon
     start vendor.sec_nvm
 
@@ -153,21 +152,15 @@ on boot
     chown cameraserver cameraserver /dev/cpuset/camera-daemon/tasks
     chmod 0660 /dev/cpuset/camera-daemon/tasks
 
-on property:init.svc.vendor.diag-router=running
-    start audio_chime
-
 on property:init.svc.zygote=running
     write /sys/kernel/boot_kpi/kpi_values "M - USER Zygote Start"
 
-on property:init.svc.bootanim=running
+on property:service.bootanim.exit=0
     write /sys/kernel/boot_kpi/kpi_values "K - USER Boot Animation Start"
     setprop vendor.init.svc.bootanim "running"
 
-on property:init.svc.bootanim=stopped
+on property:service.bootanim.exit=1
     setprop vendor.init.svc.bootanim "stopped"
-
-on property:init.svc.media=running
-    write /sys/kernel/boot_kpi/kpi_values "M - USER MediaServer Start"
 
 on property:sys.boot_completed=1
     write /sys/kernel/boot_kpi/kpi_values "K - USER Android Boot Complete"
@@ -183,13 +176,10 @@ on property:init.svc.surfaceflinger=running
     setprop vendor.usb.dpl.inst.name "dpl"
     setprop vendor.usb.qdss.inst.name "qdss"
     setprop vendor.usb.controller a600000.dwc3
-    setprop sys.usb.configfs 1
 
 on boot && property:persist.vendor.usb.controller.default=*
     setprop vendor.usb.controller ${persist.vendor.usb.controller.default}
 
-on property:vendor.usb.controller=*
-    setprop sys.usb.controller ${vendor.usb.controller}
 
 on property:ro.vendor.wlan.chip=*
     insmod /vendor/lib/modules/qca_cld3_${ro.vendor.wlan.chip}.ko
@@ -247,6 +237,11 @@ service vendor.sec_nvm /vendor/bin/sec_nvm
     class core
     user system
     group system
+
+#emac
+service emac_rps_setting /system/vendor/bin/sh /vendor/bin/emac_rps_settings.sh 1 18
+    user root
+    oneshot
 
 service vendor.thermal-engine /vendor/bin/thermal-engine
    class main
@@ -309,6 +304,7 @@ service smcinvoked /system/bin/smcinvoked
 
 #Start EMAC ethernet driver
 on boot
+    start emac_rps_setting
     insmod /vendor/lib/modules/emac_dwc_eqos.ko
 
 service carpowerd /vendor/bin/car_power_daemon
