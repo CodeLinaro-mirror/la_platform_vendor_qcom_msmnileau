@@ -176,13 +176,10 @@ on property:init.svc.surfaceflinger=running
     setprop vendor.usb.dpl.inst.name "dpl"
     setprop vendor.usb.qdss.inst.name "qdss"
     setprop vendor.usb.controller a600000.dwc3
-    setprop sys.usb.configfs 1
 
 on boot && property:persist.vendor.usb.controller.default=*
     setprop vendor.usb.controller ${persist.vendor.usb.controller.default}
 
-on property:vendor.usb.controller=*
-    setprop sys.usb.controller ${vendor.usb.controller}
 
 on property:ro.vendor.wlan.chip=*
     insmod /vendor/lib/modules/qca_cld3_${ro.vendor.wlan.chip}.ko
