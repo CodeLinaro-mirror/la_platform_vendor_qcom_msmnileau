@@ -171,6 +171,104 @@ ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
     endif
 endif
 
+ifeq (,$(findstring -qgki-debug_defconfig,$(KERNEL_DEFCONFIG)))
+$(warning #### GKI config ####)
+VENDOR_RAMDISK_KERNEL_MODULES := proxy-consumer.ko \
+				 rpmh-regulator.ko \
+				 refgen.ko \
+				 stub-regulator.ko \
+				 clk-dummy.ko \
+				 clk-qcom.ko \
+				 clk-rpmh.ko \
+				 gcc-sm8150.ko \
+				 qnoc-sm8150.ko \
+				 cmd-db.ko \
+				 qcom_rpmh.ko \
+				 rpmhpd.ko \
+				 icc-bcm-voter.ko \
+				 icc-rpmh.ko \
+				 pinctrl-msm.ko \
+				 pinctrl-sm8150.ko \
+				 _qcom_scm.ko \
+				 secure_buffer.ko \
+				 iommu-logger.ko \
+				 qcom-arm-smmu-mod.ko \
+				 phy-qcom-ufs.ko \
+				 phy-qcom-ufs-qmp-v4.ko \
+				 phy-qcom-ufs-qrbtc-sdm845.ko \
+				 ufs-qcom.ko \
+				 qbt_handler.ko \
+				 qcom_watchdog.ko \
+				 qcom-pdc.ko \
+				 qpnp-power-on.ko \
+				 msm-poweroff.ko \
+				 sdhci-msm.ko \
+				 cqhci.ko \
+				 cqhci-crypto.ko \
+				 cqhci-crypto-qti.ko \
+				 memory_dump_v2.ko \
+				 qnoc-qos.ko \
+				 msm_ion_heaps.ko \
+				 msm-geni-se.ko \
+				 msm_geni_serial.ko \
+				 msm_drm.ko \
+				 msm_cfg.ko \
+				 subsys-pil-tz.ko \
+				 peripheral-loader.ko \
+				 smem.ko \
+				 qmi_helpers.ko \
+				 subsystem_restart.ko \
+				 msm_kgsl.ko \
+				 governor_gpubw_mon.ko \
+				 governor_msm_adreno_tz.ko \
+				 pinctrl-sx150x.ko \
+				 dwc3.ko \
+				 dwc3-msm.ko \
+				 phy-qcom-emu.ko \
+				 phy-msm-ssusb-qmp.ko \
+				 phy-msm-snps-hs.ko \
+				 phy-generic.ko \
+				 ns.ko \
+				 qrtr.ko \
+				 qrtr-smd.ko \
+				 usb_f_cdev.ko \
+				 dispcc-sm8150.ko \
+				 scc-sm8150.ko \
+				 pinctrl-slpi.ko \
+				 i2c-msm-geni.ko \
+				 i2c-mux.ko \
+				 analogix-anx7625.ko \
+				 msm_qmp.ko \
+				 i2c-mux-pca954x.ko \
+				 gpucc-sm8150.ko \
+				 qpnp-power-on.ko \
+				 spmi-pmic-arb.ko \
+				 qcom-spmi-pmic.ko \
+				 spmi-pmic-arb-debug.ko \
+				 qcom-spmi-temp-alarm.ko \
+				 pinctrl-spmi-gpio.ko \
+				 pinctrl-spmi-mpp.ko \
+				 rtc-pm8xxx.ko \
+				 clk-spmi-pmic-div.ko \
+				 qcom-spmi-adc5.ko \
+				 qcom-spmi-sdam.o \
+				 regmap-spmi.ko \
+				 qcom-vadc-common.ko \
+				 qseecom-mod.ko \
+				 hdcp_qseecom.ko \
+				 msm_rng.ko \
+				 smcinvoke.ko \
+				 ufshcd-crypto-qti.ko \
+				 crypto-qti-common.ko \
+				 crypto-qti-tz.ko \
+				 cdsp-loader.ko \
+				 msm_dma_iommu_mapping.ko \
+				 i2c-dev.ko \
+				 spidev.ko
+else
+$(warning #### QGKI config ####)
+endif
+
 BOARD_DO_NOT_STRIP_VENDOR_MODULES := true
 
 BOARD_VENDOR_KERNEL_MODULES += $(shell ls $(KERNEL_MODULES_OUT)/*.ko)
