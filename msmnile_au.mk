@@ -32,6 +32,7 @@ TARGET_USES_GAS := true
 BOARD_USES_EARLY_SERVICESIMAGE := true
 BOARD_SUPPORTS_EARLY_INIT := true
 
+TARGET_HAS_DIAG_ROUTER := true
 # Dynamic-partition enabled by default
 BOARD_DYNAMIC_PARTITION_ENABLE := true
 ifeq ($(strip $(BOARD_DYNAMIC_PARTITION_ENABLE)),true)
@@ -106,8 +107,11 @@ KERNEL_LLVM_SUPPORT := true
 #Enable sd-llvm suppport for kernel
 KERNEL_SD_LLVM_SUPPORT := false
 
-# diag-router
-TARGET_HAS_DIAG_ROUTER := true
+
+#diag-router no there for router
+ifeq ($(strip $(TARGET_BUILD_VARIANT)),user)
+TARGET_HAS_DIAG_ROUTER := false
+endif
 
 # Target uses DIAG_MDM2 instance to collect WLAN fw diag logs
 PRODUCT_PROPERTY_OVERRIDES += vendor.usb.diag_mdm.inst.name=diag_mdm2
