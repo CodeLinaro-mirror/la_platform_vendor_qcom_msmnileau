@@ -25,6 +25,7 @@ TARGET_ENABLE_QC_AV_ENHANCEMENTS := false
 TARGET_FWK_SUPPORTS_AV_VALUEADDS := false
 TARGET_USES_AOSP_FOR_WLAN := true
 ENABLE_CAR_POWER_MANAGER := true
+TARGET_HAS_DIAG_ROUTER := true
 # Dynamic-partition enabled by default
 BOARD_DYNAMIC_PARTITION_ENABLE := true
 ifeq ($(strip $(BOARD_DYNAMIC_PARTITION_ENABLE)),true)
@@ -92,8 +93,11 @@ KERNEL_LLVM_SUPPORT := true
 #Enable sd-llvm suppport for kernel
 KERNEL_SD_LLVM_SUPPORT := false
 
-# diag-router
-TARGET_HAS_DIAG_ROUTER := true
+
+#diag-router no there for router
+ifeq ($(strip $(TARGET_BUILD_VARIANT)),user)
+TARGET_HAS_DIAG_ROUTER := false
+endif
 
 # default is nosdcard, S/W button enabled in resource
 PRODUCT_CHARACTERISTICS := nosdcard
