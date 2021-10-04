@@ -42,6 +42,9 @@ BOARD_BUILD_SUPER_IMAGE_BY_DEFAULT := true
 PRODUCT_BUILD_SUPER_PARTITION := true
 PRODUCT_PACKAGES += fastbootd
 
+# Enable System_ext
+PRODUCT_BUILD_SYSTEM_EXT_IMAGE := true
+
 # Mismatch in the uses-library tags between build system and the manifest leads
 # to soong APK manifest_check tool errors. Enable the flag to fix this.
 RELAX_USES_LIBRARY_CHECK := true
