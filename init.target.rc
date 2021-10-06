@@ -28,6 +28,7 @@
 #
 
 on early-init
+    exec u:r:vendor_modprobe:s0 -- /vendor/bin/modprobe -a -d /vendor/lib/modules pci-msm-drv
     write /proc/sys/kernel/sched_boost 1
 
     mkdir /dev/cpuctl/foreground
@@ -154,6 +155,7 @@ on boot
     chown radio radio /data/vendor/netmgr/recovery/recovery_info
 
 #Load WLAN driver
+    exec u:r:vendor_modprobe:s0 -- /vendor/bin/modprobe -a -d /vendor/lib/modules cnss2
     start wlan_multiko
 
 # Add a cpuset for the camera daemon
