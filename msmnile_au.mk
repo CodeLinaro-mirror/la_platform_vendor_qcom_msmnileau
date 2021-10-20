@@ -17,13 +17,16 @@ endif
 BOARD_AVB_ENABLE := true
 TARGET_BOARD_AUTO := true
 TARGET_USES_AOSP := true
-TARGET_USES_AOSP_FOR_AUDIO := true
 TARGET_USES_QCOM_BSP := false
 TARGET_NO_TELEPHONY := true
 TARGET_USES_QTIC := false
 TARGET_USES_QTIC_EXTENSION := false
 ENABLE_HYP := false
+
+ifeq (,$(findstring -gki_defconfig, $(KERNEL_DEFCONFIG)))
 BOARD_HAS_QCOM_WLAN := true
+endif
+
 TARGET_NO_QTI_WFD := true
 BOARD_HAVE_QCOM_FM := false
 BOARD_VENDOR_QCOM_LOC_PDK_FEATURE_SET := false
@@ -38,6 +41,9 @@ PRODUCT_USE_DYNAMIC_PARTITIONS := true
 BOARD_BUILD_SUPER_IMAGE_BY_DEFAULT := true
 PRODUCT_BUILD_SUPER_PARTITION := true
 PRODUCT_PACKAGES += fastbootd
+
+# Enable System_ext
+PRODUCT_BUILD_SYSTEM_EXT_IMAGE := true
 
 # Mismatch in the uses-library tags between build system and the manifest leads
 # to soong APK manifest_check tool errors. Enable the flag to fix this.
@@ -148,9 +154,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     device/qcom/qssi/init.qcom.testscripts.sh:system/etc/init.qcom.testscripts.sh
 
-#Audio sample file for early services
-PRODUCT_COPY_FILES += device/qcom/msmnile_au/bike_bell.wav:$(TARGET_COPY_OUT_VENDOR)/etc/bike_bell.wav
-
 # Video codec configuration files
 ifeq ($(TARGET_ENABLE_QC_AV_ENHANCEMENTS), true)
 PRODUCT_COPY_FILES += device/qcom/msmnile/media_profiles.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles_vendor.xml
@@ -165,10 +168,8 @@ endif #TARGET_ENABLE_QC_AV_ENHANCEMENTS
 
 #PRODUCT_COPY_FILES += hardware/qcom/media/conf_files/msmnile/system_properties.xml:$(TARGET_COPY_OUT_VENDOR)/etc/system_properties.xml
 
+PRODUCT_COPY_FILES += hardware/interfaces/security/keymint/aidl/default/android.hardware.hardware_keystore.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.hardware_keystore.xml
 PRODUCT_PACKAGES += android.hardware.media.omx@1.0-impl
-
-# Audio configuration file
--include $(TOPDIR)vendor/qcom/opensource/audio-hal/primary-hal/configs/msmnile_au/msmnile_au.mk
 
 #Audio DLKM
 AUDIO_DLKM := audio_apr.ko
