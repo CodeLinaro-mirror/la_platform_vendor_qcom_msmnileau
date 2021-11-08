@@ -264,7 +264,33 @@ VENDOR_RAMDISK_KERNEL_MODULES := proxy-consumer.ko \
 				 cdsp-loader.ko \
 				 msm_dma_iommu_mapping.ko \
 				 i2c-dev.ko \
-				 spidev.ko
+				 spidev.ko \
+				 frpc-adsprpc.ko \
+				 service-notifier.ko \
+				 service-locator.ko \
+				 rpmsg_core.ko \
+				 qcom_glink_smem.ko \
+				 qcom_glink_spss.ko \
+				 glink_probe.ko \
+				 glink_pkt.ko \
+				 qsee_ipc_irq.ko \
+				 qsee_ipc_irq_bridge.ko \
+				 spcom.ko \
+				 clk-aop-qmp.ko \
+				 cdsprm.ko \
+				 qcom-cpufreq-hw.ko \
+				 pci-msm-drv.ko \
+				 smp2p.ko \
+				 osm-l3.ko \
+				 mhi_bus.ko \
+				 mhi_uci.ko \
+				 qcom_hwspinlock.ko \
+				 msm_sharedmem.ko \
+				 qcom_glink_native.ko \
+				 spss_utils.ko \
+				 qcom-apcs-ipc-mailbox.ko \
+				 smem_state.ko \
+				 socinfo.ko
 else
 $(warning #### QGKI config ####)
 endif
