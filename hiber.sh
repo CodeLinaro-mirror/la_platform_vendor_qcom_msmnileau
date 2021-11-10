@@ -40,6 +40,11 @@ killall qcarcam_edrm_rvc
 killall qcarcam_test
 killall qcarcam_rvc
 
+echo "Resetting all Coresight sources, sinks and cti"
+echo 1 > /sys/bus/coresight/reset_source_sink
+echo 4 2 > /sys/bus/coresight/devices/coresight-cti-swao_cti0/unmap_trigin
+echo 4 2 > /sys/bus/coresight/devices/coresight-cti-swao_cti0/unmap_trigout
+
 sleep 3
 
 echo "enable swap partition"
