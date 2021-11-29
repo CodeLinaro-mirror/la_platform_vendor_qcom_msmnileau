@@ -192,10 +192,10 @@ AUDIO_DLKM += audio_native.ko
 AUDIO_DLKM += audio_machine_msmnile.ko
 PRODUCT_PACKAGES += $(AUDIO_DLKM)
 
-PCIE_DLKM := pci_msm_drv
+PCIE_DLKM := pci-msm-drv.ko
 PRODUCT_PACKAGES += $(PCIE_DLKM)
 
-CNSS_DLKM := cnss2
+CNSS_DLKM := cnss2.ko
 PRODUCT_PACKAGES += $(CNSS_DLKM)
 
 # HS-I2S DLKM
