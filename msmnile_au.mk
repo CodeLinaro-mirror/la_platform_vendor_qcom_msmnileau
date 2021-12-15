@@ -395,6 +395,7 @@ PRODUCT_PACKAGES += libnbaio
 PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
 
 PRODUCT_ENFORCE_RRO_TARGETS := framework-res
+PRODUCT_PACKAGES += qcar-gsi.avbpubkey
 
 ###################################################################################
 # This is the End of target.mk file.
