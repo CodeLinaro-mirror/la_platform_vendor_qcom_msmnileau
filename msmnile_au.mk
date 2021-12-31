@@ -37,8 +37,8 @@ TARGET_NO_QTI_WFD := true
 BOARD_HAVE_QCOM_FM := false
 BOARD_VENDOR_QCOM_LOC_PDK_FEATURE_SET := false
 TARGET_ENABLE_QC_AV_ENHANCEMENTS := false
-TARGET_FWK_SUPPORTS_AV_VALUEADDS := false
 TARGET_USES_GAS := true
+TARGET_FWK_SUPPORTS_AV_VALUEADDS := true
 TARGET_USES_AOSP_FOR_WLAN := true
 TARGET_LINUX_BOOT_CPU_SELECTION := true
 TARGET_LINUX_BOOT_CPU_ID := 7
@@ -407,6 +407,9 @@ PRODUCT_PACKAGES += android.hardware.neuralnetworks@1.0.vendor \
                     android.hardware.neuralnetworks@1.1.vendor \
                     android.hardware.neuralnetworks@1.2.vendor \
                     android.hardware.neuralnetworks@1.3.vendor
+
+#add libnbaio for avenhancement
+PRODUCT_PACKAGES += libnbaio
 
 PRODUCT_ENFORCE_RRO_TARGETS := framework-res
 PRODUCT_PACKAGES += qcar-gsi.avbpubkey
