@@ -281,7 +281,6 @@ VENDOR_RAMDISK_KERNEL_MODULES := proxy-consumer.ko \
 				 clk-aop-qmp.ko \
 				 cdsprm.ko \
 				 qcom-cpufreq-hw.ko \
-				 pci-msm-drv.ko \
 				 smp2p.ko \
 				 osm-l3.ko \
 				 mhi_bus.ko \
