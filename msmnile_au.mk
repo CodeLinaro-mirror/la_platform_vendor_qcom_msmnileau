@@ -40,6 +40,8 @@ BOARD_VENDOR_QCOM_LOC_PDK_FEATURE_SET := false
 TARGET_ENABLE_QC_AV_ENHANCEMENTS := false
 TARGET_FWK_SUPPORTS_AV_VALUEADDS := false
 TARGET_USES_AOSP_FOR_WLAN := true
+TARGET_LINUX_BOOT_CPU_SELECTION := true
+TARGET_LINUX_BOOT_CPU_ID := 7
 ENABLE_CAR_POWER_MANAGER := true
 # Dynamic-partition enabled by default
 BOARD_DYNAMIC_PARTITION_ENABLE := true
@@ -116,7 +118,9 @@ KERNEL_LLVM_SUPPORT := true
 KERNEL_SD_LLVM_SUPPORT := false
 
 # diag-router
-TARGET_HAS_DIAG_ROUTER := true
+ifneq ($(TARGET_BUILD_VARIANT),user)
+    TARGET_HAS_DIAG_ROUTER := true
+endif
 
 # Target uses DIAG_MDM2 instance to collect WLAN fw diag logs
 PRODUCT_PROPERTY_OVERRIDES += vendor.usb.diag_mdm.inst.name=diag_mdm2
@@ -316,6 +320,9 @@ ifeq ($(strip $(BOARD_HAS_QCOM_WLAN)),true)
 TARGET_WLAN_CHIP := qca6174 qca6390 qcn7605
 include device/qcom/wlan/msmnile_au/wlan.mk
 endif
+
+#Enable rc file from wpa_supplicant project
+WIFI_HIDL_UNIFIED_SUPPLICANT_SERVICE_RC_ENTRY := true
 
 #for Emac
 PRODUCT_PACKAGES += \
