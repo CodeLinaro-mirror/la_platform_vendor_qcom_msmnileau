@@ -111,9 +111,9 @@ ifneq ($(AB_OTA_UPDATER),true)
 endif
 
 ifneq ($(strip $(BOARD_DYNAMIC_PARTITION_ENABLE)),true)
-  TARGET_RECOVERY_FSTAB := device/qcom/msmnile/fstab.qcom
+  TARGET_RECOVERY_FSTAB := device/qcom/msmnile_au/fstab.qcom
 else
-  TARGET_RECOVERY_FSTAB := device/qcom/msmnile/fstab.qcom
+  TARGET_RECOVERY_FSTAB := device/qcom/msmnile_au/fstab.qcom
 endif
 
 
