@@ -28,6 +28,11 @@ TARGET_LINUX_BOOT_CPU_ID := 7
 TARGET_USES_AOSP_FOR_WLAN := false
 ENABLE_CAR_POWER_MANAGER := true
 TARGET_USES_GAS := true
+
+BOARD_USES_EARLY_SERVICESIMAGE := true
+BOARD_SUPPORTS_EARLY_INIT := true
+
+TARGET_HAS_DIAG_ROUTER := true
 # Dynamic-partition enabled by default
 BOARD_DYNAMIC_PARTITION_ENABLE := true
 ifeq ($(strip $(BOARD_DYNAMIC_PARTITION_ENABLE)),true)
@@ -41,6 +46,7 @@ BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
 BOARD_AVB_VBMETA_SYSTEM_ALGORITHM := SHA256_RSA2048
 BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
 BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX_LOCATION := 2
+
 
 ifeq ($(ENABLE_AB), true)
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/fstab_AB_dynamic_partition_variant.qti:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.qcom
@@ -101,8 +107,11 @@ KERNEL_LLVM_SUPPORT := true
 #Enable sd-llvm suppport for kernel
 KERNEL_SD_LLVM_SUPPORT := false
 
-# diag-router
-TARGET_HAS_DIAG_ROUTER := true
+
+#diag-router no there for router
+ifeq ($(strip $(TARGET_BUILD_VARIANT)),user)
+TARGET_HAS_DIAG_ROUTER := false
+endif
 
 # Target uses DIAG_MDM2 instance to collect WLAN fw diag logs
 PRODUCT_PROPERTY_OVERRIDES += vendor.usb.diag_mdm.inst.name=diag_mdm2
@@ -143,9 +152,11 @@ endif
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.ethernet.xml:system/etc/permissions/android.hardware.ethernet.xml
 
+ifneq ($(strip $(TARGET_BUILD_VARIANT)),user)
 # Copy the testscripts from the qssi folder as it was moved to QSSI folder.
 PRODUCT_COPY_FILES += \
     device/qcom/qssi/init.qcom.testscripts.sh:system/etc/init.qcom.testscripts.sh
+endif
 
 #Audio sample file for early services
 PRODUCT_COPY_FILES += device/qcom/msmnile_au/bike_bell.wav:$(TARGET_COPY_OUT_VENDOR)/etc/bike_bell.wav
@@ -374,7 +385,6 @@ endif
 TARGET_MOUNT_POINTS_SYMLINKS := false
 
 PRODUCT_PACKAGES += android.hardware.dumpstate@1.1-service.example \
-                    android.hardware.thermal@2.0-service.mock \
 
 PRODUCT_PACKAGES += android.hardware.health@2.1-service \
                     android.hardware.health@2.1-impl \
