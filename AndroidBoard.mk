@@ -4,7 +4,7 @@ LOCAL_PATH := $(call my-dir)
 # Compile (L)ittle (K)ernel bootloader and the nandwrite utility
 #----------------------------------------------------------------------
 ifneq ($(strip $(TARGET_NO_BOOTLOADER)),true)
-
+ifneq ($(strip $(TARGET_SIGNONLY_BOOTLOADER)),true)
 # Compile
 include bootable/bootloader/edk2/AndroidBoot.mk
 
@@ -14,13 +14,17 @@ $(BUILT_TARGET_FILES_PACKAGE): $(INSTALLED_BOOTLOADER_MODULE)
 
 droidcore: $(INSTALLED_BOOTLOADER_MODULE)
 endif
+endif
+
+SIGN_ABL := $(PRODUCT_OUT)/signed
+$(shell mkdir -p $(SIGN_ABL))
 
 # Create firmware folder for graphics
 $(shell mkdir -p $(TARGET_OUT_VENDOR)/firmware/)
 #----------------------------------------------------------------------
 # Compile Linux Kernel
 #----------------------------------------------------------------------
-include device/qcom/kernelscripts/kernel_definitions.mk
+# include device/qcom/kernelscripts/kernel_definitions.mk
 
 #----------------------------------------------------------------------
 # Copy additional target-specific files

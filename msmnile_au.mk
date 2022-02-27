@@ -1,7 +1,11 @@
+AUDIO_USE_STUB_HAL := true
+
 TARGET_BOARD_PLATFORM := msmnile
 TARGET_BOOTLOADER_BOARD_NAME := msmnile
 TARGET_BOARD_TYPE := auto
 TARGET_BOARD_SUFFIX := _au
+# Skip VINTF checks for kernel configs since we do not have kernel source
+PRODUCT_OTA_ENFORCE_VINTF_KERNEL_REQUIREMENTS := false
 
 ALLOW_MISSING_DEPENDENCIES := true
 ENABLE_AB ?= true
@@ -26,9 +30,7 @@ ENABLE_HYP := false
 # FR77687: Migrate AIDL interface using -ndk_platform.so to -ndk.so
 NEED_AIDL_NDK_PLATFORM_BACKEND := true
 
-ifeq (,$(findstring -gki_defconfig, $(KERNEL_DEFCONFIG)))
-BOARD_HAS_QCOM_WLAN := true
-endif
+BOARD_HAS_QCOM_WLAN := false
 
 TARGET_NO_QTI_WFD := true
 BOARD_HAVE_QCOM_FM := false
@@ -309,8 +311,8 @@ ENABLE_VENDOR_RIL_SERVICE := true
 #----------------------------------------------------------------------
 # Multiple chips
 ifeq ($(strip $(BOARD_HAS_QCOM_WLAN)),true)
-TARGET_WLAN_CHIP := qca6174 qca6390 qcn7605
-include device/qcom/wlan/msmnile_au/wlan.mk
+# TARGET_WLAN_CHIP := qca6174 qca6390 qcn7605
+# include device/qcom/wlan/msmnile_au/wlan.mk
 endif
 
 #for Emac

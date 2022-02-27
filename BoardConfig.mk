@@ -2,12 +2,14 @@
 #
 # Product-specific compile-time definitions.
 #
+# Disable DLKMs compilation for msmnile_au
+TARGET_KERNEL_DLKM_DISABLE := true
 
 #Enable legacy path for ELITE
 ENABLE_AUDIO_LEGACY_TECHPACK := true
 
 #Generate DTBO image
-BOARD_KERNEL_SEPARATED_DTBO := true
+BOARD_KERNEL_SEPARATED_DTBO := false
 
 ### Dynamic partition Handling
 ifneq ($(strip $(BOARD_DYNAMIC_PARTITION_ENABLE)),true)
@@ -141,7 +143,7 @@ BOARD_PERSISTIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_FLASH_BLOCK_SIZE := 131072 # (BOARD_KERNEL_PAGESIZE * 64)
 
 BOARD_VENDOR_KERNEL_MODULES := \
-     $(KERNEL_MODULES_OUT)/hsi2s.ko
+#    $(KERNEL_MODULES_OUT)/hsi2s.ko
 #    $(KERNEL_MODULES_OUT)/audio_apr.ko \
 #    $(KERNEL_MODULES_OUT)/audio_snd_event.ko \
 #    $(KERNEL_MODULES_OUT)/audio_q6_notifier.ko \
@@ -170,7 +172,7 @@ endif
 # install lkdtm only for userdebug and eng build variants
 ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
     ifneq (,$(findstring debug_defconfig, $(KERNEL_DEFCONFIG)))
-        BOARD_VENDOR_KERNEL_MODULES += $(KERNEL_MODULES_OUT)/lkdtm.ko
+#         BOARD_VENDOR_KERNEL_MODULES += $(KERNEL_MODULES_OUT)/lkdtm.ko
     endif
 endif
 
@@ -316,10 +318,6 @@ TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_HEADER_ARCH := arm64
 TARGET_KERNEL_CROSS_COMPILE_PREFIX := $(shell pwd)/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-androidkernel-
 
-KERN_PATH := kernel/msm-5.4/
-$(shell if ! [ -L $(KERN_PATH)gen_headers_arm64.bp ]; then rm $(KERN_PATH)gen_headers_arm64.bp && ln -s gen_headers_arm64_auto.bp $(KERN_PATH)gen_headers_arm64.bp; fi)
-$(shell if ! [ -L $(KERN_PATH)gen_headers_arm.bp ]; then rm $(KERN_PATH)gen_headers_arm.bp && ln -s gen_headers_arm_auto.bp $(KERN_PATH)gen_headers_arm.bp; fi)
-
 MAX_EGL_CACHE_KEY_SIZE := 12*1024
 MAX_EGL_CACHE_SIZE := 2048*1024
 
@@ -331,7 +329,8 @@ TARGET_PLATFORM_DEVICE_BASE := /devices/soc.0/
 TARGET_INIT_VENDOR_LIB := libinit_msm
 
 
-TARGET_COMPILE_WITH_MSM_KERNEL := true
+TARGET_COMPILE_WITH_MSM_KERNEL := false
+TARGET_SIGNONLY_BOOTLOADER := true
 
 #Enable PD locater/notifier
 TARGET_PD_SERVICE_ENABLED := true
@@ -400,7 +399,19 @@ BUILD_BROKEN_USES_BUILD_HOST_STATIC_LIBRARY := true
 IS_EARLY_ETH_ENABLED := 1
 
 TARGET_KERNEL_DLKM_OVERRIDE += ais.ko
-
+TARGET_KERNEL_DLKM_OVERRIDE += msm_drm.ko
+TARGET_KERNEL_DLKM_OVERRIDE += msm_kgsl.ko
+TARGET_KERNEL_DLKM_OVERRIDE += msm-vidc.ko
+TARGET_KERNEL_DLKM_OVERRIDE += q6_notifier_dlkm.ko
+TARGET_KERNEL_DLKM_OVERRIDE += q6_dlkm.ko
+TARGET_KERNEL_DLKM_OVERRIDE += machine_dlkm.ko
+TARGET_KERNEL_DLKM_OVERRIDE += adsp_loader_dlkm.ko
+TARGET_KERNEL_DLKM_OVERRIDE += apr_dlkm.ko
+TARGET_KERNEL_DLKM_OVERRIDE += platform_dlkm.ko
+TARGET_KERNEL_DLKM_OVERRIDE += native_dlkm.ko
+TARGET_KERNEL_DLKM_OVERRIDE += stub_dlkm.ko
+TARGET_KERNEL_DLKM_OVERRIDE += hdmi_dlkm.ko
+TARGET_KERNEL_DLKM_OVERRIDE += snd_event_dlkm.ko
 #################################################################################
 # This is the End of BoardConfig.mk file.
 # Now, Pickup other split Board.mk files:
