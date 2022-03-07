@@ -46,7 +46,7 @@ persist.mm.enable.prefetch=true
 #
 # system props for the data modules
 #
-ro.vendor.use_data_netmgrd=true
+ro.vendor.use_data_netmgrd=false
 persist.vendor.data.mode=concurrent
 
 #system props for time-services
@@ -202,3 +202,5 @@ ro.radio.noril=true
 
 # default wifi country code
 ro.boot.wificountrycode=us
+
+ro.surface_flinger.protected_contents=true
