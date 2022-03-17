@@ -262,6 +262,17 @@ SOONG_CONFIG_ufsbsg_ufsframework := bsg
 #----------------------------------------------------------------------
 # wlan specific
 #----------------------------------------------------------------------
+ifeq ($(strip $(TARGET_KERNEL_DLKM_DISABLE)),true)
+#Uncomment the following to override dlkm disabling
+#TARGET_KERNEL_DLKM_OVERRIDE += wlan-platform-module-symvers \
+#			       cnss2.ko \
+#			       cnss_plat_ipc_qmi_svc.ko \
+#			       wlan_firmware_service.ko \
+#			       cnss_nl.ko \
+#			       cnss_utils.ko
+#TARGET_KERNEL_DLKM_OVERRIDE += $(foreach chip, $(TARGET_WLAN_CHIP), $(WLAN_CHIPSET)_$(chip).ko)
+endif
+
 ifeq ($(strip $(BOARD_HAS_QCOM_WLAN)),true)
 include device/qcom/wlan/msmnile_au/BoardConfigWlan.mk
 endif
