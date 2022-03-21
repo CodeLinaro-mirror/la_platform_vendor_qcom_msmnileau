@@ -35,10 +35,19 @@ echo Y > /sys/module/printk/parameters/ignore_loglevel
 echo N > /sys/module/printk/parameters/console_suspend
 echo 0 > /d/tracing/tracing_on
 
+# Turn BT off. Here keyevents (23:KEYCODE_DPAD_CENTER, 22:KEYCODE_DPAD_RIGHT)
+# are used to allow this script to turn off BT.
+am start -a android.bluetooth.adapter.action.REQUEST_DISABLE && input keyevent 23 && input keyevent 22 && input keyevent 23
+
 echo none > /sys/bus/platform/devices/a600000.ssusb/mode
 killall qcarcam_edrm_rvc
 killall qcarcam_test
 killall qcarcam_rvc
+
+echo "Resetting all Coresight sources, sinks and cti"
+echo 1 > /sys/bus/coresight/reset_source_sink
+echo 4 2 > /sys/bus/coresight/devices/coresight-cti-swao_cti0/unmap_trigin
+echo 4 2 > /sys/bus/coresight/devices/coresight-cti-swao_cti0/unmap_trigout
 
 sleep 3
 
@@ -57,6 +66,7 @@ sleep 2
 echo related > /sys/bus/msm_subsys/devices/subsys3/restart_level
 echo 0 > /sys/kernel/boot_adsp/boot
 echo 0 > /sys/kernel/boot_cdsp/boot
+echo 0 > /proc/sys/vm/swappiness
 
 hiber_attempts="1"
 while true
