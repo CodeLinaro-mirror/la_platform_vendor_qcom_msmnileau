@@ -396,6 +396,8 @@ BUILD_BROKEN_USES_BUILD_HOST_STATIC_LIBRARY := true
 #Flag for Early Ethernet
 IS_EARLY_ETH_ENABLED := 1
 
+TARGET_KERNEL_DLKM_OVERRIDE += ais.ko
+
 #################################################################################
 # This is the End of BoardConfig.mk file.
 # Now, Pickup other split Board.mk files:

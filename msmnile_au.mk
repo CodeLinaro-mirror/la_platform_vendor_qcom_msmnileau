@@ -354,7 +354,7 @@ PRODUCT_PACKAGES += canflasher \
 PRODUCT_PACKAGES += vndservicemanager
 
 #add for camera
-ENABLE_V4L2_CAMERA := true
+ENABLE_V4L2_CAMERA := false
 ifeq ($(ENABLE_V4L2_CAMERA), true)
 
 # Camera configuration file. Shared by passthrough/binderized camera HAL
