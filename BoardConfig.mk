@@ -289,7 +289,9 @@ VENDOR_RAMDISK_KERNEL_MODULES := proxy-consumer.ko \
 				 spss_utils.ko \
 				 qcom-apcs-ipc-mailbox.ko \
 				 smem_state.ko \
-				 socinfo.ko
+				 socinfo.ko \
+				 qcom_llcc.ko \
+				 llcc-sm8150.ko
 else
 $(warning #### QGKI config ####)
 endif

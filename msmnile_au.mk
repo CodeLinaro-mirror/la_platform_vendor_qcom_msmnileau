@@ -2,6 +2,12 @@ TARGET_BOARD_PLATFORM := msmnile
 TARGET_BOOTLOADER_BOARD_NAME := msmnile
 TARGET_BOARD_TYPE := auto
 TARGET_BOARD_SUFFIX := _au
+PRODUCT_MANUFACTURER := qti
+PRODUCT_DEVICE := msmnile_au
+
+PRODUCT_VENDOR_PROPERTIES += \
+    ro.soc.manufacturer=$(PRODUCT_MANUFACTURER) \
+    ro.soc.model=$(PRODUCT_DEVICE)
 
 ALLOW_MISSING_DEPENDENCIES := true
 ENABLE_AB ?= true
@@ -34,6 +40,8 @@ TARGET_ENABLE_QC_AV_ENHANCEMENTS := false
 TARGET_FWK_SUPPORTS_AV_VALUEADDS := true
 TARGET_USES_GAS := true
 TARGET_USES_AOSP_FOR_WLAN := true
+TARGET_LINUX_BOOT_CPU_SELECTION := true
+TARGET_LINUX_BOOT_CPU_ID := 7
 ENABLE_CAR_POWER_MANAGER := true
 # Dynamic-partition enabled by default
 BOARD_DYNAMIC_PARTITION_ENABLE := true
@@ -176,6 +184,7 @@ endif #TARGET_ENABLE_QC_AV_ENHANCEMENTS
 #PRODUCT_COPY_FILES += hardware/qcom/media/conf_files/msmnile/system_properties.xml:$(TARGET_COPY_OUT_VENDOR)/etc/system_properties.xml
 
 PRODUCT_COPY_FILES += hardware/interfaces/security/keymint/aidl/default/android.hardware.hardware_keystore.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.hardware_keystore.xml
+PRODUCT_COPY_FILES += frameworks/native/data/etc/android.hardware.keystore.app_attest_key.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.keystore.app_attest_key.xml
 
 #Hibernation Script
 PRODUCT_COPY_FILES += device/qcom/msmnile_au/hiber.sh:$(TARGET_COPY_OUT_VENDOR)/bin/hiber.sh
@@ -283,6 +292,11 @@ PRODUCT_COPY_FILES += \
     device/qcom/msmnile_au/sensors/hals.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/hals.conf \
     frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.accelerometer.xml \
     frameworks/native/data/etc/android.hardware.sensor.gyroscope.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.gyroscope.xml
+
+#Copy unsupported features list
+PRODUCT_COPY_FILES += \
+    device/qcom/msmnile_au/msmnile_au_excluded_features.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/msmnile_au_excluded_features.xml
+
 
 # Kernel modules install path
 KERNEL_MODULES_INSTALL := dlkm
@@ -398,6 +412,7 @@ PRODUCT_PACKAGES += android.hardware.neuralnetworks@1.0.vendor \
 PRODUCT_PACKAGES += libnbaio
 
 PRODUCT_ENFORCE_RRO_TARGETS := framework-res
+PRODUCT_PACKAGES += qcar-gsi.avbpubkey
 
 ###################################################################################
 # This is the End of target.mk file.
