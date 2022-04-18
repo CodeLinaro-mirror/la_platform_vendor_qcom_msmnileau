@@ -2,6 +2,12 @@ TARGET_BOARD_PLATFORM := msmnile
 TARGET_BOOTLOADER_BOARD_NAME := msmnile
 TARGET_BOARD_TYPE := auto
 TARGET_BOARD_SUFFIX := _au
+PRODUCT_MANUFACTURER := qti
+PRODUCT_DEVICE := msmnile_au
+
+PRODUCT_VENDOR_PROPERTIES += \
+    ro.soc.manufacturer=$(PRODUCT_MANUFACTURER) \
+    ro.soc.model=$(PRODUCT_DEVICE)
 
 ALLOW_MISSING_DEPENDENCIES := true
 ENABLE_AB ?= true
@@ -33,6 +39,8 @@ BOARD_VENDOR_QCOM_LOC_PDK_FEATURE_SET := false
 TARGET_ENABLE_QC_AV_ENHANCEMENTS := false
 TARGET_FWK_SUPPORTS_AV_VALUEADDS := false
 TARGET_USES_AOSP_FOR_WLAN := true
+TARGET_LINUX_BOOT_CPU_SELECTION := true
+TARGET_LINUX_BOOT_CPU_ID := 7
 ENABLE_CAR_POWER_MANAGER := true
 # Dynamic-partition enabled by default
 BOARD_DYNAMIC_PARTITION_ENABLE := true
@@ -109,7 +117,9 @@ KERNEL_LLVM_SUPPORT := true
 KERNEL_SD_LLVM_SUPPORT := false
 
 # diag-router
-TARGET_HAS_DIAG_ROUTER := true
+ifneq ($(TARGET_BUILD_VARIANT),user)
+    TARGET_HAS_DIAG_ROUTER := true
+endif
 
 # Target uses DIAG_MDM2 instance to collect WLAN fw diag logs
 PRODUCT_PROPERTY_OVERRIDES += vendor.usb.diag_mdm.inst.name=diag_mdm2
@@ -173,6 +183,7 @@ endif #TARGET_ENABLE_QC_AV_ENHANCEMENTS
 #PRODUCT_COPY_FILES += hardware/qcom/media/conf_files/msmnile/system_properties.xml:$(TARGET_COPY_OUT_VENDOR)/etc/system_properties.xml
 
 PRODUCT_COPY_FILES += hardware/interfaces/security/keymint/aidl/default/android.hardware.hardware_keystore.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.hardware_keystore.xml
+PRODUCT_COPY_FILES += frameworks/native/data/etc/android.hardware.keystore.app_attest_key.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.keystore.app_attest_key.xml
 
 #Hibernation Script
 PRODUCT_COPY_FILES += device/qcom/msmnile_au/hiber.sh:$(TARGET_COPY_OUT_VENDOR)/bin/hiber.sh
@@ -192,10 +203,10 @@ AUDIO_DLKM += audio_native.ko
 AUDIO_DLKM += audio_machine_msmnile.ko
 PRODUCT_PACKAGES += $(AUDIO_DLKM)
 
-PCIE_DLKM := pci_msm_drv
+PCIE_DLKM := pci-msm-drv.ko
 PRODUCT_PACKAGES += $(PCIE_DLKM)
 
-CNSS_DLKM := cnss2
+CNSS_DLKM := cnss2.ko
 PRODUCT_PACKAGES += $(CNSS_DLKM)
 
 # HS-I2S DLKM
@@ -240,6 +251,9 @@ DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := vendor/qcom/opensource/core-utils/
 # Enable Scoped Storage related
 $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 
+PRODUCT_LOCALES := \
+en_US
+
 #ANT+ stack
 #PRODUCT_PACKAGES += \
 #    AntHalService \
@@ -278,6 +292,11 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.accelerometer.xml \
     frameworks/native/data/etc/android.hardware.sensor.gyroscope.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.gyroscope.xml
 
+#Copy unsupported features list
+PRODUCT_COPY_FILES += \
+    device/qcom/msmnile_au/msmnile_au_excluded_features.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/msmnile_au_excluded_features.xml
+
+
 # Kernel modules install path
 KERNEL_MODULES_INSTALL := dlkm
 KERNEL_MODULES_OUT := out/target/product/msmnile_au/$(KERNEL_MODULES_INSTALL)/lib/modules
@@ -309,6 +328,9 @@ ifeq ($(strip $(BOARD_HAS_QCOM_WLAN)),true)
 TARGET_WLAN_CHIP := qca6174 qca6390 qcn7605
 include device/qcom/wlan/msmnile_au/wlan.mk
 endif
+
+#Enable rc file from wpa_supplicant project
+WIFI_HIDL_UNIFIED_SUPPLICANT_SERVICE_RC_ENTRY := true
 
 #for Emac
 PRODUCT_PACKAGES += \
@@ -386,6 +408,7 @@ PRODUCT_PACKAGES += android.hardware.neuralnetworks@1.0.vendor \
                     android.hardware.neuralnetworks@1.3.vendor
 
 PRODUCT_ENFORCE_RRO_TARGETS := framework-res
+PRODUCT_PACKAGES += qcar-gsi.avbpubkey
 
 ###################################################################################
 # This is the End of target.mk file.
