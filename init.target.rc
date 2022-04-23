@@ -37,8 +37,6 @@ on early-init
     write /sys/kernel/boot_kpi/kpi_values "M - INITRC Userspace Start"
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
-    mkdir /dev/socket/camera 0770 system camera
-    start ais_server
     mount_all /vendor/etc/fstab.qcom --early
     write /sys/kernel/boot_kpi/kpi_values "M - Start adsp"
     write /sys/kernel/boot_adsp/boot 1
@@ -48,14 +46,6 @@ on early-init
     start audiod
     start esplash
     chmod 0777 /sys/power/pm_silentmode_kernel_state
-
-service ais_server /system/vendor/bin/ais_server
-    class core
-    user system
-    group camera input graphics
-    disabled
-    onrestart restart evs_driver
-    onrestart restart qcarcam_hal
 
 on init
     write /sys/kernel/boot_cdsp/boot 1
