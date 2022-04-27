@@ -55,6 +55,9 @@ TARGET_HIBERNATION_SECURE_ENABLE := true
 # Enable System_ext
 PRODUCT_BUILD_SYSTEM_EXT_IMAGE := true
 
+# Enable boot-debug.img
+PRODUCT_BUILD_DEBUG_BOOT_IMAGE := true
+
 # Mismatch in the uses-library tags between build system and the manifest leads
 # to soong APK manifest_check tool errors. Enable the flag to fix this.
 RELAX_USES_LIBRARY_CHECK := true
