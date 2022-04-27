@@ -28,8 +28,6 @@
 #
 
 on early-init
-    umount /early_services/vendor/firmware_mnt
-    umount /aes_tmpfs/vendor/firmware_mnt
     exec u:r:vendor_modprobe:s0 -- /vendor/bin/modprobe -a -d /vendor/lib/modules snd_event_dlkm q6_notifier_dlkm apr_dlkm adsp_loader_dlkm q6_dlkm native_dlkm platform_dlkm stub_dlkm hdmi_dlkm machine_dlkm pci-msm-drv
     write /proc/sys/kernel/sched_boost 1
     chown system system /sys/kernel/boot_kpi/kpi_values
@@ -37,6 +35,8 @@ on early-init
     write /sys/kernel/boot_kpi/kpi_values "M - INITRC Userspace Start"
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
+    mkdir /dev/socket/camera 0770 system camera
+    start ais_server
     mount_all /vendor/etc/fstab.qcom --early
     write /sys/kernel/boot_kpi/kpi_values "M - Start adsp"
     write /sys/kernel/boot_adsp/boot 1
@@ -46,6 +46,14 @@ on early-init
     start audiod
     start esplash
     chmod 0777 /sys/power/pm_silentmode_kernel_state
+
+service ais_server /system/vendor/bin/ais_server
+    class core
+    user system
+    group camera input graphics
+    disabled
+    onrestart restart evs_driver
+    onrestart restart qcarcam_hal
 
 on init
     write /sys/kernel/boot_cdsp/boot 1
