@@ -415,9 +415,6 @@ PRODUCT_PACKAGES += android.hardware.neuralnetworks@1.0.vendor \
 PRODUCT_ENFORCE_RRO_TARGETS := framework-res
 PRODUCT_PACKAGES += qcar-gsi.avbpubkey
 
-#Enable Light AIDL HAL
-PRODUCT_PACKAGES += android.hardware.lights-service.qti
-
 ###################################################################################
 # This is the End of target.mk file.
 # Now, Pickup other split product.mk files:
