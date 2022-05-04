@@ -59,6 +59,8 @@ TARGET_SEPOLICY_DIR := gen3_metal
 
 BOARD_SECCOMP_POLICY := device/qcom/$(TARGET_BOARD_PLATFORM)/seccomp
 
+TARGET_AUDIO_FRAMEWORK := elite
+
 TARGET_NO_BOOTLOADER := false
 TARGET_USES_UEFI := true
 TARGET_NO_KERNEL := false
@@ -292,7 +294,9 @@ VENDOR_RAMDISK_KERNEL_MODULES := proxy-consumer.ko \
 				 smem_state.ko \
 				 socinfo.ko \
 				 qcom_llcc.ko \
-				 llcc-sm8150.ko
+				 llcc-sm8150.ko \
+				 xhci-hcd.ko \
+				 xhci-plat-hcd.ko
 else
 $(warning #### QGKI config ####)
 endif
