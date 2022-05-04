@@ -3,6 +3,9 @@
 # Product-specific compile-time definitions.
 #
 
+#Enable legacy path for ELITE
+ENABLE_AUDIO_LEGACY_TECHPACK := true
+
 #Generate DTBO image
 BOARD_KERNEL_SEPARATED_DTBO := true
 
