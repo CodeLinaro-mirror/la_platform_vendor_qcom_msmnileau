@@ -2,7 +2,7 @@ TARGET_BOARD_PLATFORM := msmnile
 TARGET_BOOTLOADER_BOARD_NAME := msmnile
 TARGET_BOARD_TYPE := auto
 TARGET_BOARD_SUFFIX := _au
-PRODUCT_MANUFACTURER := qti
+PRODUCT_MANUFACTURER := QTI
 PRODUCT_DEVICE := msmnile_au
 
 PRODUCT_VENDOR_PROPERTIES += \
@@ -414,6 +414,9 @@ PRODUCT_PACKAGES += android.hardware.neuralnetworks@1.0.vendor \
 
 PRODUCT_ENFORCE_RRO_TARGETS := framework-res
 PRODUCT_PACKAGES += qcar-gsi.avbpubkey
+
+#Enable Light AIDL HAL
+PRODUCT_PACKAGES += android.hardware.lights-service.qti
 
 ###################################################################################
 # This is the End of target.mk file.
