@@ -418,6 +418,9 @@ PRODUCT_PACKAGES += qcar-gsi.avbpubkey
 #Enable Light AIDL HAL
 PRODUCT_PACKAGES += android.hardware.lights-service.qti
 
+# privapp-permissions whitelisting (To Fix CTS :privappPermissionsMustBeEnforced)
+PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
+
 ###################################################################################
 # This is the End of target.mk file.
 # Now, Pickup other split product.mk files:
