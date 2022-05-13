@@ -9,15 +9,48 @@ ifneq ($(strip $(TARGET_SIGNONLY_BOOTLOADER)),true)
 include bootable/bootloader/edk2/AndroidBoot.mk
 
 $(INSTALLED_BOOTLOADER_MODULE): $(TARGET_EMMC_BOOTLOADER) | $(ACP)
-	$(transform-prebuilt-to-target)
-$(BUILT_TARGET_FILES_PACKAGE): $(INSTALLED_BOOTLOADER_MODULE)
 
-droidcore: $(INSTALLED_BOOTLOADER_MODULE)
+else
+
+TARGET_EMMC_BOOTLOADER := $(TARGET_BOARD_UNSIGNED_ABL_DIR)/unsigned_abl.elf
+SIGN_ID := abl
+
+ifneq ($(wildcard $(QCPATH)/sectools),)
+   SECIMAGE_BASE := $(QCPATH)/sectools
+else
+   SECIMAGE_BASE := $(QCPATH)/common/scripts/SecImage
+endif
+
+ifeq ($(USE_SOC_HW_VERSION), true)
+   soc_hw_version = $(SOC_HW_VERSION)
+   soc_vers = $(SOC_VERS)
+endif
+
+XML_FILE := secimagev3.xml
+
+define sec-image-generate
+    @echo Generating signed appsbl using secimage tool for $(strip $(QTI_GENSECIMAGE_MSM_IDS))
+    @rm -rf $(PRODUCT_OUT)/signed
+    @rm -rf $(PRODUCT_OUT)/abl.elf
+    SECIMAGE_LOCAL_DIR=$(SECIMAGE_BASE) USES_SEC_POLICY_MULTIPLE_DEFAULT_SIGN=$(USES_SEC_POLICY_MULTIPLE_DEFAULT_SIGN) \
+                    USES_SEC_POLICY_DEFAULT_SUBFOLDER_SIGN=$(USES_SEC_POLICY_DEFAULT_SUBFOLDER_SIGN) \
+                    USES_SEC_POLICY_INTEGRITY_CHECK=$(USES_SEC_POLICY_INTEGRITY_CHECK) python $(SECIMAGE_BASE)/sectools_builder.py \
+            -i $(TARGET_EMMC_BOOTLOADER) \
+            -t $(PRODUCT_OUT)/signed \
+            -g $(SIGN_ID) \
+            --soc_hw_version $(soc_hw_version) \
+            --soc_vers $(soc_vers) \
+            --config=$(SECIMAGE_BASE)/config/integration/$(XML_FILE) \
+            --install_base_dir=$(PRODUCT_OUT) \
+             > $(PRODUCT_OUT)/secimage.log 2>&1
+    @mv $(PRODUCT_OUT)/unsigned_abl.elf $(PRODUCT_OUT)/abl.elf
+    @echo Completed secimage signed appsbl \(logs in $(PRODUCT_OUT)/secimage.log\)
+endef
+
+droidcore: $(TARGET_EMMC_BOOTLOADER)
+	$(call sec-image-generate)
 endif
 endif
-
-SIGN_ABL := $(PRODUCT_OUT)/signed
-$(shell mkdir -p $(SIGN_ABL))
 
 # Create firmware folder for graphics
 $(shell mkdir -p $(TARGET_OUT_VENDOR)/firmware/)

@@ -1,4 +1,3 @@
-AUDIO_USE_STUB_HAL := true
 
 TARGET_BOARD_PLATFORM := msmnile
 TARGET_BOOTLOADER_BOARD_NAME := msmnile
@@ -117,7 +116,8 @@ KERNEL_SD_LLVM_SUPPORT := false
 TARGET_HAS_DIAG_ROUTER := true
 
 # Target uses DIAG_MDM2 instance to collect WLAN fw diag logs
-PRODUCT_PROPERTY_OVERRIDES += vendor.usb.diag_mdm.inst.name=diag_mdm2
+PRODUCT_PROPERTY_OVERRIDES += vendor.usb.diag_mdm.inst.name=diag_mdm2 \
+                              persist.vendor.usb.config=adb
 
 # default is nosdcard, S/W button enabled in resource
 PRODUCT_CHARACTERISTICS := nosdcard

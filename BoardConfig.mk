@@ -2,6 +2,14 @@
 #
 # Product-specific compile-time definitions.
 #
+ENABLE_AUTO_GENERIC_TEST_FLAG := true
+
+ENABLE_AUTO_DATAIPA_TECHPACKS := false
+TARGET_BOARD_PLATFORM := msmnile
+TARGET_BOOTLOADER_BOARD_NAME := msmnile
+#Enable legacy path for ELITE
+ENABLE_AUDIO_LEGACY_TECHPACK := true
+
 # Disable DLKMs compilation for msmnile_au
 TARGET_KERNEL_DLKM_DISABLE := true
 
@@ -10,6 +18,8 @@ ENABLE_AUDIO_LEGACY_TECHPACK := true
 
 #Generate DTBO image
 BOARD_KERNEL_SEPARATED_DTBO := false
+
+ENABLE_AUTO_CAMERA_TECHPACK := true
 
 ### Dynamic partition Handling
 ifneq ($(strip $(BOARD_DYNAMIC_PARTITION_ENABLE)),true)
@@ -132,6 +142,7 @@ BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
 endif
 TARGET_USERIMAGES_USE_EXT4 := true
 BOARD_BOOTIMAGE_PARTITION_SIZE := 0x06000000
+BOARD_KERNEL-GKI_BOOTIMAGE_PARTITION_SIZE := $(BOARD_BOOTIMAGE_PARTITION_SIZE)
 BOARD_VENDOR_BOOTIMAGE_PARTITION_SIZE := 0x06000000
 #BOARD_SYSTEMIMAGE_PARTITION_SIZE := 3221225472
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 10737418240
@@ -176,128 +187,7 @@ ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
     endif
 endif
 
-ifeq (,$(findstring -qgki-debug_defconfig,$(KERNEL_DEFCONFIG)))
-$(warning #### GKI config ####)
-VENDOR_RAMDISK_KERNEL_MODULES := proxy-consumer.ko \
-				 rpmh-regulator.ko \
-				 refgen.ko \
-				 stub-regulator.ko \
-				 clk-dummy.ko \
-				 clk-qcom.ko \
-				 clk-rpmh.ko \
-				 gcc-sm8150.ko \
-				 qnoc-sm8150.ko \
-				 cmd-db.ko \
-				 qcom_rpmh.ko \
-				 rpmhpd.ko \
-				 icc-bcm-voter.ko \
-				 icc-rpmh.ko \
-				 pinctrl-msm.ko \
-				 pinctrl-sm8150.ko \
-				 _qcom_scm.ko \
-				 secure_buffer.ko \
-				 iommu-logger.ko \
-				 qcom-arm-smmu-mod.ko \
-				 phy-qcom-ufs.ko \
-				 phy-qcom-ufs-qmp-v4.ko \
-				 phy-qcom-ufs-qrbtc-sdm845.ko \
-				 ufs-qcom.ko \
-				 qbt_handler.ko \
-				 qcom_watchdog.ko \
-				 qcom-pdc.ko \
-				 qpnp-power-on.ko \
-				 msm-poweroff.ko \
-				 sdhci-msm.ko \
-				 cqhci.ko \
-				 cqhci-crypto.ko \
-				 cqhci-crypto-qti.ko \
-				 memory_dump_v2.ko \
-				 qnoc-qos.ko \
-				 msm_ion_heaps.ko \
-				 msm-geni-se.ko \
-				 msm_geni_serial.ko \
-				 msm_drm.ko \
-				 msm_cfg.ko \
-				 subsys-pil-tz.ko \
-				 peripheral-loader.ko \
-				 smem.ko \
-				 qmi_helpers.ko \
-				 subsystem_restart.ko \
-				 msm_kgsl.ko \
-				 governor_gpubw_mon.ko \
-				 governor_msm_adreno_tz.ko \
-				 pinctrl-sx150x.ko \
-				 dwc3.ko \
-				 dwc3-msm.ko \
-				 phy-qcom-emu.ko \
-				 phy-msm-ssusb-qmp.ko \
-				 phy-msm-snps-hs.ko \
-				 phy-generic.ko \
-				 ns.ko \
-				 qrtr.ko \
-				 qrtr-smd.ko \
-				 usb_f_cdev.ko \
-				 dispcc-sm8150.ko \
-				 scc-sm8150.ko \
-				 pinctrl-slpi.ko \
-				 i2c-msm-geni.ko \
-				 i2c-mux.ko \
-				 analogix-anx7625.ko \
-				 msm_qmp.ko \
-				 i2c-mux-pca954x.ko \
-				 gpucc-sm8150.ko \
-				 qpnp-power-on.ko \
-				 spmi-pmic-arb.ko \
-				 qcom-spmi-pmic.ko \
-				 spmi-pmic-arb-debug.ko \
-				 qcom-spmi-temp-alarm.ko \
-				 pinctrl-spmi-gpio.ko \
-				 pinctrl-spmi-mpp.ko \
-				 rtc-pm8xxx.ko \
-				 clk-spmi-pmic-div.ko \
-				 qcom-spmi-adc5.ko \
-				 qcom-spmi-sdam.o \
-				 regmap-spmi.ko \
-				 qcom-vadc-common.ko \
-				 qseecom-mod.ko \
-				 hdcp_qseecom.ko \
-				 msm_rng.ko \
-				 smcinvoke.ko \
-				 ufshcd-crypto-qti.ko \
-				 crypto-qti-common.ko \
-				 crypto-qti-tz.ko \
-				 cdsp-loader.ko \
-				 msm_dma_iommu_mapping.ko \
-				 i2c-dev.ko \
-				 spidev.ko \
-				 frpc-adsprpc.ko \
-				 service-notifier.ko \
-				 service-locator.ko \
-				 rpmsg_core.ko \
-				 qcom_glink_smem.ko \
-				 qcom_glink_spss.ko \
-				 glink_probe.ko \
-				 glink_pkt.ko \
-				 qsee_ipc_irq.ko \
-				 qsee_ipc_irq_bridge.ko \
-				 spcom.ko \
-				 clk-aop-qmp.ko \
-				 cdsprm.ko \
-				 qcom-cpufreq-hw.ko \
-				 smp2p.ko \
-				 osm-l3.ko \
-				 mhi_bus.ko \
-				 mhi_uci.ko \
-				 qcom_hwspinlock.ko \
-				 msm_sharedmem.ko \
-				 qcom_glink_native.ko \
-				 spss_utils.ko \
-				 qcom-apcs-ipc-mailbox.ko \
-				 smem_state.ko \
-				 socinfo.ko
-else
-$(warning #### QGKI config ####)
-endif
+
 
 BOARD_DO_NOT_STRIP_VENDOR_MODULES := true
 
@@ -305,7 +195,7 @@ BOARD_VENDOR_KERNEL_MODULES += $(shell ls $(KERNEL_MODULES_OUT)/*.ko)
 TARGET_USES_ION := true
 TARGET_USES_NEW_ION_API :=true
 TARGET_USES_QCOM_BSP := false
-BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 earlycon=msm_geni_serial,0xa90000 androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=4096 firmware_class.path=/vendor/firmware_mnt/image loop.max_part=7 androidboot.usbcontroller=a600000.dwc3 androidboot.recover_usb=1 androidboot.selinux=enforcing hibernate=nocompress noswap_randomize pcie_ports=compat
+BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 earlycon=qcom_geni,0xa90000 androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=4096 firmware_class.path=/vendor/firmware_mnt/image loop.max_part=7 androidboot.usbcontroller=a600000.dwc3 androidboot.recover_usb=1 androidboot.selinux=permissive hibernate=nocompress noswap_randomize pcie_ports=compat qcom_geni_serial.con_enabled=1 printk.devkmsg=on log_buf_len=1M androidboot.force_normal_boot=1
 
 BOARD_EGL_CFG := device/qcom/$(TARGET_BOARD_PLATFORM)/egl.cfg
 
