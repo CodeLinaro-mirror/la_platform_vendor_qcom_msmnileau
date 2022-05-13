@@ -2,8 +2,9 @@
 #
 # Product-specific compile-time definitions.
 #
-TARGET_KERNEL_DLKM_DISABLE := true
 
+# Disable DLKMs compilation for msmnile_au
+TARGET_KERNEL_DLKM_DISABLE := false
 #Enable legacy path for ELITE
 ENABLE_AUDIO_LEGACY_TECHPACK := true
 
@@ -292,21 +293,6 @@ BUILD_BROKEN_USES_BUILD_HOST_STATIC_LIBRARY := true
 #Flag for Early Ethernet
 IS_EARLY_ETH_ENABLED := 1
 
-TARGET_KERNEL_DLKM_OVERRIDE += ais.ko
-TARGET_KERNEL_DLKM_OVERRIDE += msm_drm.ko
-TARGET_KERNEL_DLKM_OVERRIDE += msm_kgsl.ko
-TARGET_KERNEL_DLKM_OVERRIDE += msm-vidc.ko
-TARGET_KERNEL_DLKM_OVERRIDE += q6_notifier_dlkm.ko
-TARGET_KERNEL_DLKM_OVERRIDE += q6_dlkm.ko
-TARGET_KERNEL_DLKM_OVERRIDE += machine_dlkm.ko
-TARGET_KERNEL_DLKM_OVERRIDE += adsp_loader_dlkm.ko
-TARGET_KERNEL_DLKM_OVERRIDE += apr_dlkm.ko
-TARGET_KERNEL_DLKM_OVERRIDE += platform_dlkm.ko
-TARGET_KERNEL_DLKM_OVERRIDE += native_dlkm.ko
-TARGET_KERNEL_DLKM_OVERRIDE += stub_dlkm.ko
-TARGET_KERNEL_DLKM_OVERRIDE += hdmi_dlkm.ko
-TARGET_KERNEL_DLKM_OVERRIDE += snd_event_dlkm.ko
-TARGET_KERNEL_DLKM_OVERRIDE += tz_log_dlkm.ko qcedev-mod_dlkm.ko qcrypto-msm_dlkm.ko qce50_dlkm.ko hdcp_qseecom_dlkm.ko qrng_dlkm.ko qseecom_dlkm.ko
 #################################################################################
 # This is the End of BoardConfig.mk file.
 # Now, Pickup other split Board.mk files:
