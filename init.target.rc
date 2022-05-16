@@ -94,6 +94,9 @@ on post-fs
     start vendor.spdaemon
     start vendor.sec_nvm
 
+    # Enable WLAN cold boot calibration
+    write /sys/kernel/cnss/fs_ready 1
+
 service esplash /vendor/bin/esplash
     class core
     user system
@@ -139,9 +142,6 @@ on boot
     chmod 0770 /data/vendor/netmgr/recovery
     write /data/vendor/netmgr/recovery/recovery_info ""
     chown radio radio /data/vendor/netmgr/recovery/recovery_info
-
-#Load WLAN driver
-    start wlan_multiko
 
 # Add a cpuset for the camera daemon
 # We want all cores for camera
