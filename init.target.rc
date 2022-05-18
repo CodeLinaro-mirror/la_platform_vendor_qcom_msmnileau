@@ -56,6 +56,7 @@ on early-init && property:ro.boot.audio=elite
     start vendor.adsprpcd
     start vendor.adsprpcd_audiopd
     start audiod
+    setprop vendor.audio.card.def "/vendor/etc/card-defs-dummy.xml"
 
 on early-init && property:ro.boot.audio=audioreach
     exec u:r:vendor_modprobe:s0 -- /vendor/bin/modprobe -a -d /vendor/lib/modules snd_event_dlkm q6_ar_dlkm stub_ar_dlkm platform_ar_dlkm adsp_loader_ar_dlkm audpkt_ion_dlkm audio_prm_dlkm audio_pkt_dlkm gpr_dlkm spf_core_dlkm spf_machine_dlkm
