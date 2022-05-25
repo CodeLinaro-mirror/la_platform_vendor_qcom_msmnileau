@@ -15,7 +15,7 @@ $(INSTALLED_BOOTLOADER_MODULE): $(TARGET_EMMC_BOOTLOADER) | $(ACP)
 
 else
 
-TARGET_EMMC_BOOTLOADER := kernel_platform/out/msm-kernel-gen3auto-gki/abl-userdebug/unsigned_abl.elf
+TARGET_EMMC_BOOTLOADER := $(TARGET_BOARD_UNSIGNED_ABL_DIR)/unsigned_abl.elf
 SIGN_ID := abl
 
 ifneq ($(wildcard $(QCPATH)/sectools),)
@@ -34,10 +34,10 @@ XML_FILE := secimagev3.xml
 define sec-image-generate
     @echo Generating signed appsbl using secimage tool for $(strip $(QTI_GENSECIMAGE_MSM_IDS))
     @rm -rf $(PRODUCT_OUT)/signed
+    @rm -rf $(PRODUCT_OUT)/abl.elf
     SECIMAGE_LOCAL_DIR=$(SECIMAGE_BASE) USES_SEC_POLICY_MULTIPLE_DEFAULT_SIGN=$(USES_SEC_POLICY_MULTIPLE_DEFAULT_SIGN) \
                     USES_SEC_POLICY_DEFAULT_SUBFOLDER_SIGN=$(USES_SEC_POLICY_DEFAULT_SUBFOLDER_SIGN) \
                     USES_SEC_POLICY_INTEGRITY_CHECK=$(USES_SEC_POLICY_INTEGRITY_CHECK) python $(SECIMAGE_BASE)/sectools_builder.py \
-            --outfile $(PRODUCT_OUT)/abl.elf \
             -i $(TARGET_EMMC_BOOTLOADER) \
             -t $(PRODUCT_OUT)/signed \
             -g $(SIGN_ID) \
@@ -46,6 +46,7 @@ define sec-image-generate
             --config=$(SECIMAGE_BASE)/config/integration/$(XML_FILE) \
             --install_base_dir=$(PRODUCT_OUT) \
              > $(PRODUCT_OUT)/secimage.log 2>&1
+    @mv $(PRODUCT_OUT)/unsigned_abl.elf $(PRODUCT_OUT)/abl.elf
     @echo Completed secimage signed appsbl \(logs in $(PRODUCT_OUT)/secimage.log\)
 endef
 
