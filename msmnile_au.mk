@@ -165,8 +165,9 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.ethernet.xml:system/etc/permissions/android.hardware.ethernet.xml
 
 # Copy the testscripts from the qssi folder as it was moved to QSSI folder.
-PRODUCT_COPY_FILES += \
-    device/qcom/qssi/init.qcom.testscripts.sh:system/etc/init.qcom.testscripts.sh
+# A copy of init.qcom.testscripts.sh is available at system/product/etc
+#PRODUCT_COPY_FILES += \
+#    device/qcom/qssi/init.qcom.testscripts.sh:system/etc/init.qcom.testscripts.sh
 
 # Video codec configuration files
 ifeq ($(TARGET_ENABLE_QC_AV_ENHANCEMENTS), true)
