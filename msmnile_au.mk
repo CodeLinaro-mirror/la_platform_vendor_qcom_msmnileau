@@ -7,6 +7,9 @@ ifeq ($(ENABLE_VIRTUAL_AB), true)
   $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota.mk)
 endif
 
+ALLOW_MISSING_DEPENDENCIES := true
+ENABLE_AIDL_VHAL := false
+
 # Enable AVB 2.0
 BOARD_AVB_ENABLE := true
 TARGET_BOARD_AUTO := true
