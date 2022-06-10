@@ -301,6 +301,7 @@ TARGET_KERNEL_DLKM_OVERRIDE += native_dlkm.ko
 TARGET_KERNEL_DLKM_OVERRIDE += stub_dlkm.ko
 TARGET_KERNEL_DLKM_OVERRIDE += hdmi_dlkm.ko
 TARGET_KERNEL_DLKM_OVERRIDE += snd_event_dlkm.ko
+TARGET_KERNEL_DLKM_OVERRIDE += tz_log_dlkm.ko qcedev-mod_dlkm.ko qcrypto-msm_dlkm.ko qce50_dlkm.ko hdcp_qseecom_dlkm.ko qrng_dlkm.ko qseecom_dlkm.ko
 #################################################################################
 # This is the End of BoardConfig.mk file.
 # Now, Pickup other split Board.mk files:
