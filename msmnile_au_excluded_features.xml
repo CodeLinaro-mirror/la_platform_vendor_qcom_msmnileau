@@ -25,4 +25,9 @@
     <unavailable-feature name="android.software.picture_in_picture" />
     <!-- No backup feature -->
     <unavailable-feature name="android.software.backup" />
+    <!-- No Managed Users -->
+    <unavailable-feature name="android.software.managed_users" />
+    <!-- No Sensor support -->
+    <unavailable-feature name="android.hardware.sensor.compass" />
+    <unavailable-feature name="android.hardware.sensor.accelerometer" />
 </permissions>
