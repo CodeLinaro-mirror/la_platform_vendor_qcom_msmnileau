@@ -30,7 +30,8 @@
 on early-init
     umount /early_services/vendor/firmware_mnt
     umount /aes_tmpfs/vendor/firmware_mnt
-    exec u:r:vendor_modprobe:s0 -- /vendor/bin/modprobe -a -d /vendor/lib/modules snd_event_dlkm q6_notifier_dlkm apr_dlkm adsp_loader_dlkm q6_dlkm native_dlkm platform_dlkm stub_dlkm hdmi_dlkm machine_dlkm pci-msm-drv
+    write /sys/kernel/boot_kpi/kpi_values "M - INITRC Userspace Start"
+    exec_background u:r:vendor_modprobe:s0 -- /vendor/bin/modprobe -a -d /vendor/lib/modules snd_event_dlkm q6_notifier_dlkm apr_dlkm adsp_loader_dlkm q6_dlkm native_dlkm platform_dlkm stub_dlkm hdmi_dlkm machine_dlkm pci-msm-drv
     write /proc/sys/kernel/sched_boost 1
     chown system system /sys/kernel/boot_kpi/kpi_values
     symlink /data/tombstones /tombstones
@@ -38,13 +39,12 @@ on early-init
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
     mount_all /vendor/etc/fstab.qcom --early
-    write /sys/kernel/boot_kpi/kpi_values "M - Start adsp"
     write /sys/kernel/boot_adsp/boot 1
     write /sys/kernel/boot_kpi/kpi_values "M - adsprpcd Start"
     start vendor.adsprpcd
     start vendor.adsprpcd_audiopd
     start audiod
-    start esplash
+   #start esplash
 
 on init
     start vendor.pd_mapper
@@ -84,8 +84,8 @@ on post-fs
 
     start vendor.qseecomd
     exec - system system -- /vendor/bin/init.qti.qseecomd.sh
-    start vendor.spdaemon
-    start vendor.sec_nvm
+    #start vendor.spdaemon
+    #start vendor.sec_nvm
 
 service esplash /vendor/bin/esplash
     class core
