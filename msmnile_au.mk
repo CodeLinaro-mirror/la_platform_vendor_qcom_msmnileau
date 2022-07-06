@@ -25,6 +25,7 @@ TARGET_NO_TELEPHONY := true
 TARGET_USES_QTIC := false
 TARGET_USES_QTIC_EXTENSION := false
 ENABLE_HYP := false
+ENABLE_AIDL_VHAL := true
 
 # FR77687: Migrate AIDL interface using -ndk_platform.so to -ndk.so
 NEED_AIDL_NDK_PLATFORM_BACKEND := true
@@ -539,8 +540,6 @@ PRODUCT_PACKAGES += candump \
 PRODUCT_PACKAGES += canflasher \
                     mpc5746c_firmware_A.bin \
                     mpc5746c_firmware_B.bin \
-                    vendor.qti.hardware.automotive.vehicle@1.0-service \
-                    android.hardware.automotive.vehicle@2.0-manager-lib-shared
 
 #add vndservicemanager for surfaceflinger crash
 PRODUCT_PACKAGES += vndservicemanager
