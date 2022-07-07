@@ -121,8 +121,7 @@ KERNEL_SD_LLVM_SUPPORT := false
 TARGET_HAS_DIAG_ROUTER := true
 
 # Target uses DIAG_MDM2 instance to collect WLAN fw diag logs
-PRODUCT_PROPERTY_OVERRIDES += vendor.usb.diag_mdm.inst.name=diag_mdm2 \
-                              persist.vendor.usb.config=adb
+PRODUCT_PROPERTY_OVERRIDES += vendor.usb.diag_mdm.inst.name=diag_mdm2
 
 # default is nosdcard, S/W button enabled in resource
 PRODUCT_CHARACTERISTICS := nosdcard
@@ -335,6 +334,7 @@ PRODUCT_PROPERTY_OVERRIDES += rild.libpath=/vendor/lib64/libril-qc-hal-qmi.so \
                             dev.pm.dyn_samplingrate=1
 
 PRODUCT_PROPERTY_OVERRIDES += qcom.hw.aac.encoder=true
+PRODUCT_PROPERTY_OVERRIDES += persist.vendor.usb.config=diag,adb
 
 # Cne module properties
 PRODUCT_PROPERTY_OVERRIDES += persist.vendor.cne.feature=1
