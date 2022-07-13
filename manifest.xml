@@ -26,7 +26,7 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 <manifest version="1.0" type="device" target-level="6">
-    <kernel target-level="6"/>
+    <kernel target-level="7"/>
     <hal format="hidl">
         <name>android.hardware.health</name>
         <transport>hwbinder</transport>
@@ -132,6 +132,16 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             <name>ICameraProvider</name>
             <instance>legacy/0</instance>
         </interface>
+    </hal>
+    <!-- keymaster -->
+   <hal format="hidl">
+       <name>android.hardware.keymaster</name>
+       <transport>hwbinder</transport>
+       <version>4.1</version>
+       <interface>
+           <name>IKeymasterDevice</name>
+           <instance>default</instance>
+       </interface>
     </hal>
     <!-- gatekeeper -->
     <hal format="hidl">

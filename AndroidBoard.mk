@@ -3,9 +3,12 @@ LOCAL_PATH := $(call my-dir)
 #----------------------------------------------------------------------
 # Compile (L)ittle (K)ernel bootloader and the nandwrite utility
 #----------------------------------------------------------------------
+
 ifneq ($(strip $(TARGET_NO_BOOTLOADER)),true)
 ifneq ($(strip $(TARGET_SIGNONLY_BOOTLOADER)),true)
+
 # Compile
+
 include bootable/bootloader/edk2/AndroidBoot.mk
 
 $(INSTALLED_BOOTLOADER_MODULE): $(TARGET_EMMC_BOOTLOADER) | $(ACP)
@@ -46,6 +49,8 @@ define sec-image-generate
     @mv $(PRODUCT_OUT)/unsigned_abl.elf $(PRODUCT_OUT)/abl.elf
     @echo Completed secimage signed appsbl \(logs in $(PRODUCT_OUT)/secimage.log\)
 endef
+
+# $(transform-prebuilt-to-target)
 
 droidcore: $(TARGET_EMMC_BOOTLOADER)
 	$(call sec-image-generate)
