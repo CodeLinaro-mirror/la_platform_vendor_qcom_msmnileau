@@ -409,8 +409,7 @@ endif
 
 TARGET_MOUNT_POINTS_SYMLINKS := false
 
-PRODUCT_PACKAGES += android.hardware.dumpstate@1.1-service.example \
-                    android.hardware.thermal@2.0-service.mock \
+PRODUCT_PACKAGES += android.hardware.dumpstate@1.1-service.example
 
 PRODUCT_PACKAGES += android.hardware.health@2.1-service \
                     android.hardware.health@2.1-impl \
