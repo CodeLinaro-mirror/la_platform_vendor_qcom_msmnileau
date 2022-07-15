@@ -29,14 +29,13 @@ ENABLE_HYP := false
 # FR77687: Migrate AIDL interface using -ndk_platform.so to -ndk.so
 NEED_AIDL_NDK_PLATFORM_BACKEND := true
 
-BOARD_HAS_QCOM_WLAN := false
-
 TARGET_NO_QTI_WFD := true
 BOARD_HAVE_QCOM_FM := false
 BOARD_VENDOR_QCOM_LOC_PDK_FEATURE_SET := false
 TARGET_ENABLE_QC_AV_ENHANCEMENTS := false
 TARGET_FWK_SUPPORTS_AV_VALUEADDS := false
 TARGET_USES_AOSP_FOR_WLAN := true
+BOARD_HAS_QCOM_WLAN := true
 ENABLE_CAR_POWER_MANAGER := true
 # Dynamic-partition enabled by default
 BOARD_DYNAMIC_PARTITION_ENABLE := true
@@ -314,8 +313,8 @@ ENABLE_VENDOR_RIL_SERVICE := true
 #----------------------------------------------------------------------
 # Multiple chips
 ifeq ($(strip $(BOARD_HAS_QCOM_WLAN)),true)
-# TARGET_WLAN_CHIP := qca6174 qca6390 qcn7605
-# include device/qcom/wlan/msmnile_au/wlan.mk
+TARGET_WLAN_CHIP := qca6174 qca6390 qcn7605
+include device/qcom/wlan/msmnile_au/wlan.mk
 endif
 
 PRODUCT_PROPERTY_OVERRIDES += rild.libpath=/vendor/lib64/libril-qc-hal-qmi.so \
