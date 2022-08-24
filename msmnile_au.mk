@@ -8,10 +8,6 @@ PRODUCT_OTA_ENFORCE_VINTF_KERNEL_REQUIREMENTS := false
 
 ALLOW_MISSING_DEPENDENCIES := true
 ENABLE_AB ?= true
-# Enable virtual-ab by default
-ifeq ($(ENABLE_AB), true)
-  ENABLE_VIRTUAL_AB ?= true
-endif
 ifeq ($(ENABLE_VIRTUAL_AB), true)
   $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota.mk)
 endif
