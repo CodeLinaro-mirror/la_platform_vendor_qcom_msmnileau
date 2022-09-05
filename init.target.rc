@@ -123,6 +123,10 @@ on init
     write /sys/kernel/boot_kpi/kpi_values "M - audio_hal_plugin_service Start"
     start audio_hal_plugin_service
 
+on init && property:ro.boot.audio=audioreach
+    chmod 0777 /dev/aud_pasthru_adsp
+    chmod 0777 /dev/msm_audio_ion
+
 on late-init
     start automotive_display
 
