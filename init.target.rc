@@ -107,6 +107,7 @@ on init
     start vendor.pd_mapper
     start vendor.qrtr-ns
     write /sys/kernel/boot_cdsp/boot 1
+    write /sys/kernel/boot_mdsp/boot 1
     write /dev/stune/foreground/schedtune.sched_boost_no_override 1
     write /dev/stune/top-app/schedtune.sched_boost_no_override 1
     write /dev/stune/schedtune.colocate 0
