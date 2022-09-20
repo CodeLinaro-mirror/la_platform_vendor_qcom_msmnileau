@@ -14,8 +14,20 @@
      limitations under the License.
 -->
 
-
 <permissions>
-    <unavailable-feature name="android.software.picture_in_picture" />
+    <!-- No support of telephony -->
+    <unavailable-feature name="android.hardware.telephony" />
+    <unavailable-feature name="android.hardware.telephony.cdma" />
+    <unavailable-feature name="android.hardware.telephony.gsm" />
+    <unavailable-feature name="android.hardware.telephony.ims" />
+    <!-- No portrait support-->
     <unavailable-feature name="android.hardware.screen.portrait" />
+    <!--No picture in Picture support-->
+    <unavailable-feature name="android.software.picture_in_picture" />
+    <!-- No backup feature -->
+    <unavailable-feature name="android.software.backup" />
+    <!-- No network location feature -->
+    <unavailable-feature name="android.hardware.location.network" />
+    <!-- No Managed users feature -->
+    <unavailable-feature name="android.software.managed_users" />
 </permissions>
