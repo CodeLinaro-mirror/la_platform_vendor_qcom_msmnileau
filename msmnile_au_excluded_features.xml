@@ -27,4 +27,10 @@
     <unavailable-feature name="android.software.backup" />
     <!-- No Managed Users -->
     <unavailable-feature name="android.software.managed_users" />
+    <!-- No camera and flashlight support -->
+    <unavailable-feature name="android.hardware.camera" />
+    <!-- No Sensor support -->
+    <unavailable-feature name="android.hardware.sensor.accelerometer" />
+    <!-- No Location Provider -->
+    <unavailable-feature name="android.hardware.location.network" />
 </permissions>
