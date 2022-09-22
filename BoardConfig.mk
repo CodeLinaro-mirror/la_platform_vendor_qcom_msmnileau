@@ -59,6 +59,8 @@ TARGET_SEPOLICY_DIR := gen3_metal
 
 BOARD_SECCOMP_POLICY := device/qcom/$(TARGET_BOARD_PLATFORM)/seccomp
 
+TARGET_AUDIO_FRAMEWORK := elite
+
 TARGET_NO_BOOTLOADER := false
 TARGET_USES_UEFI := true
 TARGET_NO_KERNEL := false
@@ -279,7 +281,6 @@ VENDOR_RAMDISK_KERNEL_MODULES := proxy-consumer.ko \
 				 clk-aop-qmp.ko \
 				 cdsprm.ko \
 				 qcom-cpufreq-hw.ko \
-				 pci-msm-drv.ko \
 				 smp2p.ko \
 				 osm-l3.ko \
 				 mhi_bus.ko \
@@ -292,7 +293,9 @@ VENDOR_RAMDISK_KERNEL_MODULES := proxy-consumer.ko \
 				 smem_state.ko \
 				 socinfo.ko \
 				 qcom_llcc.ko \
-				 llcc-sm8150.ko
+				 llcc-sm8150.ko \
+				 xhci-hcd.ko \
+				 xhci-plat-hcd.ko
 else
 $(warning #### QGKI config ####)
 endif
@@ -303,7 +306,7 @@ BOARD_VENDOR_KERNEL_MODULES += $(shell ls $(KERNEL_MODULES_OUT)/*.ko)
 TARGET_USES_ION := true
 TARGET_USES_NEW_ION_API :=true
 TARGET_USES_QCOM_BSP := false
-BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 earlycon=msm_geni_serial,0xa90000 androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=4096 firmware_class.path=/vendor/firmware_mnt/image loop.max_part=7 androidboot.usbcontroller=a600000.dwc3 androidboot.recover_usb=1 androidboot.selinux=enforcing hibernate=nocompress noswap_randomize pcie_ports=compat
+BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 earlycon=msm_geni_serial,0xa90000 androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=4096 firmware_class.path=/vendor/firmware_mnt/image loop.max_part=7 androidboot.usbcontroller=a600000.dwc3 androidboot.recover_usb=1 androidboot.selinux=enforcing hibernate=nocompress noswap_randomize pcie_ports=compat kpti=0
 
 BOARD_EGL_CFG := device/qcom/$(TARGET_BOARD_PLATFORM)/egl.cfg
 
