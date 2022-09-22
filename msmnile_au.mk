@@ -592,6 +592,9 @@ PRODUCT_PACKAGES += android.hardware.neuralnetworks@1.0.vendor \
 
 PRODUCT_ENFORCE_RRO_TARGETS := framework-res
 
+# privapp-permissions whitelisting (To Fix CTS :privappPermissionsMustBeEnforced)
+PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
+
 ###################################################################################
 # This is the End of target.mk file.
 # Now, Pickup other split product.mk files:
