@@ -172,17 +172,6 @@ BOARD_VENDOR_KERNEL_MODULES := \
 #    $(KERNEL_MODULES_OUT)/msm_11ad_proxy.ko \
 #    $(KERNEL_MODULES_OUT)/emac_dwc_eqos.ko \
 
-#----------------------------------------------------------------------
-# Compile Linux Kernel
-#----------------------------------------------------------------------
-ifeq ($(KERNEL_DEFCONFIG),)
-    ifeq ($(TARGET_BUILD_VARIANT),user)
-        KERNEL_DEFCONFIG := gen3auto-qgki_defconfig
-    else
-        KERNEL_DEFCONFIG := gen3auto-qgki-debug_defconfig
-    endif
-endif
-
 # install lkdtm only for userdebug and eng build variants
 ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
     ifneq (,$(findstring debug_defconfig, $(KERNEL_DEFCONFIG)))
