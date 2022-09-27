@@ -127,6 +127,10 @@ TARGET_KERNEL_VERSION := 5.15
 
 TARGET_HAS_GENERIC_KERNEL_HEADERS := true
 
+ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
+    PRODUCT_COPY_FILES += $(LOCAL_PATH)/drop_caches.sh:$(TARGET_COPY_OUT_VENDOR)/bin/drop_caches.sh
+endif
+
 #Enable llvm support for kernel
 KERNEL_LLVM_SUPPORT := true
 
@@ -602,6 +606,7 @@ PRODUCT_PACKAGES += android.hardware.neuralnetworks@1.0.vendor \
                     android.hardware.neuralnetworks@1.3.vendor
 
 PRODUCT_ENFORCE_RRO_TARGETS := framework-res
+PRODUCT_PACKAGES_DEBUG += dumpsCaches
 
 # privapp-permissions whitelisting (To Fix CTS :privappPermissionsMustBeEnforced)
 PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
