@@ -191,10 +191,14 @@ BOARD_VENDOR_KERNEL_MODULES += $(shell ls $(KERNEL_MODULES_OUT)/*.ko)
 TARGET_USES_ION := true
 TARGET_USES_NEW_ION_API :=true
 TARGET_USES_QCOM_BSP := false
-BOARD_KERNEL_CMDLINE := androidboot.hardware=qcom androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=4096 firmware_class.path=/vendor/firmware_mnt/image loop.max_part=7 androidboot.usbcontroller=a600000.dwc3 androidboot.recover_usb=1 androidboot.selinux=enforcing hibernate=nocompress noswap_randomize pcie_ports=compat androidboot.load_modules_parallel=true cpufreq.default_governor=performance
+
+BOARD_BOOTCONFIG := androidboot.hardware=qcom androidboot.memcg=1 androidboot.usbcontroller=a600000.dwc3 androidboot.recover_usb=1 androidboot.selinux=enforcing androidboot.load_modules_parallel=true
+
+BOARD_KERNEL_CMDLINE := lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=4096 firmware_class.path=/vendor/firmware_mnt/image loop.max_part=7 hibernate=nocompress noswap_randomize pcie_ports=compat
 
 ifeq ($(TARGET_CONSOLE_ENABLED),true)
-BOARD_KERNEL_CMDLINE += console=ttyMSM0,115200n8 earlycon=qcom_geni,0xa90000 qcom_geni_serial.con_enabled=1 androidboot.console=ttyMSM0
+BOARD_KERNEL_CMDLINE += console=ttyMSM0,115200n8 earlycon=qcom_geni,0xa90000 qcom_geni_serial.con_enabled=1
+BOARD_BOOTCONFIG += androidboot.console=ttyMSM0
 BOARD_KERNEL_CMDLINE += slub_debug=FZPU
 else
 ifeq ($(TARGET_CONSOLE_ENABLED),false)
