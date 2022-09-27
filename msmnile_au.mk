@@ -510,6 +510,9 @@ PRODUCT_PROPERTY_OVERRIDES += vendor.display.builtin_baseid_and_size=5,3 \
 # Gralloc use dmabuf
 PRODUCT_PROPERTY_OVERRIDES += vendor.gralloc.use_dma_buf_heaps=1
 
+# Disable boot animation
+PRODUCT_PROPERTY_OVERRIDES += debug.sf.nobootanimation=1
+
 # Enable car power manager for LPM(LowPowerMode)
 PRODUCT_PROPERTY_OVERRIDES += persist.vendor.car.lpm=true
 
