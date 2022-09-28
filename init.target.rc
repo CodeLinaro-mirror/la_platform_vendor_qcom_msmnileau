@@ -95,9 +95,6 @@ on post-fs
     start vendor.spdaemon
     start vendor.sec_nvm
 
-    # Enable WLAN cold boot calibration
-    write /sys/kernel/cnss/fs_ready 1
-
 service esplash /vendor/bin/esplash
     class core
     user system
@@ -169,6 +166,9 @@ on property:service.bootanim.exit=1
 on property:sys.boot_completed=1
     write /sys/kernel/boot_kpi/kpi_values "K - USER Android Boot Complete"
     setprop vendor.sys.boot_completed 1
+
+    # Enable WLAN cold boot calibration
+    write /sys/kernel/cnss/fs_ready 1
 
 on property:init.svc.surfaceflinger=running
     write /sys/kernel/boot_kpi/kpi_values "M - USER SurfaceFlinger Start"
