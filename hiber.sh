@@ -39,6 +39,10 @@ echo 0 > /d/tracing/tracing_on
 # are used to allow this script to turn off BT.
 am start -a android.bluetooth.adapter.action.REQUEST_DISABLE && input keyevent 23 && input keyevent 22 && input keyevent 23
 
+# Turn WLAN off.
+svc wifi disable
+sleep 12
+
 echo none > /sys/bus/platform/devices/a600000.ssusb/mode
 killall qcarcam_edrm_rvc
 killall qcarcam_test
@@ -66,7 +70,7 @@ sleep 2
 echo related > /sys/bus/msm_subsys/devices/subsys3/restart_level
 echo 0 > /sys/kernel/boot_adsp/boot
 echo 0 > /sys/kernel/boot_cdsp/boot
-echo 0 > /proc/sys/vm/swappiness
+echo 100 > /proc/sys/vm/swappiness
 
 hiber_attempts="1"
 while true
@@ -78,6 +82,7 @@ do
   echo "Start Hibernation"
   echo 8 > /proc/sys/kernel/printk
 
+  echo 0 > /sys/power/image_size
   echo shutdown > /sys/power/disk
   echo disk > /sys/power/state
   if [ $? -eq 0 ]
