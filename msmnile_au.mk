@@ -345,6 +345,11 @@ endif
 #Enable rc file from wpa_supplicant project
 WIFI_HIDL_UNIFIED_SUPPLICANT_SERVICE_RC_ENTRY := true
 
+#Copy supported features list
+ifeq ($(TARGET_USES_GAS),true)
+PRODUCT_COPY_FILES += device/qcom/msmnile_au/msmnile_au_features.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/msmnile_au_features.xml
+endif
+
 #for Emac
 PRODUCT_PACKAGES += \
     emac_perf_settings.sh
