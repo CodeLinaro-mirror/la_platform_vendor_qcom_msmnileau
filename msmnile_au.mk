@@ -407,6 +407,8 @@ PRODUCT_PROPERTY_OVERRIDES += ro.hardware.camera=v4l2
 PRODUCT_PACKAGES += camera.v4l2
 endif
 
+PRODUCT_PACKAGES += init.qti.cam.sh
+
 TARGET_MOUNT_POINTS_SYMLINKS := false
 
 PRODUCT_PACKAGES += android.hardware.dumpstate@1.1-service.example \
