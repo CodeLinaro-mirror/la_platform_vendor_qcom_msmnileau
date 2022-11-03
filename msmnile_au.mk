@@ -8,6 +8,10 @@ PRODUCT_OTA_ENFORCE_VINTF_KERNEL_REQUIREMENTS := false
 
 ALLOW_MISSING_DEPENDENCIES := true
 ENABLE_AB ?= true
+# Enable virtual-ab by default
+ifeq ($(ENABLE_AB), true)
+   ENABLE_VIRTUAL_AB := true
+endif
 ifeq ($(ENABLE_VIRTUAL_AB), true)
   $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota.mk)
 endif
@@ -22,6 +26,7 @@ TARGET_USES_QTIC := false
 TARGET_USES_QTIC_EXTENSION := false
 ENABLE_HYP := false
 ENABLE_AIDL_VHAL := true
+TARGET_CONSOLE_ENABLED ?= true
 
 SYSTEMEXT_SEPARATE_PARTITION_ENABLE = true
 TARGET_USES_QSSI := true
@@ -38,6 +43,10 @@ TARGET_FWK_SUPPORTS_AV_VALUEADDS := false
 TARGET_USES_AOSP_FOR_WLAN := true
 BOARD_HAS_QCOM_WLAN := true
 ENABLE_CAR_POWER_MANAGER := true
+
+#Enable Userspace Restart
+$(call inherit-product, $(SRC_TARGET_DIR)/product/userspace_reboot.mk)
+
 # Dynamic-partition enabled by default
 #BOARD_DYNAMIC_PARTITION_ENABLE := true
 #ifeq ($(strip $(BOARD_DYNAMIC_PARTITION_ENABLE)),true)
@@ -62,6 +71,14 @@ BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
 BOARD_AVB_VBMETA_SYSTEM_ALGORITHM := SHA256_RSA2048
 BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
 BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX_LOCATION := 2
+
+# Using sha256 for dm-verity partitions.
+# system, system_ext and vendor.
+BOARD_AVB_SYSTEM_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
+BOARD_AVB_SYSTEM_EXT_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
+BOARD_AVB_VENDOR_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
+BOARD_AVB_SYSTEM_DLKM_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
+BOARD_AVB_VENDOR_DLKM_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
 
 ifeq ($(ENABLE_AB), true)
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/fstab_AB_dynamic_partition_variant.qti:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.qcom
@@ -114,6 +131,10 @@ endif
 TARGET_KERNEL_VERSION := 5.15
 
 TARGET_HAS_GENERIC_KERNEL_HEADERS := true
+
+ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
+    PRODUCT_COPY_FILES += $(LOCAL_PATH)/drop_caches.sh:$(TARGET_COPY_OUT_VENDOR)/bin/drop_caches.sh
+endif
 
 #Enable llvm support for kernel
 KERNEL_LLVM_SUPPORT := true
@@ -273,6 +294,10 @@ PRODUCT_SHIPPING_API_LEVEL := 33
 # MIDI feature
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.midi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.midi.xml
+
+#Copy unsupported features list
+PRODUCT_COPY_FILES += \
+    device/qcom/msmnile_au/msmnile_au_excluded_features.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/msmnile_au_excluded_features.xml
 
 
 PRODUCT_PACKAGES += \
@@ -498,6 +523,9 @@ PRODUCT_PROPERTY_OVERRIDES += vendor.display.builtin_baseid_and_size=5,3 \
 # Gralloc use dmabuf
 PRODUCT_PROPERTY_OVERRIDES += vendor.gralloc.use_dma_buf_heaps=1
 
+# Disable boot animation
+PRODUCT_PROPERTY_OVERRIDES += debug.sf.nobootanimation=1
+
 # Enable car power manager for LPM(LowPowerMode)
 PRODUCT_PROPERTY_OVERRIDES += persist.vendor.car.lpm=true
 
@@ -583,6 +611,10 @@ PRODUCT_PACKAGES += android.hardware.neuralnetworks@1.0.vendor \
                     android.hardware.neuralnetworks@1.3.vendor
 
 PRODUCT_ENFORCE_RRO_TARGETS := framework-res
+PRODUCT_PACKAGES_DEBUG += dumpsCaches
+
+# privapp-permissions whitelisting (To Fix CTS :privappPermissionsMustBeEnforced)
+PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
 
 ###################################################################################
 # This is the End of target.mk file.

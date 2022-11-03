@@ -30,8 +30,6 @@
 import /vendor/etc/init/hw/init.qti.kernel.rc
 
 on early-init
-    exec u:r:vendor_modprobe:s0 -- /vendor/bin/vendor_modprobe.sh
-    exec u:r:vendor_modprobe:s0 -- /vendor/bin/modprobe -a -d /vendor/lib/modules snd_event_dlkm wglink_dlkm q6_pdr_dlkm q6_notifier_dlkm apr_dlkm adsp_loader_dlkm q6_dlkm native_dlkm usf_dlkm pinctrl_wcd_dlkm swr_dlkm platform_dlkm wcd_spi_dlkm stub_dlkm wcd_core_dlkm wsa881x_dlkm wcd9360_dlkm hdmi_dlkm machine_dlkm pci-msm-drv
     write /proc/sys/kernel/sched_boost 1
     chown system system /sys/kernel/boot_kpi/kpi_values
     symlink /data/tombstones /tombstones
@@ -40,7 +38,6 @@ on early-init
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
     mkdir /dev/socket/camera 0770 system camera
     start ais_server
-    mount_all /vendor/etc/fstab.qcom --early
     write /sys/kernel/boot_kpi/kpi_values "M - Start adsp"
     write /sys/kernel/boot_adsp/boot 1
     write /sys/kernel/boot_kpi/kpi_values "M - adsprpcd Start"
@@ -97,9 +94,6 @@ on post-fs
     start vendor.spdaemon
     start vendor.sec_nvm
 
-    # Enable WLAN cold boot calibration
-    write /sys/kernel/cnss/fs_ready 1
-
 service esplash /vendor/bin/esplash
     class core
     user system
@@ -145,6 +139,7 @@ on boot
     chmod 0770 /data/vendor/netmgr/recovery
     write /data/vendor/netmgr/recovery/recovery_info ""
     chown radio radio /data/vendor/netmgr/recovery/recovery_info
+    start dumpsCaches
 
 # Add a cpuset for the camera daemon
 # We want all cores for camera
@@ -171,6 +166,9 @@ on property:service.bootanim.exit=1
 on property:sys.boot_completed=1
     write /sys/kernel/boot_kpi/kpi_values "K - USER Android Boot Complete"
     setprop vendor.sys.boot_completed 1
+
+    # Enable WLAN cold boot calibration
+    write /sys/kernel/cnss/fs_ready 1
 
 on property:init.svc.surfaceflinger=running
     write /sys/kernel/boot_kpi/kpi_values "M - USER SurfaceFlinger Start"
@@ -346,3 +344,9 @@ service audio_chime /vendor/bin/audio_chime /vendor/etc/bike_bell.wav
 
 on property:sys.boot_completed=1
     mount vfat /dev/block/bootdevice/by-name/logfs /sys/kernel/debug/bookpi/bootloader_log
+
+service dumpsCaches /vendor/bin/drop_caches.sh
+    class core
+    user root
+    disabled
+    oneshot
