@@ -357,7 +357,6 @@ PRODUCT_PROPERTY_OVERRIDES += rild.libpath=/vendor/lib64/libril-qc-hal-qmi.so \
                             dev.pm.dyn_samplingrate=1
 
 PRODUCT_PROPERTY_OVERRIDES += qcom.hw.aac.encoder=true
-PRODUCT_PROPERTY_OVERRIDES += persist.vendor.usb.config=diag,adb
 
 # Cne module properties
 PRODUCT_PROPERTY_OVERRIDES += persist.vendor.cne.feature=1
