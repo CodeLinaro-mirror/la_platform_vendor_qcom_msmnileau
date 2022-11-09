@@ -621,6 +621,8 @@ PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
 # privapp-permissions whitelisting (To Fix CTS :privappPermissionsMustBeEnforced)
 PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
 
+PRODUCT_PACKAGES += qcar-gsi.avbpubkey
+
 ###################################################################################
 # This is the End of target.mk file.
 # Now, Pickup other split product.mk files:
