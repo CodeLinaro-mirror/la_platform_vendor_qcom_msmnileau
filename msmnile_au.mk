@@ -28,9 +28,6 @@ ENABLE_HYP := false
 ENABLE_AIDL_VHAL := true
 TARGET_CONSOLE_ENABLED ?= true
 
-# FR77687: Migrate AIDL interface using -ndk_platform.so to -ndk.so
-NEED_AIDL_NDK_PLATFORM_BACKEND := true
-
 TARGET_NO_QTI_WFD := true
 BOARD_HAVE_QCOM_FM := false
 BOARD_VENDOR_QCOM_LOC_PDK_FEATURE_SET := false
