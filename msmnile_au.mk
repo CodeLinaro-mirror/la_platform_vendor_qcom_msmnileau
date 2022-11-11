@@ -7,14 +7,19 @@ TARGET_BOARD_SUFFIX := _au
 PRODUCT_OTA_ENFORCE_VINTF_KERNEL_REQUIREMENTS := false
 
 ALLOW_MISSING_DEPENDENCIES := true
+
 ENABLE_AB ?= true
 # Enable virtual-ab by default
 ifeq ($(ENABLE_AB), true)
    ENABLE_VIRTUAL_AB := true
 endif
 ifeq ($(ENABLE_VIRTUAL_AB), true)
-  $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota.mk)
+  # Enable virtual A/B compression
+  $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/android_t_baseline.mk)
+  PRODUCT_VIRTUAL_AB_COMPRESSION_METHOD := gz
+  PRODUCT_PACKAGES += snapuserd.ramdisk
 endif
+
 
 # Enable AVB 2.0
 BOARD_AVB_ENABLE := true
