@@ -42,6 +42,12 @@ am start -a android.bluetooth.adapter.action.REQUEST_DISABLE && input keyevent 2
 echo none > /sys/bus/platform/devices/a600000.ssusb/mode
 #echo none > /sys/bus/platform/devices/a800000.ssusb/mode
 
+echo "Putting all connected USB devices to auto suspend forcefully"
+for j in /sys/bus/usb/devices/*/power/control;
+do echo auto > $j;
+done
+
+
 killall qcarcam_edrm_rvc
 killall qcarcam_test
 killall qcarcam_rvc
