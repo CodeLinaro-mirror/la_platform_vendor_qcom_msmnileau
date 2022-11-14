@@ -115,6 +115,8 @@ on post-fs-data
     mkdir /data/vendor/hbtp 0750 system system
     mkdir /data/vendor/tloc 0700 system drmrpc
     mkdir /data/vendor/nnhal 0700 system system
+    chown root system /sys/kernel/silent_boot/pm_silentmode_kernel_state
+    chown root system /sys/kernel/silent_boot/pm_silentmode_hw_state
 
 # For cpusets initialize for Silver Only first and then Silver + Gold
 # Silver Only configuration cannot work with 0-7
