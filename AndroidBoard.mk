@@ -112,13 +112,15 @@ endif
 include $(BUILD_PREBUILT)
 endif #BOARD_DYNAMIC_PARTITION_ENABLE
 
-include $(CLEAR_VARS)
-LOCAL_MODULE       := dumpsCaches
-LOCAL_MODULE_TAGS  := optional
-LOCAL_MODULE_CLASS := ETC
-LOCAL_SRC_FILES    := drop_caches.sh
-LOCAL_MODULE_PATH  := $(TARGET_OUT_VENDOR_EXECUTABLES)
-include $(BUILD_PREBUILT)
+ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
+    include $(CLEAR_VARS)
+    LOCAL_MODULE       := dumpsCaches
+    LOCAL_MODULE_TAGS  := optional
+    LOCAL_MODULE_CLASS := ETC
+    LOCAL_SRC_FILES    := drop_caches.sh
+    LOCAL_MODULE_PATH  := $(TARGET_OUT_VENDOR_EXECUTABLES)
+    include $(BUILD_PREBUILT)
+endif
 
 #----------------------------------------------------------------------
 # Radio image
