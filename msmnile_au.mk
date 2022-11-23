@@ -470,7 +470,6 @@ PRODUCT_PROPERTY_OVERRIDES += media.stagefright.enable-player=true \
                               mmp.enable.3g2=true \
                               media.aac_51_output_enabled=true \
                               mm.enable.smoothstreaming=true \
-                              vendor.mm.enable.qcom_parser=63963135 \
                               persist.mm.enable.prefetch=true
 
 # system props for the data modules
@@ -679,6 +678,11 @@ PRODUCT_PACKAGES += android.hardware.neuralnetworks@1.0.vendor \
                     android.hardware.neuralnetworks@1.1.vendor \
                     android.hardware.neuralnetworks@1.2.vendor \
                     android.hardware.neuralnetworks@1.3.vendor
+
+# Value Add changes: add libnbaio for avenhancement
+ifeq ($(TARGET_FWK_SUPPORTS_FULL_VALUEADDS), true)
+PRODUCT_PACKAGES += libnbaio
+endif
 
 PRODUCT_ENFORCE_RRO_TARGETS := framework-res
 PRODUCT_PACKAGES_DEBUG += dumpsCaches
