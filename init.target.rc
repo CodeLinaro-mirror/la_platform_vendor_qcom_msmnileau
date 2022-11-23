@@ -141,7 +141,6 @@ on boot
     chmod 0770 /data/vendor/netmgr/recovery
     write /data/vendor/netmgr/recovery/recovery_info ""
     chown radio radio /data/vendor/netmgr/recovery/recovery_info
-    start dumpsCaches
 
 # Add a cpuset for the camera daemon
 # We want all cores for camera
@@ -346,9 +345,3 @@ service audio_chime /vendor/bin/audio_chime /vendor/etc/bike_bell.wav
 
 on property:sys.boot_completed=1
     mount vfat /dev/block/bootdevice/by-name/logfs /sys/kernel/debug/bookpi/bootloader_log
-
-service dumpsCaches /vendor/bin/drop_caches.sh
-    class core
-    user root
-    disabled
-    oneshot
