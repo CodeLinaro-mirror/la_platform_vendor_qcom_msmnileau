@@ -44,6 +44,7 @@ on early-init
     start vendor.adsprpcd
     start vendor.adsprpcd_audiopd
     start audiod
+    start esplash
 
 service ais_server /system/vendor/bin/ais_server
     class core
@@ -92,6 +93,13 @@ on post-fs
     exec - system system -- /vendor/bin/init.qti.qseecomd.sh
     start vendor.spdaemon
     start vendor.sec_nvm
+
+service esplash /vendor/bin/esplash
+    class core
+    user system
+    group system
+    oneshot
+    disabled
 
 #emac
 service emac_perf_setting /system/vendor/bin/sh /data/emac/emac_perf_settings.sh
@@ -147,14 +155,6 @@ on property:vendor.wlan.driver.status="ok"
 
 on property:init.svc.zygote=running
     write /sys/kernel/boot_kpi/kpi_values "M - USER Zygote Start"
-    start esplash
-
-service esplash /vendor/bin/esplash
-    class core
-    user system
-    group system
-    oneshot
-    disabled
 
 on property:service.bootanim.exit=0
     write /sys/kernel/boot_kpi/kpi_values "K - USER Boot Animation Start"
