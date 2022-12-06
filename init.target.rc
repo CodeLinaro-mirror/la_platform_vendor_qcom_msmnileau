@@ -46,6 +46,10 @@ on early-init
     start audiod
     start esplash
 
+on early-init && property:ro.boot.audio=audioreach
+    setprop ro.hardware.audio.primary "msmnile.ar"
+    setprop ro.hardware.soundtrigger.primary "msmnile.ar"
+
 service ais_server /system/vendor/bin/ais_server
     class core
     user system
