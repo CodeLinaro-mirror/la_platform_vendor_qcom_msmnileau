@@ -340,6 +340,11 @@ endif
 #Enable rc file from wpa_supplicant project
 WIFI_HIDL_UNIFIED_SUPPLICANT_SERVICE_RC_ENTRY := true
 
+#Copy supported features list
+ifeq ($(TARGET_USES_GAS),true)
+PRODUCT_COPY_FILES += device/qcom/msmnile_au/msmnile_au_features.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/msmnile_au_features.xml
+endif
+
 #for Emac
 PRODUCT_PACKAGES += \
     emac_perf_settings.sh
@@ -401,6 +406,8 @@ PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-service
 PRODUCT_PROPERTY_OVERRIDES += ro.hardware.camera=v4l2
 PRODUCT_PACKAGES += camera.v4l2
 endif
+
+PRODUCT_PACKAGES += init.qti.cam.sh
 
 TARGET_MOUNT_POINTS_SYMLINKS := false
 
