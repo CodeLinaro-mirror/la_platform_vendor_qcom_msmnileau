@@ -46,6 +46,9 @@ on early-init
     start audiod
     start esplash
 
+on early-init && property:ro.boot.audio=""
+    setprop vendor.audio.card.def "/vendor/etc/card-defs-dummy.xml"
+
 on early-init && property:ro.boot.audio=audioreach
     setprop ro.hardware.audio.primary "msmnile.ar"
     setprop ro.hardware.soundtrigger.primary "msmnile.ar"
