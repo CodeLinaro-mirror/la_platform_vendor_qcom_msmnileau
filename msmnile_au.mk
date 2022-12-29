@@ -7,14 +7,19 @@ TARGET_BOARD_SUFFIX := _au
 PRODUCT_OTA_ENFORCE_VINTF_KERNEL_REQUIREMENTS := false
 
 ALLOW_MISSING_DEPENDENCIES := true
+
 ENABLE_AB ?= true
 # Enable virtual-ab by default
 ifeq ($(ENABLE_AB), true)
-   ENABLE_VIRTUAL_AB := true
+   ENABLE_VIRTUAL_AB := false
 endif
 ifeq ($(ENABLE_VIRTUAL_AB), true)
-  $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota.mk)
+  # Enable virtual A/B compression
+  $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/android_t_baseline.mk)
+  PRODUCT_VIRTUAL_AB_COMPRESSION_METHOD := gz
+  PRODUCT_PACKAGES += snapuserd.ramdisk
 endif
+
 
 # Enable AVB 2.0
 BOARD_AVB_ENABLE := true
@@ -27,9 +32,6 @@ TARGET_USES_QTIC_EXTENSION := false
 ENABLE_HYP := false
 ENABLE_AIDL_VHAL := true
 TARGET_CONSOLE_ENABLED ?= true
-
-# FR77687: Migrate AIDL interface using -ndk_platform.so to -ndk.so
-NEED_AIDL_NDK_PLATFORM_BACKEND := true
 
 TARGET_NO_QTI_WFD := true
 BOARD_HAVE_QCOM_FM := false
@@ -126,10 +128,6 @@ endif
 TARGET_KERNEL_VERSION := 5.15
 
 TARGET_HAS_GENERIC_KERNEL_HEADERS := true
-
-ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
-    PRODUCT_COPY_FILES += $(LOCAL_PATH)/drop_caches.sh:$(TARGET_COPY_OUT_VENDOR)/bin/drop_caches.sh
-endif
 
 #Enable llvm support for kernel
 KERNEL_LLVM_SUPPORT := true
@@ -317,8 +315,9 @@ PRODUCT_COPY_FILES += \
 
 # Kernel modules install path
 KERNEL_MODULES_INSTALL := dlkm
+ifeq ($(KERNEL_MODULES_OUT),)
 KERNEL_MODULES_OUT := out/target/product/msmnile_au/$(KERNEL_MODULES_INSTALL)/lib/modules
-
+endif
 #FEATURE_OPENGLES_EXTENSION_PACK support string config file
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.opengles.aep.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.opengles.aep.xml
@@ -588,10 +587,11 @@ PRODUCT_PACKAGES += android.hardware.neuralnetworks@1.0.vendor \
                     android.hardware.neuralnetworks@1.3.vendor
 
 PRODUCT_ENFORCE_RRO_TARGETS := framework-res
-PRODUCT_PACKAGES_DEBUG += dumpsCaches
 
 # privapp-permissions whitelisting (To Fix CTS :privappPermissionsMustBeEnforced)
 PRODUCT_VENDOR_PROPERTIES += ro.control_privapp_permissions=enforce
+
+PRODUCT_PACKAGES += qcar-gsi.avbpubkey
 
 ###################################################################################
 # This is the End of target.mk file.
