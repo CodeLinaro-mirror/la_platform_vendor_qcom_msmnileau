@@ -28,6 +28,7 @@ TARGET_NO_TELEPHONY := true
 TARGET_USES_QTIC := false
 TARGET_USES_QTIC_EXTENSION := false
 ENABLE_HYP := false
+TARGET_GVMGH_SPECIFIC := false
 
 ifeq (,$(findstring -gki_defconfig, $(KERNEL_DEFCONFIG)))
 BOARD_HAS_QCOM_WLAN := true
