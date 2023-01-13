@@ -579,11 +579,11 @@ PRODUCT_PACKAGES += vndservicemanager
 
 TARGET_MOUNT_POINTS_SYMLINKS := false
 
-PRODUCT_PACKAGES += android.hardware.dumpstate@1.1-service.example \
+PRODUCT_PACKAGES += android.hardware.dumpstate-service.example \
                     android.hardware.thermal@2.0-service.mock \
 
-PRODUCT_PACKAGES += android.hardware.health@2.1-service \
-                    android.hardware.health@2.1-impl \
+PRODUCT_PACKAGES += android.hardware.health-service.qti \
+                    android.hardware.health-service.qti_recovery
 
 PRODUCT_PACKAGES += android.hardware.neuralnetworks@1.0.vendor \
                     android.hardware.neuralnetworks@1.1.vendor \
