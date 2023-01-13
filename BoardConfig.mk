@@ -12,32 +12,27 @@ ENABLE_AUDIO_LEGACY_TECHPACK := true
 BOARD_KERNEL_SEPARATED_DTBO := false
 
 
-### Dynamic partition Handling
-  # System_ext support
-  TARGET_COPY_OUT_SYSTEM_EXT := system_ext
-  BOARD_SYSTEM_EXTIMAGE_FILE_SYSTEM_TYPE := ext4
+# System DLKM dynamic Partition support
+BOARD_USES_SYSTEM_DLKMIMAGE := true
+TARGET_COPY_OUT_SYSTEM_DLKM := system_dlkm
+BOARD_SYSTEM_DLKMIMAGE_FILE_SYSTEM_TYPE := ext4
 
-  # System DLKM dynamic Partition support
-  BOARD_USES_SYSTEM_DLKMIMAGE := true
-  TARGET_COPY_OUT_SYSTEM_DLKM := system_dlkm
-  BOARD_SYSTEM_DLKMIMAGE_FILE_SYSTEM_TYPE := ext4
+# Vendor DLKM dynamic partition support
+BOARD_USES_VENDOR_DLKMIMAGE := true
+BOARD_VENDOR_DLKMIMAGE_FILE_SYSTEM_TYPE := ext4
+TARGET_COPY_OUT_VENDOR_DLKM := vendor_dlkm
 
-  # Vendor DLKM dynamic partition support
-  BOARD_USES_VENDOR_DLKMIMAGE := true
-  BOARD_VENDOR_DLKMIMAGE_FILE_SYSTEM_TYPE := ext4
-  TARGET_COPY_OUT_VENDOR_DLKM := vendor_dlkm
-
-  # Define the Dynamic Partition sizes and groups.
-  ifeq ($(ENABLE_AB), true)
-    BOARD_SUPER_PARTITION_SIZE := 12884901888
-  else
-    BOARD_SUPER_PARTITION_SIZE := 5318967296
-  endif
-  BOARD_SUPER_PARTITION_GROUPS := qti_dynamic_partitions
-  BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := 5314772992
-  BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := vendor vendor_dlkm system_dlkm
-  BOARD_RECOVERYIMAGE_PARTITION_SIZE := 67108864
-  BOARD_EXT4_SHARE_DUP_BLOCKS := true
+# Define the Dynamic Partition sizes and groups.
+ifeq ($(ENABLE_AB), true)
+  BOARD_SUPER_PARTITION_SIZE := 12884901888
+else
+  BOARD_SUPER_PARTITION_SIZE := 5318967296
+endif
+BOARD_SUPER_PARTITION_GROUPS := qti_dynamic_partitions
+BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := 5314772992
+BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := vendor vendor_dlkm system_dlkm
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 67108864
+BOARD_EXT4_SHARE_DUP_BLOCKS := true
 
 ifeq ($(BOARD_KERNEL_SEPARATED_DTBO),true)
     # Enable DTBO for recovery image
@@ -139,35 +134,19 @@ BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
 endif
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
+
 BOARD_BOOTIMAGE_PARTITION_SIZE := 0x06000000
 BOARD_KERNEL-GKI_BOOTIMAGE_PARTITION_SIZE := $(BOARD_BOOTIMAGE_PARTITION_SIZE)
 BOARD_VENDOR_BOOTIMAGE_PARTITION_SIZE := 0x06000000
 BOARD_INIT_BOOT_IMAGE_PARTITION_SIZE := 0x00800000
-#BOARD_SYSTEMIMAGE_PARTITION_SIZE := 3221225472
 BOARD_USERDATAIMAGE_PARTITION_SIZE := 10737418240
 BOARD_PERSISTIMAGE_PARTITION_SIZE := 33554432
+BOARD_PERSISTIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_METADATAIMAGE_PARTITION_SIZE := 16777216
 BOARD_PREBUILT_DTBOIMAGE := out/target/product/msmnile_au/prebuilt_dtbo.img
 BOARD_DTBOIMG_PARTITION_SIZE := 0x0800000
-BOARD_PERSISTIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_FLASH_BLOCK_SIZE := 131072 # (BOARD_KERNEL_PAGESIZE * 64)
 BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
-
-BOARD_VENDOR_KERNEL_MODULES := \
-#    $(KERNEL_MODULES_OUT)/hsi2s.ko
-#    $(KERNEL_MODULES_OUT)/audio_apr.ko \
-#    $(KERNEL_MODULES_OUT)/audio_snd_event.ko \
-#    $(KERNEL_MODULES_OUT)/audio_q6_notifier.ko \
-#    $(KERNEL_MODULES_OUT)/audio_adsp_loader.ko \
-#    $(KERNEL_MODULES_OUT)/audio_q6.ko \
-#    $(KERNEL_MODULES_OUT)/audio_platform.ko \
-#    $(KERNEL_MODULES_OUT)/audio_hdmi.ko \
-#    $(KERNEL_MODULES_OUT)/audio_stub.ko \
-#    $(KERNEL_MODULES_OUT)/audio_native.ko \
-#    $(KERNEL_MODULES_OUT)/audio_machine_msmnile.ko \
-#    $(KERNEL_MODULES_OUT)/wil6210.ko \
-#    $(KERNEL_MODULES_OUT)/msm_11ad_proxy.ko \
-#    $(KERNEL_MODULES_OUT)/emac_dwc_eqos.ko \
 
 # install lkdtm only for userdebug and eng build variants
 ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
@@ -176,8 +155,6 @@ ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
     endif
 endif
 
-
-
 BOARD_DO_NOT_STRIP_VENDOR_MODULES := true
 
 BOARD_VENDOR_KERNEL_MODULES += $(shell ls $(KERNEL_MODULES_OUT)/*.ko)
@@ -185,7 +162,7 @@ TARGET_USES_ION := true
 TARGET_USES_NEW_ION_API :=true
 TARGET_USES_QCOM_BSP := false
 
-BOARD_BOOTCONFIG := androidboot.hardware=qcom androidboot.memcg=1 androidboot.usbcontroller=a600000.dwc3 androidboot.recover_usb=1 androidboot.selinux=enforcing androidboot.load_modules_parallel=true
+BOARD_BOOTCONFIG := androidboot.hardware=qcom androidboot.memcg=1 androidboot.usbcontroller=a600000.dwc3 androidboot.recover_usb=1 androidboot.selinux=permissive
 
 BOARD_KERNEL_CMDLINE := lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=4096 firmware_class.path=/vendor/firmware_mnt/image loop.max_part=7 kvm-arm.mode=nvhe hibernate=nocompress noswap_randomize pcie_ports=compat
 
@@ -303,6 +280,7 @@ BUILD_BROKEN_USES_BUILD_HOST_SHARED_LIBRARY := true
 BUILD_BROKEN_USES_BUILD_HOST_EXECUTABLE := true
 BUILD_BROKEN_USES_BUILD_COPY_HEADERS := true
 BUILD_BROKEN_USES_BUILD_HOST_STATIC_LIBRARY := true
+BUILD_BROKEN_CLANG_PROPERTY := true
 
 #Flag for Early Ethernet
 IS_EARLY_ETH_ENABLED := 1
