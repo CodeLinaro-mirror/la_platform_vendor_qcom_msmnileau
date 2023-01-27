@@ -37,6 +37,7 @@ TARGET_NO_QTI_WFD := true
 BOARD_HAVE_QCOM_FM := false
 BOARD_VENDOR_QCOM_LOC_PDK_FEATURE_SET := false
 TARGET_ENABLE_QC_AV_ENHANCEMENTS := false
+TARGET_USES_GAS := true
 TARGET_FWK_SUPPORTS_AV_VALUEADDS := false
 TARGET_USES_AOSP_FOR_WLAN := true
 BOARD_HAS_QCOM_WLAN := true
@@ -77,12 +78,13 @@ BOARD_AVB_SYSTEM_EXT_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
 BOARD_AVB_VENDOR_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
 BOARD_AVB_SYSTEM_DLKM_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
 BOARD_AVB_VENDOR_DLKM_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
-
+ifneq ($(TARGET_BOARD_DERIVATIVE_SUFFIX), _km4)
 ifeq ($(ENABLE_AB), true)
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/fstab_AB_dynamic_partition_variant.qti:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.qcom
 else
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/fstab_non_AB_dynamic_partition_variant.qti:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.qcom
 endif
+endif #TARGET_BOARD_DERIVATIVE_SUFFIX
 endif
 #PRODUCT_BUILD_SYSTEM_IMAGE := true
 PRODUCT_BUILD_SYSTEM_OTHER_IMAGE := false
@@ -117,6 +119,11 @@ PRODUCT_NAME := msmnile_au
 PRODUCT_DEVICE := msmnile_au
 PRODUCT_BRAND := qti
 PRODUCT_MODEL := msmnile_au for arm64
+PRODUCT_MANUFACTURER := qti
+
+PRODUCT_VENDOR_PROPERTIES += \
+    ro.soc.manufacturer=$(PRODUCT_MANUFACTURER) \
+    ro.soc.model=$(PRODUCT_DEVICE)
 
 #Initial bringup flags
 
@@ -136,7 +143,11 @@ KERNEL_LLVM_SUPPORT := true
 KERNEL_SD_LLVM_SUPPORT := false
 
 # diag-router
-TARGET_HAS_DIAG_ROUTER := true
+ifeq ($(strip $(TARGET_BUILD_VARIANT)),user)
+    TARGET_HAS_DIAG_ROUTER := false
+else
+    TARGET_HAS_DIAG_ROUTER := true
+endif
 
 # Target uses DIAG_MDM2 instance to collect WLAN fw diag logs
 PRODUCT_VENDOR_PROPERTIES += vendor.usb.diag_mdm.inst.name=diag_mdm2
@@ -258,8 +269,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     device/qcom/msmnile_au/input-port-associations.xml:$(TARGET_COPY_OUT_VENDOR)/etc/input-port-associations.xml
 
-
+ifneq ($(TARGET_BOARD_DERIVATIVE_SUFFIX), _km4)
 DEVICE_MANIFEST_FILE := device/qcom/msmnile_au/manifest.xml
+endif
 DEVICE_MATRIX_FILE   := device/qcom/common/compatibility_matrix.xml
 DEVICE_FRAMEWORK_MANIFEST_FILE := device/qcom/msmnile_au/framework_manifest.xml
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := vendor/qcom/opensource/core-utils/vendor_framework_compatibility_matrix.xml
@@ -280,7 +292,6 @@ PRODUCT_PACKAGES += android.frameworks.automotive.display@1.0-service
 # MSM IRQ Balancer configuration file
 PRODUCT_COPY_FILES += device/qcom/msmnile_au/msm_irqbalance.conf:$(TARGET_COPY_OUT_VENDOR)/etc/msm_irqbalance.conf
 
-SHIPPING_API_LEVEL := 33
 PRODUCT_SHIPPING_API_LEVEL := 33
 
 
@@ -575,11 +586,9 @@ PRODUCT_PACKAGES += vndservicemanager
 
 TARGET_MOUNT_POINTS_SYMLINKS := false
 
-PRODUCT_PACKAGES += android.hardware.dumpstate@1.1-service.example \
+PRODUCT_PACKAGES += android.hardware.dumpstate-service.example \
                     android.hardware.thermal@2.0-service.mock \
-
-PRODUCT_PACKAGES += android.hardware.health@2.1-service \
-                    android.hardware.health@2.1-impl \
+                    android.hardware.health-service.example
 
 PRODUCT_PACKAGES += android.hardware.neuralnetworks@1.0.vendor \
                     android.hardware.neuralnetworks@1.1.vendor \
