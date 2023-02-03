@@ -203,7 +203,7 @@ TARGET_COMPILE_WITH_MSM_KERNEL := false
 TARGET_SIGNONLY_BOOTLOADER := true
 
 #Enable PD locater/notifier
-TARGET_PD_SERVICE_ENABLED := true
+TARGET_PD_SERVICE_ENABLED := false
 
 #Enable peripheral manager
 TARGET_PER_MGR_ENABLED := true
