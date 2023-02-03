@@ -62,7 +62,6 @@ service ais_server /system/vendor/bin/ais_server
 on init
     mkdir /dev/socket/camera 0770 system camera
     start ais_server
-    write /sys/kernel/boot_cdsp/boot 1
     write /dev/stune/foreground/schedtune.sched_boost_no_override 1
     write /dev/stune/top-app/schedtune.sched_boost_no_override 1
     write /dev/stune/schedtune.colocate 0
