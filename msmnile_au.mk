@@ -546,6 +546,11 @@ PRODUCT_PROPERTY_OVERRIDES += ro.radio.noril=true
 # Default wifi country code
 PRODUCT_PROPERTY_OVERRIDES += ro.boot.wificountrycode=us
 
+#Copy supported features list
+ifeq ($(TARGET_USES_GAS),true)
+PRODUCT_COPY_FILES += device/qcom/msmnile_au/msmnile_au_features.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/msmnile_au_features.xml
+endif
+
 #for Emac
 PRODUCT_PACKAGES += emac_perf_settings.sh
 
