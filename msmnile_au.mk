@@ -391,7 +391,7 @@ PRODUCT_VENDOR_PROPERTIES += media.stagefright.enable-player=true \
                               persist.mm.enable.prefetch=true
 
 # system props for the data modules
-PRODUCT_VENDOR_PROPERTIES += ro.vendor.use_data_netmgrd=true \
+PRODUCT_VENDOR_PROPERTIES += ro.vendor.use_data_netmgrd=false \
                               persist.vendor.data.mode=concurrent
 
 # system props for time-services
