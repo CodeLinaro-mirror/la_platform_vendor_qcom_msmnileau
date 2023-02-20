@@ -218,6 +218,12 @@ PRODUCT_COPY_FILES += device/qcom/msmnile_au/hiber.sh:$(TARGET_COPY_OUT_VENDOR)/
 
 PRODUCT_PACKAGES += android.hardware.media.omx@1.0-impl
 
+# BroadcastRadio
+PRODUCT_PACKAGES += \
+    android.hardware.broadcastradio@2.0-service
+
+PRODUCT_COPY_FILES += frameworks/native/data/etc/android.hardware.broadcastradio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.broadcastradio.xml
+
 #Audio DLKM
 AUDIO_DLKM := audio_apr.ko
 AUDIO_DLKM += audio_snd_event.ko
