@@ -352,7 +352,7 @@ ENABLE_VENDOR_RIL_SERVICE := true
 #----------------------------------------------------------------------
 # Multiple chips
 ifeq ($(strip $(BOARD_HAS_QCOM_WLAN)),true)
-TARGET_WLAN_CHIP := qca6390
+TARGET_WLAN_CHIP := qca6390 qcn7605 qca6174
 include device/qcom/wlan/msmnile_au/wlan.mk
 endif
 
@@ -386,7 +386,6 @@ PRODUCT_PROPERTY_OVERRIDES += media.stagefright.enable-player=true \
                               mmp.enable.3g2=true \
                               media.aac_51_output_enabled=true \
                               mm.enable.smoothstreaming=true \
-                              vendor.mm.enable.qcom_parser=63963135 \
                               persist.mm.enable.prefetch=true
 
 # system props for the data modules
@@ -546,6 +545,11 @@ PRODUCT_PROPERTY_OVERRIDES += ro.radio.noril=true
 # Default wifi country code
 PRODUCT_PROPERTY_OVERRIDES += ro.boot.wificountrycode=us
 
+#Copy supported features list
+ifeq ($(TARGET_USES_GAS),true)
+PRODUCT_COPY_FILES += device/qcom/msmnile_au/msmnile_au_features.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/msmnile_au_features.xml
+endif
+
 #for Emac
 PRODUCT_PACKAGES += emac_perf_settings.sh
 
@@ -595,6 +599,11 @@ PRODUCT_PACKAGES += android.hardware.neuralnetworks@1.0.vendor \
                     android.hardware.neuralnetworks@1.1.vendor \
                     android.hardware.neuralnetworks@1.2.vendor \
                     android.hardware.neuralnetworks@1.3.vendor
+
+# Value Add changes: add libnbaio for avenhancement
+ifeq ($(TARGET_FWK_SUPPORTS_FULL_VALUEADDS), true)
+PRODUCT_PACKAGES += libnbaio
+endif
 
 PRODUCT_ENFORCE_RRO_TARGETS := framework-res
 PRODUCT_PACKAGES_DEBUG += dumpsCaches
