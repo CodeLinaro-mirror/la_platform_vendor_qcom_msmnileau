@@ -40,16 +40,30 @@ echo 0 > /d/tracing/tracing_on
 am start -a android.bluetooth.adapter.action.REQUEST_DISABLE && input keyevent 23 && input keyevent 22 && input keyevent 23
 
 echo none > /sys/bus/platform/devices/a600000.ssusb/mode
+#echo none > /sys/bus/platform/devices/a800000.ssusb/mode
+
+echo "Putting all connected USB devices to auto suspend forcefully"
+for j in /sys/bus/usb/devices/*/power/control;
+do echo auto > $j;
+done
+
+
 killall qcarcam_edrm_rvc
 killall qcarcam_test
 killall qcarcam_rvc
 
+sda=`ls -l /dev/block/by-name/swap_a | awk '{print $NF}' | awk -F'[/]' '{print $4}'`
+major=`ls -l /dev/block/${sda} | awk '{print $5}' | grep -o '[0-9]*'`
+minor=`ls -l /dev/block/${sda} | awk '{print $6}' | grep -o '[0-9]*'`
+echo "${major}:${minor}" > /sys/power/resume
 sleep 3
 
 echo "enable swap partition"
 mkswap /dev/block/sda13
 swapon /dev/block/sda13 -p 0
 
+echo 100 > /proc/sys/vm/swappiness
+echo 0 > /sys/power/image_size
 echo "UI turn off"
 cat /proc/swaps
 
@@ -58,15 +72,15 @@ sync
 #drop caches
 echo "drop page caches"
 sleep 2
-echo related > /sys/bus/msm_subsys/devices/subsys3/restart_level
-echo 0 > /sys/kernel/boot_adsp/boot
-echo 0 > /sys/kernel/boot_cdsp/boot
+
+echo stop > /sys/class/remoteproc/remoteproc0/state
+echo stop > /sys/class/remoteproc/remoteproc1/state
 
 hiber_attempts="1"
 while true
 do
   echo 3 > /proc/sys/vm/drop_caches
-  echo 1 > /sys/module/lpm_levels/parameters/sleep_disabled
+  #echo 1 > /sys/module/lpm_levels/parameters/sleep_disabled
   sync
   #hibernate
   echo "Start Hibernation"
@@ -92,8 +106,10 @@ do
 done
 
 # Post Restore
-echo 1 > /sys/kernel/boot_adsp/boot
-echo 1 > /sys/kernel/boot_cdsp/boot
+
+echo start > /sys/class/remoteproc/remoteproc0/state
+echo start > /sys/class/remoteproc/remoteproc1/state
+
 setprop persist.vendor.usb.config diag,adb
 echo peripheral > /sys/bus/platform/devices/a600000.ssusb/mode
 swapoff /dev/block/sda13

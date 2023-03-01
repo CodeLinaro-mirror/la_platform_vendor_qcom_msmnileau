@@ -36,8 +36,6 @@ on early-init
     write /sys/kernel/boot_kpi/kpi_values "M - INITRC Userspace Start"
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
-    mkdir /dev/socket/camera 0770 system camera
-    start ais_server
     write /sys/kernel/boot_kpi/kpi_values "M - Start adsp"
     write /sys/kernel/boot_adsp/boot 1
     write /sys/kernel/boot_kpi/kpi_values "M - adsprpcd Start"
@@ -45,6 +43,9 @@ on early-init
     start vendor.adsprpcd_audiopd
     start audiod
     start esplash
+
+on early-init && property:ro.boot.audio=""
+    setprop vendor.audio.card.def "/vendor/etc/card-defs-dummy.xml"
 
 on early-init && property:ro.boot.audio=audioreach
     setprop ro.hardware.audio.primary "msmnile.ar"
@@ -59,7 +60,8 @@ service ais_server /system/vendor/bin/ais_server
     onrestart restart qcarcam_hal
 
 on init
-    write /sys/kernel/boot_cdsp/boot 1
+    mkdir /dev/socket/camera 0770 system camera
+    start ais_server
     write /dev/stune/foreground/schedtune.sched_boost_no_override 1
     write /dev/stune/top-app/schedtune.sched_boost_no_override 1
     write /dev/stune/schedtune.colocate 0
