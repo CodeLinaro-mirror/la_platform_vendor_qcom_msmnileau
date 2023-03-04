@@ -116,6 +116,8 @@ ifeq ($(ENABLE_VENDOR_IMAGE),)
 ENABLE_VENDOR_IMAGE := false
 endif
 
+PRODUCT_COPY_FILES += device/qcom/msmnile_au/splash_nv12_720p30_3secs.h264:$(TARGET_COPY_OUT_VENDOR)/etc/splash_nv12_720p30_3secs.h264
+
 TARGET_KERNEL_VERSION := 5.4
 
 TARGET_HAS_GENERIC_KERNEL_HEADERS := true
