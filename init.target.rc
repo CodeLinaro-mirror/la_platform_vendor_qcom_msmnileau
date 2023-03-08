@@ -148,6 +148,11 @@ on boot
     chown radio radio /data/vendor/netmgr/recovery/recovery_info
     start dumpsCaches
 
+on boot && property:ro.boot.audio=audioreach
+    start audionxp
+    start agmplay
+    write /sys/kernel/boot_kpi/kpi_values "M - audio agm play"
+
 # Add a cpuset for the camera daemon
 # We want all cores for camera
     mkdir /dev/cpuset/camera-daemon
@@ -342,6 +347,24 @@ service acdb_loader_service /vendor/bin/acdb_loader_service
 
 #audio chime
 service audio_chime /vendor/bin/audio_chime /vendor/etc/bike_bell.wav
+    class main
+    user system
+    group system wakelock
+    capabilities BLOCK_SUSPEND
+    oneshot
+    disabled
+
+#audio nxp
+service audionxp /vendor/bin/audio-nxp-auto
+    class main
+    user system
+    group system wakelock
+    capabilities BLOCK_SUSPEND
+    oneshot
+    disabled
+
+#agmplay
+service agmplay /vendor/bin/agmplay /vendor/etc/bike_bell.wav -D 0 -d 100 -i TDM-LPAIF-RX-TERTIARY -sx 0xA100000A -ist 0x1 -dx 0xA2000001 -dpp 0xAC000002
     class main
     user system
     group system wakelock
