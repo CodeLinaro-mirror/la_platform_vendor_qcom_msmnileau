@@ -303,11 +303,6 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
    frameworks/native/data/etc/android.hardware.audio.pro.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.audio.pro.xml
 
-#Copy unsupported features list
-PRODUCT_COPY_FILES += \
-    device/qcom/msmnile_au/msmnile_au_excluded_features.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/msmnile_au_excluded_features.xml
-
-
 PRODUCT_PACKAGES += \
        openavb_harness \
        gptp \
