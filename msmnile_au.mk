@@ -29,6 +29,7 @@ ENABLE_AIDL_VHAL := true
 TARGET_CONSOLE_ENABLED ?= true
 TARGET_USES_GAS := true
 TARGET_GVMGH_SPECIFIC := false
+TARGET_USES_RRO := true
 
 SYSTEMEXT_SEPARATE_PARTITION_ENABLE = true
 TARGET_USES_QSSI := true
@@ -608,7 +609,6 @@ ifeq ($(TARGET_FWK_SUPPORTS_FULL_VALUEADDS), true)
 PRODUCT_PACKAGES += libnbaio
 endif
 
-PRODUCT_ENFORCE_RRO_TARGETS := framework-res
 PRODUCT_PACKAGES_DEBUG += dumpsCaches
 
 # privapp-permissions whitelisting (To Fix CTS :privappPermissionsMustBeEnforced)
