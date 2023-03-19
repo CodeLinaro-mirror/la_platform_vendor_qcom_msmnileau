@@ -310,7 +310,31 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
        openavb_harness \
        gptp \
-       mrpd
+       mrpd \
+       libopenavb \
+       libopenavb_intf_audio_stream \
+       libopenavb_intf_clk_ref \
+       libopenavb_intf_ctrl \
+       libopenavb_intf_echo \
+       libopenavb_intf_h264_file \
+       libopenavb_intf_logger \
+       libopenavb_intf_mjpeg_file \
+       libopenavb_intf_mpeg2ts_file \
+       libopenavb_intf_null \
+       libopenavb_intf_tinyalsa \
+       libopenavb_intf_tonegen \
+       libopenavb_intf_viewer \
+       libopenavb_intf_wav_file \
+       libopenavb_map_aaf_audio \
+       libopenavb_map_clk_ref \
+       libopenavb_map_ctrl \
+       libopenavb_map_h264 \
+       libopenavb_map_mjpeg \
+       libopenavb_map_mpeg2ts \
+       libopenavb_map_null \
+       libopenavb_map_pipe \
+       libopenavb_map_uncmp_audio \
+       audio.eavb.default \
 
 #sysprofiler
 PRODUCT_PACKAGES += libsysprofiler \
