@@ -112,6 +112,16 @@ LOCAL_POST_INSTALL_CMD := echo $(VENDOR_FSTAB_ENTRY) >> $(LOCAL_MODULE_PATH)/$(L
 endif
 include $(BUILD_PREBUILT)
 endif #BOARD_DYNAMIC_PARTITION_ENABLE
+
+#----------------------------------------------------------------------
+# Radio image
+#----------------------------------------------------------------------
+ifeq ($(ADD_RADIO_FILES), true)
+radio_dir := $(LOCAL_PATH)/radio
+RADIO_FILES := $(shell cd $(radio_dir) ; ls)
+$(foreach f, $(RADIO_FILES), \
+	$(call add-radio-file,radio/$(f)))
+endif
 endif #TARGET_BOARD_DERIVATIVE_SUFFIX
 
 #Add gsi key.
@@ -123,16 +133,6 @@ LOCAL_MODULE_CLASS := ETC
 LOCAL_SRC_FILES := ../../../test/vts-testcase/security/avb/data/qcar-gsi.avbpubkey
 LOCAL_MODULE_PATH := $(TARGET_RECOVERY_ROOT_OUT)/first_stage_ramdisk/avb
 include $(BUILD_PREBUILT)
-
-#----------------------------------------------------------------------
-# Radio image
-#----------------------------------------------------------------------
-ifeq ($(ADD_RADIO_FILES), true)
-radio_dir := $(LOCAL_PATH)/radio
-RADIO_FILES := $(shell cd $(radio_dir) ; ls)
-$(foreach f, $(RADIO_FILES), \
-	$(call add-radio-file,radio/$(f)))
-endif
 
 #----------------------------------------------------------------------
 # extra images
