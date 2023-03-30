@@ -87,7 +87,8 @@ LOCAL_SRC_FILES    := $(LOCAL_MODULE)
 LOCAL_MODULE_PATH  := $(TARGET_OUT_KEYLAYOUT)
 include $(BUILD_PREBUILT)
 
-ifeq ($(strip $(PRODUCT_USE_DYNAMIC_PARTITIONS)),true)
+ifneq ($(TARGET_BOARD_DERIVATIVE_SUFFIX), _km4)
+ifeq ($(strip $(BOARD_DYNAMIC_PARTITION_ENABLE)),true)
 include $(CLEAR_VARS)
 LOCAL_MODULE       := fstab.qcom
 
@@ -110,19 +111,11 @@ ifeq ($(ENABLE_VENDOR_IMAGE), true)
 LOCAL_POST_INSTALL_CMD := echo $(VENDOR_FSTAB_ENTRY) >> $(LOCAL_MODULE_PATH)/$(LOCAL_MODULE)
 endif
 include $(BUILD_PREBUILT)
-endif #PRODUCT_USE_DYNAMIC_PARTITIONS
+endif #BOARD_DYNAMIC_PARTITION_ENABLE 
+endif #TARGET_BOARD_DERIVATIVE_SUFFIX
 
 include device/qcom/vendor-common/MergeConfig.mk
 
-ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
-    include $(CLEAR_VARS)
-    LOCAL_MODULE       := dumpsCaches
-    LOCAL_MODULE_TAGS  := optional
-    LOCAL_MODULE_CLASS := ETC
-    LOCAL_SRC_FILES    := drop_caches.sh
-    LOCAL_MODULE_PATH  := $(TARGET_OUT_VENDOR_EXECUTABLES)
-    include $(BUILD_PREBUILT)
-endif
 
 #Add gsi key.
 include $(CLEAR_VARS)
