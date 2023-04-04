@@ -43,7 +43,7 @@ on early-init
     #start ais_server
     start esplash
 
-on early-init && property:ro.boot.audio=""
+on early-init && property:ro.boot.audio=elite
     setprop vendor.audio.card.def "/vendor/etc/card-defs-dummy.xml"
 
 on early-init && property:ro.boot.audio=audioreach
