@@ -125,25 +125,29 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         </interface>
     </hal>
     <!-- keymaster -->
-   <hal format="hidl">
-       <name>android.hardware.keymaster</name>
-       <transport>hwbinder</transport>
-       <version>4.1</version>
-       <interface>
-           <name>IKeymasterDevice</name>
-           <instance>default</instance>
-       </interface>
-    </hal>
-    <!-- gatekeeper -->
+    <!--
     <hal format="hidl">
-       <name>android.hardware.gatekeeper</name>
-       <transport>hwbinder</transport>
-       <version>1.0</version>
-       <interface>
-           <name>IGatekeeper</name>
-           <instance>default</instance>
-       </interface>
-   </hal>
+        <name>android.hardware.keymaster</name>
+        <transport>hwbinder</transport>
+        <version>4.1</version>
+        <interface>
+            <name>IKeymasterDevice</name>
+            <instance>default</instance>
+        </interface>
+     </hal>
+     -->
+     <!-- gatekeeper -->
+     <!--
+     <hal format="hidl">
+        <name>android.hardware.gatekeeper</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>IGatekeeper</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    -->
     <!-- playready HAL service -->
     <hal format="hidl">
         <name>android.hardware.drm</name>
