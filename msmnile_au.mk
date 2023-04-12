@@ -214,6 +214,10 @@ PRODUCT_NAME := msmnile_au
 PRODUCT_DEVICE := msmnile_au
 PRODUCT_BRAND := qti
 PRODUCT_MODEL := msmnile_au for arm64
+PRODUCT_MANUFACTURER := Qualcomm
+
+PRODUCT_VENDOR_PROPERTIES += \
+    ro.soc.manufacturer=$(PRODUCT_MANUFACTURER) \
 
 #Initial bringup flags
 
