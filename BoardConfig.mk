@@ -51,6 +51,16 @@ TARGET_CPU_ABI := arm64-v8a
 TARGET_CPU_ABI2 :=
 TARGET_CPU_VARIANT := generic
 
+BOARD_SUPPORTS_RAMDISK_EARLY_INIT := true
+ifeq ($(BOARD_SUPPORTS_RAMDISK_EARLY_INIT),true)
+CONFIG_EARLY_INIT := true
+TARGET_COPY_OUT_EARLY_SERVICES := vendor_early_services
+TEMPORARY_DISABLE_PATH_RESTRICTIONS := true
+ifeq (,$(findstring $(TARGET_BOARD_PLATFORM)_au, $(TARGET_FS_CONFIG_GEN)))
+TARGET_FS_CONFIG_GEN += device/qcom/$(TARGET_BOARD_PLATFORM)_au/config.fs
+endif
+endif
+
 TARGET_2ND_ARCH := arm
 TARGET_2ND_ARCH_VARIANT := armv7-a-neon
 TARGET_2ND_CPU_ABI := armeabi-v7a
@@ -171,6 +181,18 @@ BOARD_VENDOR_KERNEL_MODULES := \
 #    $(KERNEL_MODULES_OUT)/msm_11ad_proxy.ko \
 #    $(KERNEL_MODULES_OUT)/emac_dwc_eqos.ko \
 
+BOARD_GENERIC_RAMDISK_KERNEL_MODULES_LOAD := \
+    snd_event_dlkm.ko \
+    q6_notifier_dlkm.ko \
+    apr_dlkm.ko \
+    adsp_loader_dlkm.ko \
+    q6_dlkm.ko \
+    machine_dlkm.ko \
+    stub_dlkm.ko \
+    platform_dlkm.ko \
+    native_dlkm.ko \
+    hdmi_dlkm.ko \
+
 # install lkdtm only for userdebug and eng build variants
 ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
     ifneq (,$(findstring debug_defconfig, $(KERNEL_DEFCONFIG)))
@@ -189,7 +211,14 @@ TARGET_USES_QCOM_BSP := false
 
 BOARD_BOOTCONFIG := androidboot.hardware=qcom androidboot.memcg=1 androidboot.usbcontroller=a600000.dwc3 androidboot.recover_usb=1 androidboot.selinux=enforcing androidboot.load_modules_parallel=true
 
-BOARD_KERNEL_CMDLINE := lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=4096 firmware_class.path=/vendor/firmware_mnt/image loop.max_part=7 kvm-arm.mode=nvhe hibernate=nocompress noswap_randomize pcie_ports=compat
+BOARD_KERNEL_CMDLINE := lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000 msm_rtb.filter=0x237 service_locator.enable=1 swiotlb=4096 loop.max_part=7 kvm-arm.mode=nvhe hibernate=nocompress noswap_randomize pcie_ports=compat
+
+ifeq ($(BOARD_SUPPORTS_RAMDISK_EARLY_INIT),true)
+BOARD_KERNEL_CMDLINE += firmware_class.path=/vendor_early_services/vendor/firmware_mnt/image
+else
+BOARD_KERNEL_CMDLINE += firmware_class.path=/vendor/firmware_mnt/image
+endif
+
 
 ifeq ($(TARGET_CONSOLE_ENABLED),true)
 BOARD_KERNEL_CMDLINE += console=ttyMSM0,115200n8 earlycon=qcom_geni,0xa90000 qcom_geni_serial.con_enabled=1
@@ -273,6 +302,11 @@ SOONG_CONFIG_ufsbsg_ufsframework := bsg
 SOONG_CONFIG_NAMESPACES += qtiwifi
 SOONG_CONFIG_qtiwifi += automobile
 SOONG_CONFIG_qtiwifi_automobile := true
+
+#enable 64bit audioservice
+SOONG_CONFIG_NAMESPACES += android_hardware_audio
+SOONG_CONFIG_android_hardware_audio += run_64bit
+SOONG_CONFIG_android_hardware_audio_run_64bit := true
 
 #----------------------------------------------------------------------
 # wlan specific

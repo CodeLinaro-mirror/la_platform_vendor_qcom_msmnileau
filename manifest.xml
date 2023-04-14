@@ -25,17 +25,7 @@ WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
 OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
-<manifest version="1.0" type="device" target-level="6">
-    <kernel target-level="7"/>
-    <hal format="hidl">
-        <name>android.hardware.health</name>
-        <transport>hwbinder</transport>
-        <version>2.1</version>
-        <interface>
-            <name>IHealth</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
+<manifest version="1.0" type="device" target-level="7">
     <hal format="hidl">
         <name>android.hardware.audio</name>
         <transport>hwbinder</transport>
@@ -226,15 +216,6 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         </interface>
     </hal>
     <hal format="hidl">
-        <name>android.hardware.bluetooth.audio</name>
-        <transport>hwbinder</transport>
-        <version>2.0</version>
-        <interface>
-            <name>IBluetoothAudioProvidersFactory</name>
-            <instance>default</instance>
-        </interface>
-    </hal>
-    <hal format="hidl">
         <name>vendor.qti.esepowermanager</name>
         <transport>hwbinder</transport>
         <version>1.1</version>
@@ -298,11 +279,9 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     </hal>
     <hal format="aidl">
         <name>android.hardware.automotive.audiocontrol</name>
-        <version>1</version>
         <interface>
             <name>IAudioControl</name>
             <instance>default</instance>
         </interface>
     </hal>
-
 </manifest>

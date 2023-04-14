@@ -36,8 +36,6 @@ on early-init
     write /sys/kernel/boot_kpi/kpi_values "M - INITRC Userspace Start"
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
-    mkdir /dev/socket/camera 0770 system camera
-    start ais_server
     write /sys/kernel/boot_kpi/kpi_values "M - Start adsp"
     write /sys/kernel/boot_adsp/boot 1
     write /sys/kernel/boot_kpi/kpi_values "M - adsprpcd Start"
@@ -63,6 +61,8 @@ service ais_server /system/vendor/bin/ais_server
     onrestart restart qcarcam_hal
 
 on init
+    mkdir /dev/socket/camera 0770 system camera
+    start ais_server
     write /dev/stune/foreground/schedtune.sched_boost_no_override 1
     write /dev/stune/top-app/schedtune.sched_boost_no_override 1
     write /dev/stune/schedtune.colocate 0
@@ -122,6 +122,8 @@ on post-fs-data
     mkdir /data/vendor/hbtp 0750 system system
     mkdir /data/vendor/tloc 0700 system drmrpc
     mkdir /data/vendor/nnhal 0700 system system
+    chown root system /sys/kernel/silent_boot/pm_silentmode_kernel_state
+    chown root system /sys/kernel/silent_boot/pm_silentmode_hw_state
 
 # For cpusets initialize for Silver Only first and then Silver + Gold
 # Silver Only configuration cannot work with 0-7
@@ -146,7 +148,6 @@ on boot
     chmod 0770 /data/vendor/netmgr/recovery
     write /data/vendor/netmgr/recovery/recovery_info ""
     chown radio radio /data/vendor/netmgr/recovery/recovery_info
-    start dumpsCaches
 
 on boot && property:ro.boot.audio=audioreach
     start audionxp
@@ -374,9 +375,3 @@ service agmplay /vendor/bin/agmplay /vendor/etc/bike_bell.wav -D 0 -d 100 -i TDM
 
 on property:sys.boot_completed=1
     mount vfat /dev/block/bootdevice/by-name/logfs /sys/kernel/debug/bookpi/bootloader_log
-
-service dumpsCaches /vendor/bin/drop_caches.sh
-    class core
-    user root
-    disabled
-    oneshot

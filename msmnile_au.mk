@@ -7,6 +7,7 @@ TARGET_BOARD_SUFFIX := _au
 PRODUCT_OTA_ENFORCE_VINTF_KERNEL_REQUIREMENTS := false
 
 ALLOW_MISSING_DEPENDENCIES := true
+
 ENABLE_AB ?= true
 # Enable virtual-ab by default
 ifeq ($(ENABLE_AB), true)
@@ -18,6 +19,7 @@ ifeq ($(ENABLE_VIRTUAL_AB), true)
   $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/android_t_baseline.mk)
   PRODUCT_VIRTUAL_AB_COMPRESSION_METHOD := gz
 endif
+
 
 # Enable AVB 2.0
 BOARD_AVB_ENABLE := true
@@ -37,9 +39,6 @@ TARGET_USES_RRO := true
 SYSTEMEXT_SEPARATE_PARTITION_ENABLE = true
 TARGET_USES_QSSI := true
 PRODUCT_ENFORCE_VINTF_MANIFEST := false
-
-# FR77687: Migrate AIDL interface using -ndk_platform.so to -ndk.so
-NEED_AIDL_NDK_PLATFORM_BACKEND := true
 
 TARGET_NO_QTI_WFD := true
 BOARD_HAVE_QCOM_FM := false
@@ -85,21 +84,13 @@ BOARD_AVB_SYSTEM_EXT_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
 BOARD_AVB_VENDOR_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
 BOARD_AVB_SYSTEM_DLKM_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
 BOARD_AVB_VENDOR_DLKM_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
-
-# Using sha256 for dm-verity partitions.
-# system, system_ext and vendor.
-BOARD_AVB_SYSTEM_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
-BOARD_AVB_SYSTEM_EXT_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
-BOARD_AVB_VENDOR_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
-BOARD_AVB_SYSTEM_DLKM_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
-BOARD_AVB_VENDOR_DLKM_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
-
+ifneq ($(TARGET_BOARD_DERIVATIVE_SUFFIX), _km4)
 ifeq ($(ENABLE_AB), true)
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/fstab_AB_dynamic_partition_variant.qti:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.qcom
 else
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/fstab_non_AB_dynamic_partition_variant.qti:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.qcom
 endif
-#endif
+endif #TARGET_BOARD_DERIVATIVE_SUFFIX
 #PRODUCT_BUILD_SYSTEM_IMAGE := true
 PRODUCT_BUILD_SYSTEM_IMAGE := false
 PRODUCT_BUILD_SYSTEM_OTHER_IMAGE := false
@@ -121,7 +112,7 @@ endif
 TARGET_DEFINES_DALVIK_HEAP := true
 $(call inherit-product, device/qcom/common/common64.mk)
 #Inherit all except heap growth limit from phone-xhdpi-2048-dalvik-heap.mk
-PRODUCT_PROPERTY_OVERRIDES  += \
+PRODUCT_VENDOR_PROPERTIES  += \
 	dalvik.vm.heapstartsize=8m \
 	dalvik.vm.heapsize=512m \
 	dalvik.vm.heaptargetutilization=0.75 \
@@ -134,6 +125,11 @@ PRODUCT_NAME := msmnile_au
 PRODUCT_DEVICE := msmnile_au
 PRODUCT_BRAND := qti
 PRODUCT_MODEL := msmnile_au for arm64
+PRODUCT_MANUFACTURER := qti
+
+PRODUCT_VENDOR_PROPERTIES += \
+    ro.soc.manufacturer=$(PRODUCT_MANUFACTURER) \
+    ro.soc.model=$(PRODUCT_DEVICE)
 
 #Initial bringup flags
 
@@ -144,11 +140,9 @@ endif
 
 TARGET_KERNEL_VERSION := 5.15
 
-TARGET_HAS_GENERIC_KERNEL_HEADERS := true
+PRODUCT_COPY_FILES += device/qcom/msmnile_au/splash_nv12_720p30_3secs.h264:$(TARGET_COPY_OUT_VENDOR)/etc/splash_nv12_720p30_3secs.h264
 
-ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
-    PRODUCT_COPY_FILES += $(LOCAL_PATH)/drop_caches.sh:$(TARGET_COPY_OUT_VENDOR)/bin/drop_caches.sh
-endif
+TARGET_HAS_GENERIC_KERNEL_HEADERS := true
 
 #Enable llvm support for kernel
 KERNEL_LLVM_SUPPORT := true
@@ -157,10 +151,14 @@ KERNEL_LLVM_SUPPORT := true
 KERNEL_SD_LLVM_SUPPORT := false
 
 # diag-router
-TARGET_HAS_DIAG_ROUTER := true
+ifeq ($(strip $(TARGET_BUILD_VARIANT)),user)
+    TARGET_HAS_DIAG_ROUTER := false
+else
+    TARGET_HAS_DIAG_ROUTER := true
+endif
 
 # Target uses DIAG_MDM2 instance to collect WLAN fw diag logs
-PRODUCT_PROPERTY_OVERRIDES += vendor.usb.diag_mdm.inst.name=diag_mdm2
+PRODUCT_VENDOR_PROPERTIES += vendor.usb.diag_mdm.inst.name=diag_mdm2
 
 # default is nosdcard, S/W button enabled in resource
 PRODUCT_CHARACTERISTICS := nosdcard
@@ -285,8 +283,9 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     device/qcom/msmnile_au/input-port-associations.xml:$(TARGET_COPY_OUT_VENDOR)/etc/input-port-associations.xml
 
-
+ifneq ($(TARGET_BOARD_DERIVATIVE_SUFFIX), _km4)
 DEVICE_MANIFEST_FILE := device/qcom/msmnile_au/manifest.xml
+endif
 DEVICE_MATRIX_FILE   := device/qcom/common/compatibility_matrix.xml
 DEVICE_FRAMEWORK_MANIFEST_FILE := device/qcom/msmnile_au/framework_manifest.xml
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := vendor/qcom/opensource/core-utils/vendor_framework_compatibility_matrix.xml
@@ -307,13 +306,16 @@ PRODUCT_PACKAGES += android.frameworks.automotive.display@1.0-service
 # MSM IRQ Balancer configuration file
 PRODUCT_COPY_FILES += device/qcom/msmnile_au/msm_irqbalance.conf:$(TARGET_COPY_OUT_VENDOR)/etc/msm_irqbalance.conf
 
-SHIPPING_API_LEVEL := 33
 PRODUCT_SHIPPING_API_LEVEL := 33
 
 
 # MIDI feature
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.midi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.midi.xml
+
+# Pro Audio feature
+PRODUCT_COPY_FILES += \
+   frameworks/native/data/etc/android.hardware.audio.pro.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.audio.pro.xml
 
 PRODUCT_PACKAGES += \
        openavb_harness \
@@ -333,8 +335,9 @@ PRODUCT_COPY_FILES += \
 
 # Kernel modules install path
 KERNEL_MODULES_INSTALL := dlkm
+ifeq ($(KERNEL_MODULES_OUT),)
 KERNEL_MODULES_OUT := out/target/product/msmnile_au/$(KERNEL_MODULES_INSTALL)/lib/modules
-
+endif
 #FEATURE_OPENGLES_EXTENSION_PACK support string config file
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.opengles.aep.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.opengles.aep.xml
@@ -363,7 +366,7 @@ TARGET_WLAN_CHIP := qca6390 qcn7605 qca6174
 include device/qcom/wlan/msmnile_au/wlan.mk
 endif
 
-PRODUCT_PROPERTY_OVERRIDES += rild.libpath=/vendor/lib64/libril-qc-hal-qmi.so \
+PRODUCT_VENDOR_PROPERTIES += rild.libpath=/vendor/lib64/libril-qc-hal-qmi.so \
                             persist.rild.nitz_plmn=
                             persist.rild.nitz_long_ons_0=
                             persist.rild.nitz_long_ons_1=
@@ -378,13 +381,13 @@ PRODUCT_PROPERTY_OVERRIDES += rild.libpath=/vendor/lib64/libril-qc-hal-qmi.so \
                             dalvik.vm.heapsize=36m \
                             dev.pm.dyn_samplingrate=1
 
-PRODUCT_PROPERTY_OVERRIDES += qcom.hw.aac.encoder=true
+PRODUCT_VENDOR_PROPERTIES += qcom.hw.aac.encoder=true
 
 # Cne module properties
-PRODUCT_PROPERTY_OVERRIDES += persist.vendor.cne.feature=1
+PRODUCT_VENDOR_PROPERTIES += persist.vendor.cne.feature=1
 
 # system properties for MM modules
-PRODUCT_PROPERTY_OVERRIDES += media.stagefright.enable-player=true \
+PRODUCT_VENDOR_PROPERTIES += media.stagefright.enable-player=true \
                               media.stagefright.enable-http=true \
                               media.stagefright.enable-aac=true \
                               media.stagefright.enable-qcp=true \
@@ -396,50 +399,50 @@ PRODUCT_PROPERTY_OVERRIDES += media.stagefright.enable-player=true \
                               persist.mm.enable.prefetch=true
 
 # system props for the data modules
-PRODUCT_PROPERTY_OVERRIDES += ro.vendor.use_data_netmgrd=true \
+PRODUCT_VENDOR_PROPERTIES += ro.vendor.use_data_netmgrd=true \
                               persist.vendor.data.mode=concurrent
 
 # system props for time-services
-PRODUCT_PROPERTY_OVERRIDES += persist.timed.enable=true
+PRODUCT_VENDOR_PROPERTIES += persist.timed.enable=true
 
 # system prop for opengles version
 #
 # 196608 is decimal for 0x30000 to report version 3
 # 196609 is decimal for 0x30001 to report version 3.1
 #  196610 is decimal for 0x30002 to report version 3.2
-PRODUCT_PROPERTY_OVERRIDES += ro.opengles.version=196610
+PRODUCT_VENDOR_PROPERTIES += ro.opengles.version=196610
 
 # system property for maximum number of HFP client connections
-PRODUCT_PROPERTY_OVERRIDES += bt.max.hfpclient.connections=1
+PRODUCT_VENDOR_PROPERTIES += bt.max.hfpclient.connections=1
 
 # Simulate sdcard on /data/media
-PRODUCT_PROPERTY_OVERRIDES += persist.fuse_sdcard=true
+PRODUCT_VENDOR_PROPERTIES += persist.fuse_sdcard=true
 
 # System prop for Bluetooth SOC type
-PRODUCT_PROPERTY_OVERRIDES += vendor.qcom.bluetooth.soc=rome
+PRODUCT_VENDOR_PROPERTIES += vendor.qcom.bluetooth.soc=rome
 
 # System prop for wipower support
-PRODUCT_PROPERTY_OVERRIDES += ro.bluetooth.emb_wp_mode=false \
+PRODUCT_VENDOR_PROPERTIES += ro.bluetooth.emb_wp_mode=false \
                               ro.bluetooth.wipower=false \
                               persist.vendor.service.bt.a2dp.sink=true \
                               persist.vendor.btstack.enable.splita2dp=false \
                               persist.vendor.service.bdroid.sibs=false
 
 # System prop for setting sensor hal
-PRODUCT_PROPERTY_OVERRIDES += ro.hardware.sensors=msmnile.asm_auto \
+PRODUCT_VENDOR_PROPERTIES += ro.hardware.sensors=msmnile.asm_auto \
                               ro.hardware.type=automotive
 
 # Snapdragon value add features
-PRODUCT_PROPERTY_OVERRIDES += ro.qc.sdk.audio.ssr=false
+PRODUCT_VENDOR_PROPERTIES += ro.qc.sdk.audio.ssr=false
 
 # Fluencetype can be "fluence" or "fluencepro" or "none"
-PRODUCT_PROPERTY_OVERRIDES += ro.qc.sdk.audio.fluencetype=none \
+PRODUCT_VENDOR_PROPERTIES += ro.qc.sdk.audio.fluencetype=none \
                               persist.audio.fluence.voicecall=true \
                               persist.audio.fluence.voicerec=false \
                               persist.audio.fluence.speaker=true
 
 # System prop for RmNet Data
-PRODUCT_PROPERTY_OVERRIDES += persist.rmnet.data.enable=true \
+PRODUCT_VENDOR_PROPERTIES += persist.rmnet.data.enable=true \
                               persist.data.wda.enable=true \
                               persist.data.df.dl_mode=5 \
                               persist.data.df.ul_mode=5 \
@@ -450,37 +453,37 @@ PRODUCT_PROPERTY_OVERRIDES += persist.rmnet.data.enable=true \
                               persist.data.df.dev_name=rmnet_usb0
 
 # property to enable user to access Google WFD settings
-PRODUCT_PROPERTY_OVERRIDES += persist.debug.wfd.enable=1
+PRODUCT_VENDOR_PROPERTIES += persist.debug.wfd.enable=1
 
 # property to choose between virtual/external wfd display
-PRODUCT_PROPERTY_OVERRIDES += persist.sys.wfd.virtual=0
+PRODUCT_VENDOR_PROPERTIES += persist.sys.wfd.virtual=0
 
 # Enable tunnel encoding for amrwb
-PRODUCT_PROPERTY_OVERRIDES += tunnel.audio.encode = true
+PRODUCT_VENDOR_PROPERTIES += tunnel.audio.encode = true
 
 # Buffer size in kbytes for compress offload playback
-PRODUCT_PROPERTY_OVERRIDES += audio.offload.buffer.size.kb=32
+PRODUCT_VENDOR_PROPERTIES += audio.offload.buffer.size.kb=32
 
 # Enable offload audio video playback by default
-PRODUCT_PROPERTY_OVERRIDES += av.offload.enable=true
+PRODUCT_VENDOR_PROPERTIES += av.offload.enable=true
 
 # Enable voice path for PCM VoIP by default
-PRODUCT_PROPERTY_OVERRIDES += use.voice.path.for.pcm.voip=true
+PRODUCT_VENDOR_PROPERTIES += use.voice.path.for.pcm.voip=true
 
 # System prop for NFC DT
-PRODUCT_PROPERTY_OVERRIDES += ro.nfc.port=I2C
+PRODUCT_VENDOR_PROPERTIES += ro.nfc.port=I2C
 
 # Enable dsp gapless mode by default
-PRODUCT_PROPERTY_OVERRIDES += audio.offload.gapless.enabled=true
+PRODUCT_VENDOR_PROPERTIES += audio.offload.gapless.enabled=true
 
 # initialize QCA1530 detection
-PRODUCT_PROPERTY_OVERRIDES += sys.qca1530=detect
+PRODUCT_VENDOR_PROPERTIES += sys.qca1530=detect
 
 # Enable stm events
-PRODUCT_PROPERTY_OVERRIDES += persist.debug.coresight.config=stm-events
+PRODUCT_VENDOR_PROPERTIES += persist.debug.coresight.config=stm-events
 
 # Hwui properties
-PRODUCT_PROPERTY_OVERRIDES += ro.hwui.texture_cache_size=72 \
+PRODUCT_VENDOR_PROPERTIES += ro.hwui.texture_cache_size=72 \
                               ro.hwui.layer_cache_size=48 \
                               ro.hwui.r_buffer_cache_size=8 \
                               ro.hwui.path_cache_size=32 \
@@ -494,26 +497,26 @@ PRODUCT_PROPERTY_OVERRIDES += ro.hwui.texture_cache_size=72 \
                               config.disable_rtt=true
 
 # Bringup properties
-PRODUCT_PROPERTY_OVERRIDES += persist.sys.force_sw_gles=1 \
+PRODUCT_VENDOR_PROPERTIES += persist.sys.force_sw_gles=1 \
                               persist.vendor.radio.atfwd.start=true \
                               ro.kernel.qemu.gles=0 \
                               qemu.hw.mainkeys=0
 
 # Increase cached app limit
-PRODUCT_PROPERTY_OVERRIDES += ro.vendor.qti.sys.fw.bg_apps_limit=60
+PRODUCT_VENDOR_PROPERTIES += ro.vendor.qti.sys.fw.bg_apps_limit=60
 
 # Enable ZRAM
-PRODUCT_PROPERTY_OVERRIDES += ro.vendor.qti.config.zram=true
+PRODUCT_VENDOR_PROPERTIES += ro.vendor.qti.config.zram=true
 
 # IOP properties
-PRODUCT_PROPERTY_OVERRIDES += vendor.iop.enable_uxe=1 \
+PRODUCT_VENDOR_PROPERTIES += vendor.iop.enable_uxe=1 \
                               vendor.perf.iop_v3.enable=true
 
 # Property to enable perf boosts from System Server
-PRODUCT_PROPERTY_OVERRIDES += vendor.perf.gestureflingboost.enable=true
+PRODUCT_VENDOR_PROPERTIES += vendor.perf.gestureflingboost.enable=true
 
 # Enable ULMK properties
-PRODUCT_PROPERTY_OVERRIDES += ro.lmk.kill_heaviest_task=true \
+PRODUCT_VENDOR_PROPERTIES += ro.lmk.kill_heaviest_task=true \
                               ro.lmk.kill_timeout_ms=15 \
                               ro.lmk.use_minfree_levels=true \
                               ro.lmk.enhance_batch_kill=true \
@@ -521,36 +524,36 @@ PRODUCT_PROPERTY_OVERRIDES += ro.lmk.kill_heaviest_task=true \
                               ro.lmk.vmpressure_file_min=80640
 
 # Property to enable scroll pre-obtain view
-PRODUCT_PROPERTY_OVERRIDES += ro.vendor.scroll.preobtain.enable=true
+PRODUCT_VENDOR_PROPERTIES += ro.vendor.scroll.preobtain.enable=true
 
 # Expose aux camera for below packages
-PRODUCT_PROPERTY_OVERRIDES += vendor.camera.aux.packagelist=org.codeaurora.snapcam
+PRODUCT_VENDOR_PROPERTIES += vendor.camera.aux.packagelist=org.codeaurora.snapcam
 
 # Display mirroring
-PRODUCT_PROPERTY_OVERRIDES += vendor.display.builtin_mirroring=true
+PRODUCT_VENDOR_PROPERTIES += vendor.display.builtin_mirroring=true
 
 # Display hwcId allocation
-PRODUCT_PROPERTY_OVERRIDES += vendor.display.builtin_baseid_and_size=5,3 \
+PRODUCT_VENDOR_PROPERTIES += vendor.display.builtin_baseid_and_size=5,3 \
                               vendor.display.pluggable_baseid_and_size=1,4 \
                               vendor.display.virtual_baseid_and_size=8,1
 
 # Gralloc use dmabuf
-PRODUCT_PROPERTY_OVERRIDES += vendor.gralloc.use_dma_buf_heaps=1
+PRODUCT_VENDOR_PROPERTIES += vendor.gralloc.use_dma_buf_heaps=1
 
 # Disable boot animation
-PRODUCT_PROPERTY_OVERRIDES += debug.sf.nobootanimation=1
+PRODUCT_VENDOR_PROPERTIES += debug.sf.nobootanimation=1
 
 # Enable car power manager for LPM(LowPowerMode)
-PRODUCT_PROPERTY_OVERRIDES += persist.vendor.car.lpm=true
+PRODUCT_VENDOR_PROPERTIES += persist.vendor.car.lpm=true
 
 # Set BT AVRCP prop to false
-PRODUCT_PROPERTY_OVERRIDES += persist.bluetooth.enablenewavrcp=false
+PRODUCT_VENDOR_PROPERTIES += persist.bluetooth.enablenewavrcp=false
 
 # Disable Telephony
-PRODUCT_PROPERTY_OVERRIDES += ro.radio.noril=true
+PRODUCT_VENDOR_PROPERTIES += ro.radio.noril=true
 
 # Default wifi country code
-PRODUCT_PROPERTY_OVERRIDES += ro.boot.wificountrycode=us
+PRODUCT_VENDOR_PROPERTIES += ro.boot.wificountrycode=us
 
 #Copy supported features list
 ifeq ($(TARGET_USES_GAS),true)
@@ -596,11 +599,9 @@ PRODUCT_PACKAGES += vndservicemanager
 
 TARGET_MOUNT_POINTS_SYMLINKS := false
 
-PRODUCT_PACKAGES += android.hardware.dumpstate@1.1-service.example \
+PRODUCT_PACKAGES += android.hardware.dumpstate-service.example \
                     android.hardware.thermal@2.0-service.mock \
-
-PRODUCT_PACKAGES += android.hardware.health@2.1-service \
-                    android.hardware.health@2.1-impl \
+                    android.hardware.health-service.example
 
 PRODUCT_PACKAGES += android.hardware.neuralnetworks@1.0.vendor \
                     android.hardware.neuralnetworks@1.1.vendor \
@@ -612,13 +613,10 @@ ifeq ($(TARGET_FWK_SUPPORTS_FULL_VALUEADDS), true)
 PRODUCT_PACKAGES += libnbaio
 endif
 
-PRODUCT_PACKAGES_DEBUG += dumpsCaches
+PRODUCT_ENFORCE_RRO_TARGETS := framework-res
 
 # privapp-permissions whitelisting (To Fix CTS :privappPermissionsMustBeEnforced)
-PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
-
-# privapp-permissions whitelisting (To Fix CTS :privappPermissionsMustBeEnforced)
-PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
+PRODUCT_VENDOR_PROPERTIES += ro.control_privapp_permissions=enforce
 
 PRODUCT_PACKAGES += qcar-gsi.avbpubkey
 
