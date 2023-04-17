@@ -50,17 +50,7 @@ on early-init && property:ro.boot.audio=audioreach
     setprop ro.hardware.audio.primary "msmnile.ar"
     setprop ro.hardware.soundtrigger.primary "msmnile.ar"
 
-service ais_server /system/vendor/bin/ais_server
-    class core
-    user system
-    group camera input graphics
-    disabled
-    onrestart restart evs_driver
-    onrestart restart qcarcam_hal
-
 on init
-    mkdir /dev/socket/camera 0770 system camera
-    start ais_server
     write /dev/stune/foreground/schedtune.sched_boost_no_override 1
     write /dev/stune/top-app/schedtune.sched_boost_no_override 1
     write /dev/stune/schedtune.colocate 0
