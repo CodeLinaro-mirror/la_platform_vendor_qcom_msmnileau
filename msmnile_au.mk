@@ -56,6 +56,8 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/userspace_reboot.mk)
 #ifeq ($(strip $(BOARD_DYNAMIC_PARTITION_ENABLE)),true)
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 PRODUCT_PACKAGES += fastbootd
+# Add default implementation of fastboot AIDL.
+PRODUCT_PACKAGES += android.hardware.fastboot-service.example_recovery
 TARGET_HIBERNATION_SECURE_ENABLE := true
 
 # Mismatch in the uses-library tags between build system and the manifest leads
