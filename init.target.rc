@@ -36,8 +36,6 @@ on early-init
     write /sys/kernel/boot_kpi/kpi_values "M - INITRC Userspace Start"
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
-    write /sys/kernel/boot_kpi/kpi_values "M - Start adsp"
-    write /sys/kernel/boot_adsp/boot 1
     write /sys/kernel/boot_kpi/kpi_values "M - adsprpcd Start"
     start vendor.adsprpcd
     start vendor.adsprpcd_audiopd
@@ -47,22 +45,15 @@ on early-init
 on early-init && property:ro.boot.audio=""
     setprop vendor.audio.card.def "/vendor/etc/card-defs-dummy.xml"
 
+on early-init && property:ro.boot.audio=elite
+    setprop vendor.audio.card.def "/vendor/etc/card-defs-dummy.xml"
+
 on early-init && property:ro.boot.audio=audioreach
     setprop vendor.audio.feature.mdf.enable "true"
     setprop ro.hardware.audio.primary "msmnile.ar"
     setprop ro.hardware.soundtrigger.primary "msmnile.ar"
 
-service ais_server /system/vendor/bin/ais_server
-    class core
-    user system
-    group camera input graphics
-    disabled
-    onrestart restart evs_driver
-    onrestart restart qcarcam_hal
-
 on init
-    mkdir /dev/socket/camera 0770 system camera
-    start ais_server
     write /dev/stune/foreground/schedtune.sched_boost_no_override 1
     write /dev/stune/top-app/schedtune.sched_boost_no_override 1
     write /dev/stune/schedtune.colocate 0
@@ -128,7 +119,6 @@ on post-fs-data
 # For cpusets initialize for Silver Only first and then Silver + Gold
 # Silver Only configuration cannot work with 0-7
 on boot
-    start audio_chime
     chown system system /sys/kernel/hbtp/display_pwr
     start rmt_storage
     start rfs_access
@@ -180,8 +170,7 @@ on property:sys.boot_completed=1
     write /sys/kernel/boot_kpi/kpi_values "K - USER Android Boot Complete"
     setprop vendor.sys.boot_completed 1
 
-    # Enable WLAN cold boot calibration
-    write /sys/kernel/cnss/fs_ready 1
+    start wlan_multiko
 
 on property:init.svc.surfaceflinger=running
     write /sys/kernel/boot_kpi/kpi_values "M - USER SurfaceFlinger Start"
@@ -342,15 +331,6 @@ service acdb_loader_service /vendor/bin/acdb_loader_service
     class main
     user system
     group system wakelock audio
-    capabilities BLOCK_SUSPEND
-    oneshot
-    disabled
-
-#audio chime
-service audio_chime /vendor/bin/audio_chime /vendor/etc/bike_bell.wav
-    class main
-    user system
-    group system wakelock
     capabilities BLOCK_SUSPEND
     oneshot
     disabled
