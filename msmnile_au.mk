@@ -3,6 +3,7 @@ TARGET_BOARD_PLATFORM := msmnile
 TARGET_BOOTLOADER_BOARD_NAME := msmnile
 TARGET_BOARD_TYPE := auto
 TARGET_BOARD_SUFFIX := _au
+TARGET_GVMGH_SPECIFIC := false
 # Skip VINTF checks for kernel configs since we do not have kernel source
 PRODUCT_OTA_ENFORCE_VINTF_KERNEL_REQUIREMENTS := false
 
@@ -11,7 +12,7 @@ ALLOW_MISSING_DEPENDENCIES := true
 ENABLE_AB ?= true
 # Enable virtual-ab by default
 ifeq ($(ENABLE_AB), true)
-   ENABLE_VIRTUAL_AB := false
+   ENABLE_VIRTUAL_AB := true
 endif
 ifeq ($(ENABLE_VIRTUAL_AB), true)
   # Enable virtual A/B compression
@@ -32,7 +33,6 @@ TARGET_USES_QTIC_EXTENSION := false
 ENABLE_HYP := false
 ENABLE_AIDL_VHAL := true
 TARGET_CONSOLE_ENABLED ?= true
-
 TARGET_NO_QTI_WFD := true
 BOARD_HAVE_QCOM_FM := false
 BOARD_VENDOR_QCOM_LOC_PDK_FEATURE_SET := false
@@ -54,7 +54,7 @@ BOARD_BUILD_SUPER_IMAGE_BY_DEFAULT := true
 PRODUCT_BUILD_SUPER_PARTITION := true
 PRODUCT_PACKAGES += fastbootd
 TARGET_HIBERNATION_SECURE_ENABLE := true
-
+TARGET_HAS_MDSPRPCD := true
 # Enable System_ext
 PRODUCT_BUILD_SYSTEM_EXT_IMAGE := true
 
@@ -275,9 +275,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     device/qcom/msmnile_au/input-port-associations.xml:$(TARGET_COPY_OUT_VENDOR)/etc/input-port-associations.xml
 
-ifneq ($(TARGET_BOARD_DERIVATIVE_SUFFIX), _km4)
 DEVICE_MANIFEST_FILE := device/qcom/msmnile_au/manifest.xml
-endif
 DEVICE_MATRIX_FILE   := device/qcom/common/compatibility_matrix.xml
 DEVICE_FRAMEWORK_MANIFEST_FILE := device/qcom/msmnile_au/framework_manifest.xml
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := vendor/qcom/opensource/core-utils/vendor_framework_compatibility_matrix.xml
@@ -309,15 +307,34 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
    frameworks/native/data/etc/android.hardware.audio.pro.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.audio.pro.xml
 
-#Copy unsupported features list
-PRODUCT_COPY_FILES += \
-    device/qcom/msmnile_au/msmnile_au_excluded_features.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/msmnile_au_excluded_features.xml
-
-
 PRODUCT_PACKAGES += \
        openavb_harness \
        gptp \
-       mrpd
+       mrpd \
+       libopenavb \
+       libopenavb_intf_audio_stream \
+       libopenavb_intf_clk_ref \
+       libopenavb_intf_ctrl \
+       libopenavb_intf_echo \
+       libopenavb_intf_h264_file \
+       libopenavb_intf_logger \
+       libopenavb_intf_mjpeg_file \
+       libopenavb_intf_mpeg2ts_file \
+       libopenavb_intf_null \
+       libopenavb_intf_tinyalsa \
+       libopenavb_intf_tonegen \
+       libopenavb_intf_viewer \
+       libopenavb_intf_wav_file \
+       libopenavb_map_aaf_audio \
+       libopenavb_map_clk_ref \
+       libopenavb_map_ctrl \
+       libopenavb_map_h264 \
+       libopenavb_map_mjpeg \
+       libopenavb_map_mpeg2ts \
+       libopenavb_map_null \
+       libopenavb_map_pipe \
+       libopenavb_map_uncmp_audio \
+       audio.eavb.default \
 
 #sysprofiler
 PRODUCT_PACKAGES += libsysprofiler \
@@ -359,7 +376,7 @@ ENABLE_VENDOR_RIL_SERVICE := true
 #----------------------------------------------------------------------
 # Multiple chips
 ifeq ($(strip $(BOARD_HAS_QCOM_WLAN)),true)
-TARGET_WLAN_CHIP := qca6390
+TARGET_WLAN_CHIP := qca6390 qcn7605 qca6174
 include device/qcom/wlan/msmnile_au/wlan.mk
 endif
 
@@ -380,9 +397,6 @@ PRODUCT_VENDOR_PROPERTIES += rild.libpath=/vendor/lib64/libril-qc-hal-qmi.so \
 
 PRODUCT_VENDOR_PROPERTIES += qcom.hw.aac.encoder=true
 
-# Cne module properties
-PRODUCT_VENDOR_PROPERTIES += persist.vendor.cne.feature=1
-
 # system properties for MM modules
 PRODUCT_VENDOR_PROPERTIES += media.stagefright.enable-player=true \
                               media.stagefright.enable-http=true \
@@ -397,7 +411,7 @@ PRODUCT_VENDOR_PROPERTIES += media.stagefright.enable-player=true \
                               persist.mm.enable.prefetch=true
 
 # system props for the data modules
-PRODUCT_VENDOR_PROPERTIES += ro.vendor.use_data_netmgrd=true \
+PRODUCT_VENDOR_PROPERTIES += ro.vendor.use_data_netmgrd=false \
                               persist.vendor.data.mode=concurrent
 
 # system props for time-services
