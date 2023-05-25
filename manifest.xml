@@ -279,6 +279,7 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     </hal>
     <hal format="aidl">
         <name>android.hardware.automotive.audiocontrol</name>
+        <version>2</version>
         <interface>
             <name>IAudioControl</name>
             <instance>default</instance>
