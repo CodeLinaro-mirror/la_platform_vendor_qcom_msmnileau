@@ -43,7 +43,10 @@ on early-init
     start esplash
 
 on early-init && property:ro.boot.audio=""
-    setprop vendor.audio.card.def "/vendor/etc/card-defs-dummy.xml"
+    setprop ro.boot.audio "audioreach"
+    setprop vendor.audio.feature.mdf.enable "true"
+    setprop ro.hardware.audio.primary "msmnile.ar"
+    setprop ro.hardware.soundtrigger.primary "msmnile.ar"
 
 on early-init && property:ro.boot.audio=elite
     setprop vendor.audio.card.def "/vendor/etc/card-defs-dummy.xml"
