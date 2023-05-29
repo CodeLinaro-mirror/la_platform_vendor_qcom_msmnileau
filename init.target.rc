@@ -43,21 +43,36 @@ on early-init
     write /sys/kernel/boot_kpi/kpi_values "M - adsprpcd Start"
     start vendor.adsprpcd
     start vendor.adsprpcd_audiopd
-    start audiod
 
 on early-init && property:ro.boot.audio=""
     setprop ro.boot.audio "audioreach"
     setprop vendor.audio.feature.mdf.enable "true"
     setprop ro.hardware.audio.primary "msmnile.ar"
     setprop ro.hardware.soundtrigger.primary "msmnile.ar"
+    start audiod
+    setprop vendor.audio.card.def "/vendor/etc/card-defs-dummy.xml"
 
 on early-init && property:ro.boot.audio=elite
+    start audiod
     setprop vendor.audio.card.def "/vendor/etc/card-defs-dummy.xml"
 
 on early-init && property:ro.boot.audio=audioreach
+    start audionxp
     setprop vendor.audio.feature.mdf.enable "true"
     setprop ro.hardware.audio.primary "msmnile.ar"
     setprop ro.hardware.sound_trigger.primary "msmnile.ar"
+
+on init && property:ro.boot.audio=audioreach
+    write /sys/kernel/boot_kpi/kpi_values "M - audio ams service Start"
+    enable vendor.ams-1-0
+    start vendor.ams-1-0
+    write /sys/kernel/boot_kpi/kpi_values "M - audio agm service Start"
+    enable vendor.agm-1-0
+    start vendor.agm-1-0
+    write /sys/kernel/boot_kpi/kpi_values "M - audio audiod Start"
+    start audiod
+    write /sys/kernel/boot_kpi/kpi_values "M - audio agm play Start"
+    start agmplay
 
 on init
     write /dev/stune/foreground/schedtune.sched_boost_no_override 1
@@ -138,11 +153,6 @@ on boot
     write /data/vendor/netmgr/recovery/recovery_info ""
     chown radio radio /data/vendor/netmgr/recovery/recovery_info
 
-on boot && property:ro.boot.audio=audioreach
-    start audionxp
-    start agmplay
-    write /sys/kernel/boot_kpi/kpi_values "M - audio agm play"
-
 # Add a cpuset for the camera daemon
 # We want all cores for camera
     mkdir /dev/cpuset/camera-daemon
@@ -191,12 +201,6 @@ service wlan_multiko /vendor/bin/init.qcom.wlan.sh
     group root
     disabled
     oneshot
-
-#pd-mapper
-service vendor.pd_mapper /vendor/bin/pd-mapper
-    class core
-    user system
-    group system
 
 #Peripheral manager
 service vendor.per_mgr /vendor/bin/pm-service
@@ -350,6 +354,30 @@ service agmplay /vendor/bin/agmplay /vendor/etc/bike_bell.wav -D 0 -d 100 -i TDM
     group system wakelock
     capabilities BLOCK_SUSPEND
     oneshot
+    disabled
+
+service vendor.agm-1-0 /vendor/bin/hw/vendor.qti.hardware.AGMIPC@1.0-service
+    class hal
+    user system
+    interface vendor.qti.hardware.AGMIPC@1.0::IAGM default
+    # media gid needed for /dev/fm (radio) and for /data/misc/media (tee)
+    group system audio media mediadrm oem_2901 wakelock
+    capabilities BLOCK_SUSPEND SYS_NICE
+    ioprio rt 4
+    task_profiles ProcessCapacityHigh HighPerformance
+    writepid /dev/cpuset/foreground/tasks /dev/stune/foreground/tasks
+    disabled
+
+service vendor.ams-1-0 /vendor/bin/hw/vendor.qti.hardware.AMSIPC@1.0-service
+    class hal
+    user system
+    interface vendor.qti.hardware.AMSIPC@1.0::IAMS default
+    # media gid needed for /dev/fm (radio) and for /data/misc/media (tee)
+    group system audio media mediadrm oem_2901 wakelock
+    capabilities BLOCK_SUSPEND SYS_NICE
+    ioprio rt 4
+    task_profiles ProcessCapacityHigh HighPerformance
+    writepid /dev/cpuset/foreground/tasks /dev/stune/foreground/tasks
     disabled
 
 on property:sys.boot_completed=1
