@@ -225,9 +225,6 @@ TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_HEADER_ARCH := arm64
 TARGET_KERNEL_CROSS_COMPILE_PREFIX := $(shell pwd)/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-androidkernel-
 
-CAM_DEVICE_TREE_PATH := vendor/qcom/proprietary/camera-devicetree/
-$(shell cp -f ${PWD}/$(CAM_DEVICE_TREE_PATH)sa8155-camera-ais.dtsi ${PWD}/$(CAM_DEVICE_TREE_PATH)sa8155-camera.dtsi)
-
 MAX_EGL_CACHE_KEY_SIZE := 12*1024
 MAX_EGL_CACHE_SIZE := 2048*1024
 
