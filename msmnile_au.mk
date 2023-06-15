@@ -381,9 +381,6 @@ PRODUCT_VENDOR_PROPERTIES += \
 
 PRODUCT_VENDOR_PROPERTIES += qcom.hw.aac.encoder=true
 
-# Cne module properties
-PRODUCT_VENDOR_PROPERTIES += persist.vendor.cne.feature=1
-
 # system properties for MM modules
 PRODUCT_VENDOR_PROPERTIES += media.stagefright.enable-player=true \
                               media.stagefright.enable-http=true \
