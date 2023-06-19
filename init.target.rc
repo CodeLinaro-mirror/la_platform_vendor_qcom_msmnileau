@@ -44,6 +44,7 @@ on early-init
     start vendor.adsprpcd
     start vendor.adsprpcd_audiopd
     start audiod
+    setprop vendor.audio.card.def "/vendor/etc/card-defs-dummy.xml"
     start esplash
 
 service ais_server /system/vendor/bin/ais_server
