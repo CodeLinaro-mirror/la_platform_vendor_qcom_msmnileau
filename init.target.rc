@@ -54,7 +54,7 @@ on early-init && property:ro.boot.audio=elite
 on early-init && property:ro.boot.audio=audioreach
     setprop vendor.audio.feature.mdf.enable "true"
     setprop ro.hardware.audio.primary "msmnile.ar"
-    setprop ro.hardware.soundtrigger.primary "msmnile.ar"
+    setprop ro.hardware.sound_trigger.primary "msmnile.ar"
 
 on init
     write /dev/stune/foreground/schedtune.sched_boost_no_override 1
