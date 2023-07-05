@@ -410,9 +410,6 @@ PRODUCT_VENDOR_PROPERTIES += persist.timed.enable=true
 #  196610 is decimal for 0x30002 to report version 3.2
 PRODUCT_VENDOR_PROPERTIES += ro.opengles.version=196610
 
-# system property for maximum number of HFP client connections
-PRODUCT_VENDOR_PROPERTIES += bt.max.hfpclient.connections=1
-
 # Simulate sdcard on /data/media
 PRODUCT_VENDOR_PROPERTIES += persist.fuse_sdcard=true
 
@@ -420,9 +417,7 @@ PRODUCT_VENDOR_PROPERTIES += persist.fuse_sdcard=true
 PRODUCT_VENDOR_PROPERTIES += vendor.qcom.bluetooth.soc=rome
 
 # System prop for wipower support
-PRODUCT_VENDOR_PROPERTIES += ro.bluetooth.emb_wp_mode=false \
-                              ro.bluetooth.wipower=false \
-                              persist.vendor.service.bt.a2dp.sink=true \
+PRODUCT_VENDOR_PROPERTIES += persist.vendor.service.bt.a2dp.sink=true \
                               persist.vendor.btstack.enable.splita2dp=false \
                               persist.vendor.service.bdroid.sibs=false
 
@@ -543,9 +538,6 @@ PRODUCT_VENDOR_PROPERTIES += debug.sf.nobootanimation=1
 
 # Enable car power manager for LPM(LowPowerMode)
 PRODUCT_VENDOR_PROPERTIES += persist.vendor.car.lpm=true
-
-# Set BT AVRCP prop to false
-PRODUCT_VENDOR_PROPERTIES += persist.bluetooth.enablenewavrcp=false
 
 # Disable Telephony
 PRODUCT_VENDOR_PROPERTIES += ro.radio.noril=true
