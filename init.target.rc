@@ -25,7 +25,9 @@
 # OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-#
+# Changes from Qualcomm Innovation Center are provided under the following license:
+# Copyright (c) 2023 Qualcomm Innovation Center, Inc. All rights reserved.
+# SPDX-License-Identifier: BSD-3-Clause-Clear
 
 import /vendor/etc/init/hw/init.qti.kernel.rc
 
@@ -44,8 +46,10 @@ on early-init
     start vendor.adsprpcd
     start vendor.adsprpcd_audiopd
     start audiod
-    setprop vendor.audio.card.def "/vendor/etc/card-defs-dummy.xml"
     start esplash
+
+on early-init && property:ro.boot.audio=""
+    setprop vendor.audio.card.def "/vendor/etc/card-defs-dummy.xml"
 
 service ais_server /system/vendor/bin/ais_server
     class core
