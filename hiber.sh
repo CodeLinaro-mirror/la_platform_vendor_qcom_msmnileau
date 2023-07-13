@@ -62,5 +62,3 @@ do
   echo 3 > /proc/sys/vm/drop_caches
   sync
 done
-
-echo shutdown > /sys/power/disk
