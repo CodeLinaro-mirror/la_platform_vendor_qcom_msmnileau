@@ -104,3 +104,5 @@ endif
 ifneq (, $(wildcard $(shell pwd)/prebuilts/build-tools/linux-x86/bin/make))
     MAKE := $(shell pwd)/prebuilts/build-tools/linux-x86/bin/$(MAKE)
 endif
+
+include device/qcom/vendor-common/MergeConfig.mk
