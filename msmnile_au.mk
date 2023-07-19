@@ -12,7 +12,11 @@ ifeq ($(ENABLE_AB), true)
    ENABLE_VIRTUAL_AB := true
 endif
 ifeq ($(ENABLE_VIRTUAL_AB), true)
-  $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota.mk)
+# Enable virtual A/B compression
+$(call inherit-product, $(SRC_TARGET_DIR)/product/generic_ramdisk.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/vabc_features.mk)
+PRODUCT_VIRTUAL_AB_COMPRESSION_METHOD := gz
+PRODUCT_VENDOR_PROPERTIES += ro.virtual_ab.compression.threads=true
 endif
 
 # Enable AVB 2.0
@@ -135,14 +139,14 @@ TARGET_USES_QMAA_OVERRIDE_DATA := false
 TARGET_USES_QMAA_OVERRIDE_DIAG := true
 TARGET_USES_QMAA_OVERRIDE_DISPLAY := true
 TARGET_USES_QMAA_OVERRIDE_DPM  := true
-TARGET_USES_QMAA_OVERRIDE_DRM  := false
+TARGET_USES_QMAA_OVERRIDE_DRM  := true
 TARGET_USES_QMAA_OVERRIDE_EID := true
 TARGET_USES_QMAA_OVERRIDE_FASTCV  := true
 TARGET_USES_QMAA_OVERRIDE_FASTRPC := true
 TARGET_USES_QMAA_OVERRIDE_FM  := true
 TARGET_USES_QMAA_OVERRIDE_FTM := true
 TARGET_USES_QMAA_OVERRIDE_GFX := true
-TARGET_USES_QMAA_OVERRIDE_GPS := false
+TARGET_USES_QMAA_OVERRIDE_GPS := true
 TARGET_USES_QMAA_OVERRIDE_GP := false
 TARGET_USES_QMAA_OVERRIDE_GPT := false
 TARGET_USES_QMAA_OVERRIDE_KERNEL_TESTS_INTERNAL := true
@@ -153,9 +157,11 @@ TARGET_USES_QMAA_OVERRIDE_PERF := true
 TARGET_USES_QMAA_OVERRIDE_REMOTE_EFS := true
 TARGET_USES_QMAA_OVERRIDE_RPMB := true
 TARGET_USES_QMAA_OVERRIDE_SCVE  := true
-TARGET_USES_QMAA_OVERRIDE_SECUREMSM_TESTS := false
+TARGET_USES_QMAA_OVERRIDE_SECUREMSM_TESTS := true
 TARGET_USES_QMAA_OVERRIDE_SENSORS := true
-TARGET_USES_QMAA_OVERRIDE_SMCINVOKE := true
+
+#Setting TARGET_USES_QMAA_OVERRIDE_SECUREMSM_TESTS to true will compile smcinvoke test files.
+TARGET_USES_QMAA_OVERRIDE_SMCINVOKE := false
 TARGET_USES_QMAA_OVERRIDE_SOTER := false
 TARGET_USES_QMAA_OVERRIDE_SPCOM_UTEST := true
 TARGET_USES_QMAA_OVERRIDE_SYNX := true
@@ -201,6 +207,10 @@ PRODUCT_NAME := msmnile_au
 PRODUCT_DEVICE := msmnile_au
 PRODUCT_BRAND := qti
 PRODUCT_MODEL := msmnile_au for arm64
+
+TARGET_OUT_INTERMEDIATES := out/target/product/$(PRODUCT_NAME)/obj
+$(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr:
+	mkdir -p $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr
 
 #Initial bringup flags
 
@@ -430,7 +440,7 @@ ENABLE_VENDOR_RIL_SERVICE := true
 #----------------------------------------------------------------------
 # Multiple chips
 ifeq ($(strip $(BOARD_HAS_QCOM_WLAN)),true)
-TARGET_WLAN_CHIP := qca6390 qca6490
+TARGET_WLAN_CHIP := qca6390 qca6490 qcn7605
 include device/qcom/wlan/msmnile_au/wlan.mk
 endif
 
@@ -682,6 +692,8 @@ PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
 
 # privapp-permissions whitelisting (To Fix CTS :privappPermissionsMustBeEnforced)
 PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
+
+PRODUCT_PACKAGES += qcar-gsi.avbpubkey
 
 ###################################################################################
 # This is the End of target.mk file.

@@ -124,6 +124,16 @@ ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
     include $(BUILD_PREBUILT)
 endif
 
+#Add gsi key.
+include $(CLEAR_VARS)
+LOCAL_MODULE := qcar-gsi.avbpubkey
+LOCAL_LICENSE_KINDS := SPDX-license-identifier-Apache-2.0
+LOCAL_LICENSE_CONDITIONS := notice
+LOCAL_MODULE_CLASS := ETC
+LOCAL_SRC_FILES := ../../../test/vts-testcase/security/avb/data/qcar-gsi.avbpubkey
+LOCAL_MODULE_PATH := $(TARGET_RECOVERY_ROOT_OUT)/first_stage_ramdisk/avb
+include $(BUILD_PREBUILT)
+
 #----------------------------------------------------------------------
 # Radio image
 #----------------------------------------------------------------------
