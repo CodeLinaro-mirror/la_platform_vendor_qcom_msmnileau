@@ -46,11 +46,6 @@ on early-init
 
 on early-init && property:ro.boot.audio=""
     setprop ro.boot.audio "audioreach"
-    setprop vendor.audio.feature.mdf.enable "true"
-    setprop ro.hardware.audio.primary "msmnile.ar"
-    setprop ro.hardware.soundtrigger.primary "msmnile.ar"
-    start audiod
-    setprop vendor.audio.card.def "/vendor/etc/card-defs-dummy.xml"
 
 on early-init && property:ro.boot.audio=elite
     start audiod
