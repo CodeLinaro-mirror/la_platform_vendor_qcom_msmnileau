@@ -300,10 +300,6 @@ PRODUCT_COPY_FILES += hardware/interfaces/security/keymint/aidl/default/android.
 PRODUCT_COPY_FILES += device/qcom/msmnile_au/hiber.sh:$(TARGET_COPY_OUT_VENDOR)/bin/hiber.sh
 PRODUCT_COPY_FILES += device/qcom/msmnile_au/hiber_restore.sh:$(TARGET_COPY_OUT_VENDOR)/bin/hiber_restore.sh
 
-# Suspend to ram or suspend to disk
-PRODUCT_VENDOR_PROPERTIES += persist.vendor.vehicle.lpm=ram \
-                             vendor.car.hiber=none
-
 PRODUCT_PACKAGES += android.hardware.media.omx@1.0-impl
 
 #Audio DLKM
@@ -379,8 +375,8 @@ PRODUCT_PACKAGES += android.frameworks.automotive.display@1.0-service
 # MSM IRQ Balancer configuration file
 PRODUCT_COPY_FILES += device/qcom/msmnile_au/msm_irqbalance.conf:$(TARGET_COPY_OUT_VENDOR)/etc/msm_irqbalance.conf
 
-SHIPPING_API_LEVEL := 33
-PRODUCT_SHIPPING_API_LEVEL := 33
+SHIPPING_API_LEVEL := 34
+PRODUCT_SHIPPING_API_LEVEL := $(SHIPPING_API_LEVEL)
 
 
 # MIDI feature
