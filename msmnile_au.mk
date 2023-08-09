@@ -346,9 +346,14 @@ PRODUCT_PACKAGES += libsysprofiler \
 
 # Sensor conf files
 PRODUCT_COPY_FILES += \
-    device/qcom/msmnile_au/sensors/hals.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/hals.conf \
+    device/qcom/msmnile_au/sensors/hals.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/hals.conf
+
+#Disabled sensor feature for KM4 target.
+ifneq ($(TARGET_BOARD_DERIVATIVE_SUFFIX), _km4)
+PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.accelerometer.xml \
     frameworks/native/data/etc/android.hardware.sensor.gyroscope.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.gyroscope.xml
+endif
 
 # Kernel modules install path
 KERNEL_MODULES_INSTALL := dlkm
