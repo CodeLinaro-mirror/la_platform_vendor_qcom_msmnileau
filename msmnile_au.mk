@@ -18,6 +18,9 @@ ifeq ($(ENABLE_VIRTUAL_AB), true)
   $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota.mk)
 endif
 
+#Fastcv Color Propety
+PRODUCT_VENDOR_PROPERTIES += ro.vendor.qc2.color.fastcv=false
+
 # Enable AVB 2.0
 BOARD_AVB_ENABLE := true
 TARGET_BOARD_AUTO := true
