@@ -208,10 +208,6 @@ PRODUCT_DEVICE := msmnile_au
 PRODUCT_BRAND := qti
 PRODUCT_MODEL := msmnile_au for arm64
 
-TARGET_OUT_INTERMEDIATES := out/target/product/$(PRODUCT_NAME)/obj
-$(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr:
-	mkdir -p $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr
-
 #Initial bringup flags
 
 #Default vendor image configuration
@@ -304,10 +300,6 @@ PRODUCT_COPY_FILES += hardware/interfaces/security/keymint/aidl/default/android.
 PRODUCT_COPY_FILES += device/qcom/msmnile_au/hiber.sh:$(TARGET_COPY_OUT_VENDOR)/bin/hiber.sh
 PRODUCT_COPY_FILES += device/qcom/msmnile_au/hiber_restore.sh:$(TARGET_COPY_OUT_VENDOR)/bin/hiber_restore.sh
 
-# Suspend to ram or suspend to disk
-PRODUCT_VENDOR_PROPERTIES += persist.vendor.vehicle.lpm=ram \
-                             vendor.car.hiber=none
-
 PRODUCT_PACKAGES += android.hardware.media.omx@1.0-impl
 
 #Audio DLKM
@@ -383,8 +375,8 @@ PRODUCT_PACKAGES += android.frameworks.automotive.display@1.0-service
 # MSM IRQ Balancer configuration file
 PRODUCT_COPY_FILES += device/qcom/msmnile_au/msm_irqbalance.conf:$(TARGET_COPY_OUT_VENDOR)/etc/msm_irqbalance.conf
 
-SHIPPING_API_LEVEL := 33
-PRODUCT_SHIPPING_API_LEVEL := 33
+SHIPPING_API_LEVEL := 34
+PRODUCT_SHIPPING_API_LEVEL := $(SHIPPING_API_LEVEL)
 
 
 # MIDI feature
@@ -474,7 +466,6 @@ PRODUCT_PROPERTY_OVERRIDES += media.stagefright.enable-player=true \
                               mmp.enable.3g2=true \
                               media.aac_51_output_enabled=true \
                               mm.enable.smoothstreaming=true \
-                              vendor.mm.enable.qcom_parser=63963135 \
                               persist.mm.enable.prefetch=true
 
 # system props for the data modules
@@ -683,6 +674,11 @@ PRODUCT_PACKAGES += android.hardware.neuralnetworks@1.0.vendor \
                     android.hardware.neuralnetworks@1.1.vendor \
                     android.hardware.neuralnetworks@1.2.vendor \
                     android.hardware.neuralnetworks@1.3.vendor
+
+# Value Add changes: add libnbaio for avenhancement
+ifeq ($(TARGET_FWK_SUPPORTS_FULL_VALUEADDS), true)
+PRODUCT_PACKAGES += libnbaio
+endif
 
 PRODUCT_ENFORCE_RRO_TARGETS := framework-res
 PRODUCT_PACKAGES_DEBUG += dumpsCaches
