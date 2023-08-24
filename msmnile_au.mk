@@ -2,6 +2,9 @@ TARGET_BOARD_PLATFORM := msmnile
 TARGET_BOOTLOADER_BOARD_NAME := msmnile
 TARGET_BOARD_TYPE := auto
 TARGET_BOARD_SUFFIX := _au
+
+DEVICE_SUPPORTS_64_BIT_APPS_ONLY := true
+
 # Skip VINTF checks for kernel configs since we do not have kernel source
 PRODUCT_OTA_ENFORCE_VINTF_KERNEL_REQUIREMENTS := false
 
