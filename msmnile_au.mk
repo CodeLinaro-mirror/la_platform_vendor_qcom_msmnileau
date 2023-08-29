@@ -671,7 +671,7 @@ PRODUCT_PACKAGES += vndservicemanager
 TARGET_MOUNT_POINTS_SYMLINKS := false
 
 PRODUCT_PACKAGES += android.hardware.dumpstate-service.example \
-                    android.hardware.thermal@2.0-service.mock \
+                    android.hardware.thermal-service.example
 
 PRODUCT_PACKAGES += android.hardware.health-service.qti \
                     android.hardware.health-service.qti_recovery
