@@ -182,6 +182,7 @@ on property:service.bootanim.exit=1
 on property:sys.boot_completed=1
     write /dev/kmsg "boot_kpi: K - USER Android Boot Complete"
     setprop vendor.sys.boot_completed 1
+    start fastcv
 
     # Enable WLAN cold boot calibration
     write /sys/kernel/cnss/fs_ready 1
@@ -192,6 +193,10 @@ on property:init.svc.surfaceflinger=running
 on boot && property:persist.vendor.usb.controller.default=*
     setprop vendor.usb.controller ${persist.vendor.usb.controller.default}
 
+#FastCV
+service fastcv /vendor/bin/fastcv.sh
+    disabled
+    oneshot
 
 service wlan_multiko /vendor/bin/init.qcom.wlan.sh
     user root
