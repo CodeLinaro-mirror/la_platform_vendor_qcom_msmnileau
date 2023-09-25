@@ -46,7 +46,7 @@ on early-init
     start vendor.adsprpcd
     start vendor.adsprpcd_audiopd
     start audiod
-    start esplash
+    #start esplash
 
 on early-init && property:ro.boot.audio=""
     setprop vendor.audio.card.def "/vendor/etc/card-defs-dummy.xml"
