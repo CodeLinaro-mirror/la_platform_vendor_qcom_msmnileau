@@ -2,6 +2,9 @@ TARGET_BOARD_PLATFORM := msmnile
 TARGET_BOOTLOADER_BOARD_NAME := msmnile
 TARGET_BOARD_TYPE := auto
 TARGET_BOARD_SUFFIX := _au
+
+DEVICE_SUPPORTS_64_BIT_APPS_ONLY := true
+
 # Skip VINTF checks for kernel configs since we do not have kernel source
 PRODUCT_OTA_ENFORCE_VINTF_KERNEL_REQUIREMENTS := false
 
@@ -29,6 +32,7 @@ TARGET_USES_QTIC := false
 TARGET_USES_QTIC_EXTENSION := false
 ENABLE_HYP := false
 ENABLE_AIDL_VHAL := true
+ENABLE_AIDL_SENSOR := true
 TARGET_CONSOLE_ENABLED ?= true
 TARGET_GVMGH_SPECIFIC := false
 
@@ -147,7 +151,7 @@ TARGET_USES_QMAA_OVERRIDE_FM  := true
 TARGET_USES_QMAA_OVERRIDE_FTM := true
 TARGET_USES_QMAA_OVERRIDE_GFX := true
 TARGET_USES_QMAA_OVERRIDE_GPS := true
-TARGET_USES_QMAA_OVERRIDE_GP := false
+TARGET_USES_QMAA_OVERRIDE_GP := true
 TARGET_USES_QMAA_OVERRIDE_GPT := false
 TARGET_USES_QMAA_OVERRIDE_KERNEL_TESTS_INTERNAL := true
 TARGET_USES_QMAA_OVERRIDE_KMGK := true
@@ -192,6 +196,9 @@ PRODUCT_COPY_FILES += device/qcom/$(TARGET_BOARD_PLATFORM)-kernel/vendor_dlkm/sy
 endif
 
 TARGET_DEFINES_DALVIK_HEAP := true
+# Disable 32bit App support.
+# This value should be set before including device/qcom/common/common64.mk
+DEVICE_SUPPORTS_64_BIT_APPS_ONLY := true
 $(call inherit-product, device/qcom/common/common64.mk)
 #Inherit all except heap growth limit from phone-xhdpi-2048-dalvik-heap.mk
 PRODUCT_PROPERTY_OVERRIDES  += \
@@ -207,6 +214,10 @@ PRODUCT_NAME := msmnile_au
 PRODUCT_DEVICE := msmnile_au
 PRODUCT_BRAND := qti
 PRODUCT_MODEL := msmnile_au for arm64
+PRODUCT_MANUFACTURER := Qualcomm
+
+PRODUCT_VENDOR_PROPERTIES += \
+    ro.soc.manufacturer=$(PRODUCT_MANUFACTURER) \
 
 #Initial bringup flags
 
@@ -331,10 +342,9 @@ PRODUCT_PACKAGES += fs_config_files
 PRODUCT_PACKAGES += update_engine \
     update_engine_client \
     update_verifier \
-    bootctrl.msmnile \
-    android.hardware.boot@1.2-impl-qti \
-    android.hardware.boot@1.2-impl-qti.recovery \
-    android.hardware.boot@1.2-service
+    android.hardware.boot-service.qti.recovery \
+    android.hardware.boot-service.qti
+
 
 PRODUCT_PACKAGES += \
     update_engine_sideload
@@ -664,8 +674,7 @@ PRODUCT_PACKAGES += vndservicemanager
 
 TARGET_MOUNT_POINTS_SYMLINKS := false
 
-PRODUCT_PACKAGES += android.hardware.dumpstate-service.example \
-                    android.hardware.thermal@2.0-service.mock \
+PRODUCT_PACKAGES += android.hardware.dumpstate-service.example
 
 PRODUCT_PACKAGES += android.hardware.health-service.qti \
                     android.hardware.health-service.qti_recovery
