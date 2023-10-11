@@ -96,9 +96,6 @@ on post-fs
     start vendor.spdaemon
     start vendor.sec_nvm
 
-    # Enable WLAN cold boot calibration
-    write /sys/kernel/cnss/fs_ready 1
-
 service esplash /vendor/bin/esplash
     class core
     user system
@@ -187,8 +184,8 @@ on property:sys.boot_completed=1
     setprop vendor.sys.boot_completed 1
     start fastcv
 
-    # Enable WLAN cold boot calibration
-    write /sys/kernel/cnss/fs_ready 1
+#Load WLAN driver
+    start wlan_multiko
 
 on property:init.svc.surfaceflinger=running
     write /dev/kmsg "boot_kpi: M - USER SurfaceFlinger Start"
