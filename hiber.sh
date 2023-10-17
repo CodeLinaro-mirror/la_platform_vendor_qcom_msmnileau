@@ -52,8 +52,17 @@ cat /proc/swaps
 
 sync
 
-echo stop > /sys/class/remoteproc/remoteproc0/state
-echo stop > /sys/class/remoteproc/remoteproc1/state
+while [ "$(cat /sys/class/remoteproc/remoteproc0/state)" != "offline" ]; do
+    echo "stop" > /sys/class/remoteproc/remoteproc0/state
+        sleep 1
+done
+
+while [ "$(cat /sys/class/remoteproc/remoteproc1/state)" != "offline" ]; do
+    echo "stop" > /sys/class/remoteproc/remoteproc1/state
+        sleep 1
+done
+
+
 echo shutdown > /sys/power/disk
 
 #drop cache
