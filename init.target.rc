@@ -96,9 +96,6 @@ on post-fs
     start vendor.spdaemon
     start vendor.sec_nvm
 
-    # Enable WLAN cold boot calibration
-    write /sys/kernel/cnss/fs_ready 1
-
 service esplash /vendor/bin/esplash
     class core
     user system
@@ -147,6 +144,10 @@ on boot
     write /data/vendor/netmgr/recovery/recovery_info ""
     chown radio radio /data/vendor/netmgr/recovery/recovery_info
     start dumpsCaches
+    chown system system /sys/bus/platform/drivers/xhci-hcd/unbind
+    chown system system /sys/bus/platform/drivers/xhci-hcd/bind
+    chmod 0644 /sys/bus/platform/drivers/xhci-hcd/unbind
+    chmod 0644 /sys/bus/platform/drivers/xhci-hcd/bind
 
 # Add a cpuset for the camera daemon
 # We want all cores for camera
@@ -163,7 +164,9 @@ on boot
     setprop vendor.usb.rmnet.inst.name "rmnet"
     setprop vendor.usb.dpl.inst.name "dpl"
     setprop vendor.usb.qdss.inst.name "qdss_sw"
-    setprop vendor.usb.controller a600000.dwc3
+
+on property:ro.boot.usbcontroller=*
+    setprop vendor.usb.controller ${ro.boot.usbcontroller}
 
 on property:vendor.wlan.driver.status="ok"
     setprop wlan.driver.status "ok"
@@ -183,8 +186,8 @@ on property:sys.boot_completed=1
     setprop vendor.sys.boot_completed 1
     start fastcv
 
-    # Enable WLAN cold boot calibration
-    write /sys/kernel/cnss/fs_ready 1
+#Load WLAN driver
+    start wlan_multiko
 
 on property:init.svc.surfaceflinger=running
     write /dev/kmsg "boot_kpi: M - USER SurfaceFlinger Start"
