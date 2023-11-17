@@ -701,16 +701,6 @@ PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
 
 PRODUCT_PACKAGES += qcar-gsi.avbpubkey
 
-ifeq ($(BOARD_SUPPORTS_RAMDISK_EARLY_INIT),true)
-ifeq ($(ENABLE_HYP), false)
-ifneq (,$(filter $(TARGET_BOARD_PLATFORM)$(TARGET_BOARD_SUFFIX), msmnile_gvmq msmnile_au))
-PRODUCT_COPY_FILES += \
-    vendor/qcom/opensource/earlyservices/early-init/modules.delaylist:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/modules.delaylist
-
-endif
-endif
-endif
-
 ###################################################################################
 # This is the End of target.mk file.
 # Now, Pickup other split product.mk files:
