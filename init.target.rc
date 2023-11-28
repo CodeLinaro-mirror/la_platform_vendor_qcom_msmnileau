@@ -184,6 +184,7 @@ on property:service.bootanim.exit=1
 on property:sys.boot_completed=1
     write /dev/kmsg "boot_kpi: K - USER Android Boot Complete"
     setprop vendor.sys.boot_completed 1
+    mkdir /data/vendor/fastcv 0700 media media
     start fastcv
 
 #Load WLAN driver
@@ -197,6 +198,8 @@ on boot && property:persist.vendor.usb.controller.default=*
 
 #FastCV
 service fastcv /vendor/bin/fastcv.sh
+    user media
+    group media
     disabled
     oneshot
 
