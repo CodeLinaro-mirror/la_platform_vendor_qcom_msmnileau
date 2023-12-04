@@ -40,9 +40,6 @@ on early-init
     write /sys/kernel/boot_kpi/kpi_values "M - INITRC Userspace Start"
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
-    write /sys/kernel/boot_kpi/kpi_values "M - adsprpcd Start"
-    start vendor.adsprpcd
-    start vendor.adsprpcd_audiopd
 
 on early-init && property:ro.boot.audio=""
     start audiod
@@ -86,6 +83,9 @@ on init
     start acdb_loader_service
     write /sys/kernel/boot_kpi/kpi_values "M - audio_hal_plugin_service Start"
     start audio_hal_plugin_service
+    write /sys/kernel/boot_kpi/kpi_values "M - adsprpcd Start"
+    start vendor.adsprpcd
+    start vendor.adsprpcd_audiopd
 
 on late-init
     start automotive_display
@@ -186,7 +186,9 @@ on property:init.svc.surfaceflinger=running
     setprop vendor.usb.rmnet.inst.name "rmnet"
     setprop vendor.usb.dpl.inst.name "dpl"
     setprop vendor.usb.qdss.inst.name "qdss"
-    setprop vendor.usb.controller a600000.dwc3
+
+on property:ro.boot.usbcontroller=*
+    setprop vendor.usb.controller ${ro.boot.usbcontroller}
 
 on boot && property:persist.vendor.usb.controller.default=*
     setprop vendor.usb.controller ${persist.vendor.usb.controller.default}
@@ -196,6 +198,13 @@ service wlan_multiko /vendor/bin/init.qcom.wlan.sh
     user root
     group root
     disabled
+    oneshot
+
+#pd-mapper
+service vendor.pd_mapper /vendor/bin/pd-mapper 1
+    class core
+    user system
+    group system
     oneshot
 
 #Peripheral manager

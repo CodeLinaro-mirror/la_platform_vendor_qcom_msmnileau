@@ -67,6 +67,7 @@ TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := cortex-a9
 
+TARGET_ES_SEPOLICY_DIR := early_services
 TARGET_SEPOLICY_DIR := gen3_metal
 
 BOARD_SECCOMP_POLICY := device/qcom/$(TARGET_BOARD_PLATFORM)/seccomp
@@ -181,6 +182,7 @@ BOARD_VENDOR_KERNEL_MODULES := \
 #    $(KERNEL_MODULES_OUT)/msm_11ad_proxy.ko \
 #    $(KERNEL_MODULES_OUT)/emac_dwc_eqos.ko \
 
+ifeq ($(BOARD_SUPPORTS_RAMDISK_EARLY_INIT),true)
 BOARD_GENERIC_RAMDISK_KERNEL_MODULES_LOAD := \
     snd_event_dlkm.ko \
     q6_notifier_dlkm.ko \
@@ -193,6 +195,8 @@ BOARD_GENERIC_RAMDISK_KERNEL_MODULES_LOAD := \
     native_dlkm.ko \
     hdmi_dlkm.ko \
 
+endif
+
 # install lkdtm only for userdebug and eng build variants
 ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
     ifneq (,$(findstring debug_defconfig, $(KERNEL_DEFCONFIG)))
@@ -202,7 +206,7 @@ endif
 
 
 
-BOARD_DO_NOT_STRIP_VENDOR_MODULES := true
+BOARD_DO_NOT_STRIP_VENDOR_MODULES := false
 
 TARGET_USES_ION := true
 TARGET_USES_NEW_ION_API :=true
