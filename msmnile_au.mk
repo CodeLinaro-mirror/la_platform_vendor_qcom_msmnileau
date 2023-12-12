@@ -118,7 +118,7 @@ PRODUCT_NAME := msmnile_au
 PRODUCT_DEVICE := msmnile_au
 PRODUCT_BRAND := qti
 PRODUCT_MODEL := msmnile_au for arm64
-PRODUCT_MANUFACTURER := qti
+PRODUCT_MANUFACTURER := Qualcomm
 
 TARGET_OUT_INTERMEDIATES := out/target/product/$(PRODUCT_NAME)/obj
 $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr:
@@ -126,7 +126,6 @@ $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr:
 
 PRODUCT_VENDOR_PROPERTIES += \
     ro.soc.manufacturer=$(PRODUCT_MANUFACTURER) \
-    ro.soc.model=$(PRODUCT_DEVICE)
 
 #Initial bringup flags
 
