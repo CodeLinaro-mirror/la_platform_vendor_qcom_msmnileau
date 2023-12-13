@@ -36,7 +36,6 @@ TARGET_NO_QTI_WFD := true
 BOARD_HAVE_QCOM_FM := false
 BOARD_VENDOR_QCOM_LOC_PDK_FEATURE_SET := false
 TARGET_ENABLE_QC_AV_ENHANCEMENTS := false
-TARGET_USES_GAS := true
 TARGET_FWK_SUPPORTS_AV_VALUEADDS := false
 TARGET_USES_AOSP_FOR_WLAN := true
 BOARD_HAS_QCOM_WLAN := true
@@ -111,7 +110,12 @@ PRODUCT_VENDOR_PROPERTIES  += \
 	dalvik.vm.heaptargetutilization=0.75 \
 	dalvik.vm.heapminfree=512k \
 	dalvik.vm.heapmaxfree=8m
+
+ifeq (,$(filter $(TARGET_BOARD_DERIVATIVE_SUFFIX), _tb))
 $(call inherit-product, packages/services/Car/car_product/build/car.mk)
+TARGET_USES_GAS := true
+endif
+
 $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 
 PRODUCT_NAME := msmnile_au
