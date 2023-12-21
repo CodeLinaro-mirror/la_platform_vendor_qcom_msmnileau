@@ -1,7 +1,6 @@
 TARGET_BOARD_PLATFORM := msmnile
 TARGET_BOOTLOADER_BOARD_NAME := msmnile
 TARGET_BOARD_TYPE := auto
-TARGET_BOARD_SUFFIX := _au
 TARGET_GVMGH_SPECIFIC := false
 # Skip VINTF checks for kernel configs since we do not have kernel source
 PRODUCT_OTA_ENFORCE_VINTF_KERNEL_REQUIREMENTS := false
@@ -114,6 +113,7 @@ PRODUCT_VENDOR_PROPERTIES  += \
 ifeq (,$(filter $(TARGET_BOARD_DERIVATIVE_SUFFIX), _tb))
 $(call inherit-product, packages/services/Car/car_product/build/car.mk)
 TARGET_USES_GAS := true
+TARGET_BOARD_SUFFIX := _au
 endif
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
