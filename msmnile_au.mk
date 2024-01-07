@@ -26,6 +26,7 @@ endif
 BOARD_AVB_ENABLE := true
 TARGET_BOARD_AUTO := true
 TARGET_USES_AOSP := true
+TARGET_USES_GAS := true
 TARGET_USES_QCOM_BSP := false
 TARGET_NO_TELEPHONY := true
 TARGET_USES_QTIC := false
@@ -56,6 +57,9 @@ TARGET_USES_RRO := true
 
 #Enable Userspace Restart
 $(call inherit-product, $(SRC_TARGET_DIR)/product/userspace_reboot.mk)
+
+# Enable support for APEX updates
+$(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
 
 # Dynamic-partition enabled by default
 #BOARD_DYNAMIC_PARTITION_ENABLE := true
@@ -392,11 +396,6 @@ PRODUCT_SHIPPING_API_LEVEL := $(SHIPPING_API_LEVEL)
 # MIDI feature
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.midi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.midi.xml
-
-#Copy unsupported features list
-PRODUCT_COPY_FILES += \
-    device/qcom/msmnile_au/msmnile_au_excluded_features.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/msmnile_au_excluded_features.xml
-
 
 PRODUCT_PACKAGES += \
        openavb_harness \
