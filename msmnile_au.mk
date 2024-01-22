@@ -26,6 +26,7 @@ endif
 BOARD_AVB_ENABLE := true
 TARGET_BOARD_AUTO := true
 TARGET_USES_AOSP := true
+TARGET_USES_GAS := true
 TARGET_USES_QCOM_BSP := false
 TARGET_NO_TELEPHONY := true
 TARGET_USES_QTIC := false
@@ -396,11 +397,6 @@ PRODUCT_SHIPPING_API_LEVEL := $(SHIPPING_API_LEVEL)
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.midi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.midi.xml
 
-#Copy unsupported features list
-PRODUCT_COPY_FILES += \
-    device/qcom/msmnile_au/msmnile_au_excluded_features.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/msmnile_au_excluded_features.xml
-
-
 PRODUCT_PACKAGES += \
        openavb_harness \
        gptp \
@@ -637,6 +633,11 @@ PRODUCT_PROPERTY_OVERRIDES += ro.radio.noril=true
 
 # Default wifi country code
 PRODUCT_PROPERTY_OVERRIDES += ro.boot.wificountrycode=us
+
+# Native service to load modules
+ifneq (,$(filter $(TARGET_BOARD_PLATFORM)$(TARGET_BOARD_SUFFIX), msmnile_au))
+PRODUCT_VENDOR_PROPERTIES += ro.vendor.qti.load_dlkm.service=native
+endif
 
 #for Emac
 PRODUCT_PACKAGES += emac_perf_settings.sh
