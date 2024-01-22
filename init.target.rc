@@ -157,9 +157,10 @@ on property:service.bootanim.exit=1
     setprop vendor.init.svc.bootanim "stopped"
 
 on property:sys.boot_completed=1
-    start fastcv
     write /sys/kernel/boot_kpi/kpi_values "K - USER Android Boot Complete"
     setprop vendor.sys.boot_completed 1
+    mkdir /data/vendor/fastcv 0700 media media
+    start fastcv
 
 on property:init.svc.surfaceflinger=running
     write /sys/kernel/boot_kpi/kpi_values "M - USER SurfaceFlinger Start"
@@ -177,6 +178,8 @@ on boot && property:persist.vendor.usb.controller.default=*
 
 #fastcv
 service fastcv /vendor/bin/fastcv.sh
+  user media
+  group media
   disabled
   oneshot
 

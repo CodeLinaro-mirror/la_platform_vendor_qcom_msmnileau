@@ -32,7 +32,6 @@ VERSION=1.0
 echo "Current hibernation script version is $VERSION"
 
 echo Y > /sys/module/printk/parameters/ignore_loglevel
-echo N > /sys/module/printk/parameters/console_suspend
 echo 0 > /d/tracing/tracing_on
 
 # Turn BT off. Here keyevents (23:KEYCODE_DPAD_CENTER, 22:KEYCODE_DPAD_RIGHT)
