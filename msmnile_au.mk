@@ -26,6 +26,7 @@ endif
 BOARD_AVB_ENABLE := true
 TARGET_BOARD_AUTO := true
 TARGET_USES_AOSP := true
+TARGET_USES_GAS := true
 TARGET_USES_QCOM_BSP := false
 TARGET_NO_TELEPHONY := true
 TARGET_USES_QTIC := false
@@ -56,6 +57,9 @@ TARGET_USES_RRO := true
 
 #Enable Userspace Restart
 $(call inherit-product, $(SRC_TARGET_DIR)/product/userspace_reboot.mk)
+
+# Enable support for APEX updates
+$(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
 
 # Dynamic-partition enabled by default
 #BOARD_DYNAMIC_PARTITION_ENABLE := true
@@ -393,11 +397,6 @@ PRODUCT_SHIPPING_API_LEVEL := $(SHIPPING_API_LEVEL)
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.midi.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.software.midi.xml
 
-#Copy unsupported features list
-PRODUCT_COPY_FILES += \
-    device/qcom/msmnile_au/msmnile_au_excluded_features.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/msmnile_au_excluded_features.xml
-
-
 PRODUCT_PACKAGES += \
        openavb_harness \
        gptp \
@@ -635,6 +634,11 @@ PRODUCT_PROPERTY_OVERRIDES += ro.radio.noril=true
 # Default wifi country code
 PRODUCT_PROPERTY_OVERRIDES += ro.boot.wificountrycode=us
 
+# Native service to load modules
+ifneq (,$(filter $(TARGET_BOARD_PLATFORM)$(TARGET_BOARD_SUFFIX), msmnile_au))
+PRODUCT_VENDOR_PROPERTIES += ro.vendor.qti.load_dlkm.service=native
+endif
+
 #for Emac
 PRODUCT_PACKAGES += emac_perf_settings.sh
 
@@ -676,8 +680,8 @@ TARGET_MOUNT_POINTS_SYMLINKS := false
 
 PRODUCT_PACKAGES += android.hardware.dumpstate-service.example
 
-PRODUCT_PACKAGES += android.hardware.health-service.qti \
-                    android.hardware.health-service.qti_recovery
+PRODUCT_PACKAGES += android.hardware.health-service.example \
+                    android.hardware.health-service.example_recovery
 
 PRODUCT_PACKAGES += android.hardware.neuralnetworks@1.0.vendor \
                     android.hardware.neuralnetworks@1.1.vendor \

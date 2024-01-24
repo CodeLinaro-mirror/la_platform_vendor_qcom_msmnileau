@@ -39,19 +39,26 @@ on early-init
     write /dev/kmsg "boot_kpi: M - INITRC Userspace Start"
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
-    mkdir /dev/socket/camera 0770 system camera
-    start ais_server
-    write /dev/kmsg "boot_kpi: M - Start adsp"
-    write /sys/kernel/boot_adsp/boot 1
+    #mkdir /dev/socket/camera 0770 system camera
+    #start ais_server
     start vendor.adsprpcd
     start vendor.adsprpcd_audiopd
     start audiod
     start esplash
 
+# Start adsp here only for pure aosp build, for va_aosp it is launched from EarlyServices
+on early-init && property:ro.vendor.qti.va_aosp.support=0
+    write /dev/kmsg "boot_kpi: M - Start adsp"
+    write /sys/kernel/boot_adsp/boot 1
+
 on early-init && property:ro.boot.audio=""
     setprop vendor.audio.card.def "/vendor/etc/card-defs-dummy.xml"
 
-service ais_server /system/vendor/bin/ais_server
+on property:ro.soc.model="SA8195P"
+    mkdir /dev/socket/camera 0770 system camera
+    start ais_server
+
+service ais_server /vendor_early_services/vendor/bin/ais_server
     class core
     user system
     group camera input graphics
@@ -123,7 +130,6 @@ on post-fs-data
 # For cpusets initialize for Silver Only first and then Silver + Gold
 # Silver Only configuration cannot work with 0-7
 on boot
-    start audio_chime
     chown system system /sys/kernel/hbtp/display_pwr
     start rmt_storage
     start rfs_access
@@ -184,6 +190,7 @@ on property:service.bootanim.exit=1
 on property:sys.boot_completed=1
     write /dev/kmsg "boot_kpi: K - USER Android Boot Complete"
     setprop vendor.sys.boot_completed 1
+    mkdir /data/vendor/fastcv 0700 media media
     start fastcv
 
 #Load WLAN driver
@@ -195,8 +202,14 @@ on property:init.svc.surfaceflinger=running
 on boot && property:persist.vendor.usb.controller.default=*
     setprop vendor.usb.controller ${persist.vendor.usb.controller.default}
 
+# Start audio_chime here only for pure aosp build, for va_aosp it is launched from EarlyServices
+on boot && property:ro.vendor.qti.va_aosp.support=0
+    start audio_chime
+
 #FastCV
 service fastcv /vendor/bin/fastcv.sh
+    user media
+    group media
     disabled
     oneshot
 

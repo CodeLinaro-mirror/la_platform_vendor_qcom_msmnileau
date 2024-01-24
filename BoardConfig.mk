@@ -59,6 +59,12 @@ TARGET_FS_CONFIG_GEN += device/qcom/$(TARGET_BOARD_PLATFORM)_au/config.fs
 endif
 endif
 
+# Enable chained vbmeta for boot images
+BOARD_AVB_BOOT_KEY_PATH := external/avb/test/data/testkey_rsa4096.pem
+BOARD_AVB_BOOT_ALGORITHM := SHA256_RSA4096
+BOARD_AVB_BOOT_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
+BOARD_AVB_BOOT_ROLLBACK_INDEX_LOCATION := 3
+
 TARGET_2ND_ARCH := arm
 TARGET_2ND_ARCH_VARIANT := armv7-a-neon
 TARGET_2ND_CPU_ABI := armeabi-v7a
