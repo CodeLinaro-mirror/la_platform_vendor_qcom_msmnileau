@@ -130,6 +130,7 @@ on boot
     chown system system /sys/kernel/hbtp/display_pwr
     start rmt_storage
     start rfs_access
+    start wlan_multiko
     write /dev/cpuset/top-app/cpus 0-3
     write /dev/cpuset/foreground/cpus 0-3
     write /dev/cpuset/foreground/boost/cpus 0-3
@@ -189,9 +190,6 @@ on property:sys.boot_completed=1
     setprop vendor.sys.boot_completed 1
     mkdir /data/vendor/fastcv 0700 media media
     start fastcv
-
-#Load WLAN driver
-    start wlan_multiko
 
 on property:init.svc.surfaceflinger=running
     write /dev/kmsg "boot_kpi: M - USER SurfaceFlinger Start"
