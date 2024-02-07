@@ -394,6 +394,11 @@ PRODUCT_PACKAGES += \
        gptp \
        mrpd
 
+# Enable libgptp
+PRODUCT_PACKAGES += \
+       libgptp \
+       libgptp_test
+
 #sysprofiler
 PRODUCT_PACKAGES += libsysprofiler \
     sysprofiler_app \
