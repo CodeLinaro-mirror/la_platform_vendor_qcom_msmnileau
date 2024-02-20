@@ -68,7 +68,7 @@ on init && property:ro.boot.audio=audioreach
     start agmplay
 
 on init
-    start ais_server
+    start vendor.ais_server
     write /dev/stune/foreground/schedtune.sched_boost_no_override 1
     write /dev/stune/top-app/schedtune.sched_boost_no_override 1
     write /dev/stune/schedtune.colocate 0
@@ -320,9 +320,9 @@ service smcinvoked /system/bin/smcinvoked
     user system
     group system
 
-service ais_server /vendor_early_services/vendor/bin/ais_server 1
+service vendor.ais_server /vendor/bin/ais_server 1
     class core
-    user root
+    user camera
     group camera input graphics
     oneshot
     disabled
