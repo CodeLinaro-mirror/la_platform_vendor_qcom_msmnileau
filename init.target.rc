@@ -261,15 +261,6 @@ service emac_rps_setting /system/vendor/bin/sh /vendor/bin/emac_rps_settings.sh 
     user root
     oneshot
 
-service vendor.thermal-engine /vendor/bin/thermal-engine
-   class main
-   user root
-   socket thermal-send-client stream 0666 system system
-   socket thermal-recv-client stream 0660 system system
-   socket thermal-recv-passive-client stream 0666 system system
-   socket thermal-send-rule stream 0660 system system
-   group root
-
 service vendor.cdsprpcd /vendor/bin/cdsprpcd
    class main
    user system
@@ -402,3 +393,7 @@ service vendor.ams-1-0 /vendor/bin/hw/vendor.qti.hardware.AMSIPC@1.0-service
 
 on property:sys.boot_completed=1
     mount vfat /dev/block/bootdevice/by-name/logfs /sys/kernel/debug/bookpi/bootloader_log
+
+on property:ro.soc.model="SA8195P"
+    mkdir /dev/socket/camera 0770 system camera
+    start ais_server
