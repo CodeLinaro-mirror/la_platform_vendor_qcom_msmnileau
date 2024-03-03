@@ -335,9 +335,7 @@ PRODUCT_PACKAGES += libsysprofiler \
 
 # Sensor conf files
 PRODUCT_COPY_FILES += \
-    device/qcom/msmnile_au/sensors/hals.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/hals.conf \
-    frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.accelerometer.xml \
-    frameworks/native/data/etc/android.hardware.sensor.gyroscope.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.sensor.gyroscope.xml
+    device/qcom/msmnile_au/sensors/hals.conf:$(TARGET_COPY_OUT_VENDOR)/etc/sensors/hals.conf
 
 # Kernel modules install path
 KERNEL_MODULES_INSTALL := dlkm
@@ -549,6 +547,11 @@ PRODUCT_VENDOR_PROPERTIES += ro.radio.noril=true
 # Default wifi country code
 PRODUCT_VENDOR_PROPERTIES += ro.boot.wificountrycode=us
 
+# Native service to load modules
+ifneq (,$(filter $(TARGET_BOARD_PLATFORM)$(TARGET_BOARD_SUFFIX), msmnile_au))
+PRODUCT_VENDOR_PROPERTIES += ro.vendor.qti.load_dlkm.service=native
+endif
+
 #Copy supported features list
 ifeq ($(TARGET_USES_GAS),true)
 PRODUCT_COPY_FILES += device/qcom/msmnile_au/msmnile_au_features.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/msmnile_au_features.xml
@@ -594,7 +597,6 @@ PRODUCT_PACKAGES += vndservicemanager
 TARGET_MOUNT_POINTS_SYMLINKS := false
 
 PRODUCT_PACKAGES += android.hardware.dumpstate-service.example \
-                    android.hardware.thermal@2.0-service.mock \
                     android.hardware.health-service.example
 
 PRODUCT_PACKAGES += android.hardware.neuralnetworks@1.0.vendor \
