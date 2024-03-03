@@ -1,7 +1,6 @@
 TARGET_BOARD_PLATFORM := msmnile
 TARGET_BOOTLOADER_BOARD_NAME := msmnile
 TARGET_BOARD_TYPE := auto
-TARGET_BOARD_SUFFIX := _au
 # Skip VINTF checks for kernel configs since we do not have kernel source
 PRODUCT_OTA_ENFORCE_VINTF_KERNEL_REQUIREMENTS := false
 
@@ -31,7 +30,6 @@ TARGET_USES_QTIC_EXTENSION := false
 ENABLE_HYP := false
 ENABLE_AIDL_VHAL := true
 TARGET_CONSOLE_ENABLED ?= true
-TARGET_USES_GAS := true
 TARGET_GVMGH_SPECIFIC := false
 TARGET_USES_RRO := true
 
@@ -120,7 +118,13 @@ PRODUCT_VENDOR_PROPERTIES  += \
 	dalvik.vm.heaptargetutilization=0.75 \
 	dalvik.vm.heapminfree=512k \
 	dalvik.vm.heapmaxfree=8m
+
+ifeq (,$(filter $(TARGET_BOARD_DERIVATIVE_SUFFIX), _tb))
 $(call inherit-product, packages/services/Car/car_product/build/car.mk)
+TARGET_USES_GAS := true
+TARGET_BOARD_SUFFIX := _au
+endif
+
 $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 
 PRODUCT_NAME := msmnile_au
@@ -129,9 +133,11 @@ PRODUCT_BRAND := qti
 PRODUCT_MODEL := msmnile_au for arm64
 PRODUCT_MANUFACTURER := Qualcomm
 
+ifeq ($(KERNEL_MODULES_OUT),)
 TARGET_OUT_INTERMEDIATES := out/target/product/$(PRODUCT_NAME)/obj
 $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr:
 	mkdir -p $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr
+endif
 
 PRODUCT_VENDOR_PROPERTIES += \
     ro.soc.manufacturer=$(PRODUCT_MANUFACTURER) \
@@ -548,7 +554,7 @@ PRODUCT_VENDOR_PROPERTIES += ro.radio.noril=true
 PRODUCT_VENDOR_PROPERTIES += ro.boot.wificountrycode=us
 
 # Native service to load modules
-ifneq (,$(filter $(TARGET_BOARD_PLATFORM)$(TARGET_BOARD_SUFFIX), msmnile_au))
+ifneq (,$(filter $(TARGET_BOARD_PLATFORM)$(TARGET_BOARD_SUFFIX)$(TARGET_BOARD_DERIVATIVE_SUFFIX), msmnile_au msmnile_tb))
 PRODUCT_VENDOR_PROPERTIES += ro.vendor.qti.load_dlkm.service=native
 endif
 
