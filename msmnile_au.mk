@@ -167,6 +167,8 @@ ifeq ($(TARGET_SINGLE_TREE), true)
   PRODUCT_BUILD_RAMDISK_IMAGE := true
 endif
 
+PRODUCT_SOONG_NAMESPACES += hardware/qcom/wlan/qcwcn
+
 ###########
 #QMAA flags starts
 ###########
