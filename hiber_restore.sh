@@ -4,6 +4,14 @@
 # SPDX-License-Identifier: BSD-3-Clause-Clear
 
 # Post Restore
-echo start > /sys/class/remoteproc/remoteproc0/state
-echo start > /sys/class/remoteproc/remoteproc1/state
+
+
+if [ "$(cat /sys/class/remoteproc/remoteproc0/state)" != "running" ]; then
+    echo start > /sys/class/remoteproc/remoteproc0/state
+fi
+
+if [ "$(cat /sys/class/remoteproc/remoteproc1/state)" != "running" ]; then
+    echo start > /sys/class/remoteproc/remoteproc1/state
+fi
+
 swapoff /dev/block/sda13
