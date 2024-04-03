@@ -58,10 +58,11 @@ on property:ro.soc.model="SA8195P"
     mkdir /dev/socket/camera 0770 system camera
     start ais_server
 
-service ais_server /vendor_early_services/vendor/bin/ais_server
+service ais_server /vendor/bin/ais_server
     class core
-    user system
+    user camera 
     group camera input graphics
+    oneshot
     disabled
     onrestart restart evs_driver
     onrestart restart qcarcam_hal
@@ -127,6 +128,8 @@ on post-fs-data
 # For cpusets initialize for Silver Only first and then Silver + Gold
 # Silver Only configuration cannot work with 0-7
 on boot
+    mkdir /dev/socket/camera 0770 camera camera
+    start ais_server
     chown system system /sys/kernel/hbtp/display_pwr
     start rmt_storage
     start rfs_access
