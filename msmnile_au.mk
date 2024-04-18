@@ -5,6 +5,10 @@ TARGET_BOARD_SUFFIX := _au
 
 DEVICE_SUPPORTS_64_BIT_APPS_ONLY := true
 
+SHIPPING_API_LEVEL := 35
+PRODUCT_SHIPPING_API_LEVEL := $(SHIPPING_API_LEVEL)
+BOARD_SHIPPING_API_LEVEL := 202404
+
 # Skip VINTF checks for kernel configs since we do not have kernel source
 PRODUCT_OTA_ENFORCE_VINTF_KERNEL_REQUIREMENTS := false
 
@@ -89,9 +93,17 @@ BOARD_AVB_SYSTEM_DLKM_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
 BOARD_AVB_VENDOR_DLKM_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
 
 ifeq ($(ENABLE_AB), true)
+ifeq (true,$(call math_gt_or_eq,$(SHIPPING_API_LEVEL),34))
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/msmnileau_fstab_metadata_f2fs/fstab_AB_dynamic_partition_variant.qti:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.qcom
+else
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/fstab_AB_dynamic_partition_variant.qti:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.qcom
+endif
+else
+ifeq (true,$(call math_gt_or_eq,$(SHIPPING_API_LEVEL),34))
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/msmnileau_fstab_metadata_f2fs/fstab_non_AB_dynamic_partition_variant.qti:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.qcom
 else
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/fstab_non_AB_dynamic_partition_variant.qti:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.qcom
+endif
 endif
 #endif
 
@@ -382,10 +394,6 @@ PRODUCT_PACKAGES += android.frameworks.automotive.display@1.0-service
 
 # MSM IRQ Balancer configuration file
 PRODUCT_COPY_FILES += device/qcom/msmnile_au/msm_irqbalance.conf:$(TARGET_COPY_OUT_VENDOR)/etc/msm_irqbalance.conf
-
-SHIPPING_API_LEVEL := 35
-PRODUCT_SHIPPING_API_LEVEL := $(SHIPPING_API_LEVEL)
-BOARD_SHIPPING_API_LEVEL := 202404
 
 # MIDI feature
 PRODUCT_COPY_FILES += \
