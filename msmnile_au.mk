@@ -415,6 +415,9 @@ PRODUCT_PACKAGES += init.qti.cam.sh
 
 TARGET_MOUNT_POINTS_SYMLINKS := false
 
+# Disable boot animation
+PRODUCT_PROPERTY_OVERRIDES += debug.sf.nobootanimation=1
+
 PRODUCT_PACKAGES += android.hardware.dumpstate@1.1-service.example \
                     android.hardware.thermal@2.0-service.mock \
 
