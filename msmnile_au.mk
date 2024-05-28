@@ -383,9 +383,9 @@ PRODUCT_PACKAGES += android.frameworks.automotive.display@1.0-service
 # MSM IRQ Balancer configuration file
 PRODUCT_COPY_FILES += device/qcom/msmnile_au/msm_irqbalance.conf:$(TARGET_COPY_OUT_VENDOR)/etc/msm_irqbalance.conf
 
-SHIPPING_API_LEVEL := 34
+SHIPPING_API_LEVEL := 35
 PRODUCT_SHIPPING_API_LEVEL := $(SHIPPING_API_LEVEL)
-BOARD_SHIPPING_API_LEVEL := 34
+BOARD_SHIPPING_API_LEVEL := 202404
 
 # MIDI feature
 PRODUCT_COPY_FILES += \
