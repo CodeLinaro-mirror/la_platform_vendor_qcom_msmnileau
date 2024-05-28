@@ -54,6 +54,13 @@ ifeq ($(BOARD_SUPPORTS_RAMDISK_EARLY_INIT),true)
 CONFIG_EARLY_INIT := true
 TARGET_COPY_OUT_EARLY_SERVICES := vendor_early_services
 
+# TODO: remove U from fiter list after q3 tag upgrade
+ifneq ( ,$(filter U UpsideDownCake 14 V VanillaIceCream 15, $(PLATFORM_VERSION)))
+TARGET_ANDROID_BELOW_V15 := false
+else
+TARGET_ANDROID_BELOW_V15 := true
+endif
+
 ifeq (,$(findstring $(TARGET_BOARD_PLATFORM)_au, $(TARGET_FS_CONFIG_GEN)))
 TARGET_FS_CONFIG_GEN += device/qcom/$(TARGET_BOARD_PLATFORM)_au/config.fs
 endif
