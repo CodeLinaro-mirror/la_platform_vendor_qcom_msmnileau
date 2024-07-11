@@ -298,8 +298,7 @@ PRODUCT_PACKAGES += \
 #sysprofiler
 PRODUCT_PACKAGES += libsysprofiler \
     sysprofiler_app \
-    libQProfilerInterface \
-    sysprofiler.h
+    libQProfilerInterface
 
 # Sensor conf files
 PRODUCT_COPY_FILES += \
