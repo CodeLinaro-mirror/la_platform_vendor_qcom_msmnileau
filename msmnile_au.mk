@@ -697,7 +697,8 @@ PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
 PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
 
 PRODUCT_PACKAGES += qcar-gsi.avbpubkey
-
+# Use AIDL for media.c2 HAL
+PRODUCT_VENDOR_PROPERTIES += media.c2.hal.selection=aidl
 ###################################################################################
 # This is the End of target.mk file.
 # Now, Pickup other split product.mk files:
