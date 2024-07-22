@@ -68,7 +68,7 @@ on init && property:ro.boot.audio=audioreach
     start agmplay
 
 on init
-    start ais_server
+    start vendor.ais_server
     write /dev/stune/foreground/schedtune.sched_boost_no_override 1
     write /dev/stune/top-app/schedtune.sched_boost_no_override 1
     write /dev/stune/schedtune.colocate 0
@@ -133,6 +133,7 @@ on boot
     chown system system /sys/kernel/hbtp/display_pwr
     start rmt_storage
     start rfs_access
+    start wlan_multiko
     write /dev/cpuset/top-app/cpus 0-3
     write /dev/cpuset/foreground/cpus 0-3
     write /dev/cpuset/foreground/boost/cpus 0-3
@@ -175,7 +176,6 @@ on property:service.bootanim.exit=1
 on property:sys.boot_completed=1
     write /sys/kernel/boot_kpi/kpi_values "K - USER Android Boot Complete"
     setprop vendor.sys.boot_completed 1
-    start wlan_multiko
     mkdir /data/vendor/fastcv 0700 media media
     start fastcv
 
@@ -311,9 +311,9 @@ service smcinvoked /system/bin/smcinvoked
     user system
     group system
 
-service ais_server /vendor_early_services/vendor/bin/ais_server 1
+service vendor.ais_server /vendor/bin/ais_server 1
     class core
-    user root
+    user camera
     group camera input graphics
     oneshot
     disabled
