@@ -3,7 +3,6 @@ TARGET_BOOTLOADER_BOARD_NAME := msmnile
 TARGET_BOARD_TYPE := auto
 TARGET_BOARD_SUFFIX := _au
 
-DEVICE_SUPPORTS_64_BIT_APPS_ONLY := true
 
 ifeq ($(TARGET_SINGLE_TREE), true)
   PRODUCT_PRODUCT_VNDK_VERSION := current
@@ -286,7 +285,11 @@ KERNEL_LLVM_SUPPORT := true
 KERNEL_SD_LLVM_SUPPORT := false
 
 # diag-router
-TARGET_HAS_DIAG_ROUTER := true
+ifeq ($(strip $(TARGET_BUILD_VARIANT)),user)
+    TARGET_HAS_DIAG_ROUTER := false
+else
+    TARGET_HAS_DIAG_ROUTER := true
+endif
 
 # Target uses DIAG_MDM2 instance to collect WLAN fw diag logs
 PRODUCT_PROPERTY_OVERRIDES += vendor.usb.diag_mdm.inst.name=diag_mdm2
