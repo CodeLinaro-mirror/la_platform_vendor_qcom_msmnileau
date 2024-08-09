@@ -43,7 +43,6 @@ on early-init
     #start ais_server
     start vendor.adsprpcd
     start vendor.adsprpcd_audiopd
-    start audiod
     start esplash
 
 # Start adsp here only for pure aosp build, for va_aosp it is launched from EarlyServices
@@ -78,6 +77,7 @@ on init
     wait /dev/block/platform/soc/1d84000.ufshc
     symlink /dev/block/platform/soc/1d84000.ufshc /dev/block/bootdevice
     # Revert this change once resolved https://partnerissuetracker.corp.google.com/issues/175540571
+    start audiod
     start acdb_loader_service
     start audio_hal_plugin_service
 
