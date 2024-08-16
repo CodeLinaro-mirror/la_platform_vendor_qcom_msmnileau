@@ -18,7 +18,7 @@ ifeq ($(ENABLE_VIRTUAL_AB), true)
 # Enable virtual A/B compression
 $(call inherit-product, $(SRC_TARGET_DIR)/product/generic_ramdisk.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota/vabc_features.mk)
-PRODUCT_VIRTUAL_AB_COMPRESSION_METHOD := gz
+PRODUCT_VIRTUAL_AB_COMPRESSION_METHOD := lz4
 PRODUCT_VENDOR_PROPERTIES += ro.virtual_ab.compression.threads=true
 endif
 
@@ -383,9 +383,9 @@ PRODUCT_PACKAGES += android.frameworks.automotive.display@1.0-service
 # MSM IRQ Balancer configuration file
 PRODUCT_COPY_FILES += device/qcom/msmnile_au/msm_irqbalance.conf:$(TARGET_COPY_OUT_VENDOR)/etc/msm_irqbalance.conf
 
-SHIPPING_API_LEVEL := 34
+SHIPPING_API_LEVEL := 35
 PRODUCT_SHIPPING_API_LEVEL := $(SHIPPING_API_LEVEL)
-BOARD_SHIPPING_API_LEVEL := 34
+BOARD_SHIPPING_API_LEVEL := 202404
 
 # MIDI feature
 PRODUCT_COPY_FILES += \
@@ -697,7 +697,8 @@ PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
 PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
 
 PRODUCT_PACKAGES += qcar-gsi.avbpubkey
-
+# Use AIDL for media.c2 HAL
+PRODUCT_VENDOR_PROPERTIES += media.c2.hal.selection=aidl
 ###################################################################################
 # This is the End of target.mk file.
 # Now, Pickup other split product.mk files:
