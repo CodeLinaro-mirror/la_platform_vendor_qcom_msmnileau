@@ -51,7 +51,10 @@ TARGET_CPU_ABI := arm64-v8a
 TARGET_CPU_ABI2 :=
 TARGET_CPU_VARIANT := generic
 
+ifneq ($(TARGET_BOARD_DERIVATIVE_SUFFIX), _tb)
 BOARD_SUPPORTS_RAMDISK_EARLY_INIT := true
+endif
+
 ifeq ($(BOARD_SUPPORTS_RAMDISK_EARLY_INIT),true)
 CONFIG_EARLY_INIT := true
 TARGET_COPY_OUT_EARLY_SERVICES := vendor_early_services
@@ -84,7 +87,7 @@ BUILD_BROKEN_DUP_RULES := true
 
 BOARD_RAMDISK_USE_LZ4 := true
 
--include $(QCPATH)/common/msmnile_au/BoardConfigVendor.mk
+-include $(QCPATH)/common/$(TARGET_BOARD_PLATFORM)$(TARGET_BOARD_SUFFIX)$(TARGET_BOARD_DERIVATIVE_SUFFIX)/BoardConfigVendor.mk
 
 # Some framework code requires this to enable BT
 BOARD_HAVE_BLUETOOTH := true

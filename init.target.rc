@@ -68,7 +68,7 @@ on init && property:ro.boot.audio=audioreach
     start agmplay
 
 on init
-    start vendor.ais_server
+    #start vendor.ais_server
     write /dev/stune/foreground/schedtune.sched_boost_no_override 1
     write /dev/stune/top-app/schedtune.sched_boost_no_override 1
     write /dev/stune/schedtune.colocate 0
@@ -394,6 +394,9 @@ service vendor.ams-1-0 /vendor/bin/hw/vendor.qti.hardware.AMSIPC@1.0-service
 on property:sys.boot_completed=1
     mount vfat /dev/block/bootdevice/by-name/logfs /sys/kernel/debug/bookpi/bootloader_log
 
+on property:ro.soc.model="SA8155P"
+    start vendor.ais_server
+
 on property:ro.soc.model="SA8195P"
     mkdir /dev/socket/camera 0770 system camera
-    start ais_server
+    start vendor.ais_server
