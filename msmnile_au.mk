@@ -3,6 +3,8 @@ TARGET_BOOTLOADER_BOARD_NAME := msmnile
 TARGET_BOARD_TYPE := auto
 TARGET_BOARD_SUFFIX := _au
 
+SHIPPING_API_LEVEL := 34
+PRODUCT_SHIPPING_API_LEVEL := $(SHIPPING_API_LEVEL)
 
 ifeq ($(TARGET_SINGLE_TREE), true)
   PRODUCT_PRODUCT_VNDK_VERSION := current
@@ -127,9 +129,17 @@ BOARD_AVB_SYSTEM_DLKM_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
 BOARD_AVB_VENDOR_DLKM_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
 
 ifeq ($(ENABLE_AB), true)
+ifeq (true,$(call math_gt_or_eq,$(SHIPPING_API_LEVEL),34))
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/msmnileau_fstab_metadata_f2fs/fstab_AB_dynamic_partition_variant.qti:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.qcom
+else
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/fstab_AB_dynamic_partition_variant.qti:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.qcom
+endif
+else
+ifeq (true,$(call math_gt_or_eq,$(SHIPPING_API_LEVEL),34))
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/msmnileau_fstab_metadata_f2fs/fstab_non_AB_dynamic_partition_variant.qti:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.qcom
 else
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/fstab_non_AB_dynamic_partition_variant.qti:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.qcom
+endif
 endif
 #endif
 
@@ -434,10 +444,6 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 
 # MSM IRQ Balancer configuration file
 PRODUCT_COPY_FILES += device/qcom/msmnile_au/msm_irqbalance.conf:$(TARGET_COPY_OUT_VENDOR)/etc/msm_irqbalance.conf
-
-SHIPPING_API_LEVEL := 34
-PRODUCT_SHIPPING_API_LEVEL := $(SHIPPING_API_LEVEL)
-
 
 # MIDI feature
 PRODUCT_COPY_FILES += \

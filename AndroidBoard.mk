@@ -93,9 +93,17 @@ LOCAL_MODULE       := fstab.qcom
 
 LOCAL_MODULE_CLASS := ETC
 ifeq ($(ENABLE_AB), true)
-  LOCAL_SRC_FILES := fstab_AB_dynamic_partition_variant.qti
+  ifeq (true,$(call math_gt_or_eq,$(PRODUCT_SHIPPING_API_LEVEL),34))
+    LOCAL_SRC_FILES := msmnileau_fstab_metadata_f2fs/fstab_AB_dynamic_partition_variant.qti
+  else
+    LOCAL_SRC_FILES := fstab_AB_dynamic_partition_variant.qti
+  endif
 else
-  LOCAL_SRC_FILES := fstab_non_AB_dynamic_partition_variant.qti
+  ifeq (true,$(call math_gt_or_eq,$(PRODUCT_SHIPPING_API_LEVEL),34))
+    LOCAL_SRC_FILES := msmnileau_fstab_metadata_f2fs/fstab_non_AB_dynamic_partition_variant.qti
+  else
+    LOCAL_SRC_FILES := fstab_non_AB_dynamic_partition_variant.qti
+  endif
 endif #ENABLE_AB
 LOCAL_MODULE_PATH  := $(TARGET_OUT_VENDOR_ETC)
 include $(BUILD_PREBUILT)
