@@ -616,6 +616,8 @@ PRODUCT_VENDOR_PROPERTIES += ro.control_privapp_permissions=enforce
 
 PRODUCT_PACKAGES += qcar-gsi.avbpubkey
 
+TARGET_ENABLE_QSEECOM := true
+
 ###################################################################################
 # This is the End of target.mk file.
 # Now, Pickup other split product.mk files:
