@@ -9,6 +9,9 @@ SHIPPING_API_LEVEL := 35
 PRODUCT_SHIPPING_API_LEVEL := $(SHIPPING_API_LEVEL)
 BOARD_SHIPPING_API_LEVEL := 202404
 
+#Enable AOSP to determine page size runtime, this removes PAGE_SIZE macro
+PRODUCT_NO_BIONIC_PAGE_SIZE_MACRO := true
+
 # Skip VINTF checks for kernel configs since we do not have kernel source
 PRODUCT_OTA_ENFORCE_VINTF_KERNEL_REQUIREMENTS := false
 
