@@ -81,13 +81,15 @@ BOARD_AVB_SYSTEM_EXT_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
 BOARD_AVB_VENDOR_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
 BOARD_AVB_SYSTEM_DLKM_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
 BOARD_AVB_VENDOR_DLKM_ADD_HASHTREE_FOOTER_ARGS += --hash_algorithm sha256
-ifneq ($(TARGET_BOARD_DERIVATIVE_SUFFIX), _km4)
+
+ifeq (,$(filter $(TARGET_BOARD_DERIVATIVE_SUFFIX), _km4 _tb))
 ifeq ($(ENABLE_AB), true)
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/fstab_AB_dynamic_partition_variant.qti:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.qcom
 else
 PRODUCT_COPY_FILES += $(LOCAL_PATH)/fstab_non_AB_dynamic_partition_variant.qti:$(TARGET_COPY_OUT_VENDOR_RAMDISK)/first_stage_ramdisk/fstab.qcom
 endif
 endif #TARGET_BOARD_DERIVATIVE_SUFFIX
+
 #PRODUCT_BUILD_SYSTEM_IMAGE := true
 PRODUCT_BUILD_SYSTEM_IMAGE := false
 PRODUCT_BUILD_SYSTEM_OTHER_IMAGE := false
@@ -123,6 +125,8 @@ ifeq (,$(filter $(TARGET_BOARD_DERIVATIVE_SUFFIX), _tb))
 $(call inherit-product, packages/services/Car/car_product/build/car.mk)
 TARGET_USES_GAS := true
 TARGET_BOARD_SUFFIX := _au
+else ifeq ($(TARGET_USES_CAR_FEATURES), true)
+$(call inherit-product, packages/services/Car/car_product/build/car.mk)
 endif
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
