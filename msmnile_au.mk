@@ -710,6 +710,9 @@ PRODUCT_PACKAGES += emac_perf_settings.sh
 #for Emac
 PRODUCT_PACKAGES += emac_rps_settings.sh
 
+#for Emac
+PRODUCT_PACKAGES += emac_buffer_settings.sh
+
 # CAN utils
 PRODUCT_PACKAGES += candump \
                     cansend \
