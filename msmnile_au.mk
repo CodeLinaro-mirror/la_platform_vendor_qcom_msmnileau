@@ -562,11 +562,6 @@ ifneq (,$(filter $(TARGET_BOARD_PLATFORM)$(TARGET_BOARD_SUFFIX)$(TARGET_BOARD_DE
 PRODUCT_VENDOR_PROPERTIES += ro.vendor.qti.load_dlkm.service=native
 endif
 
-#Copy supported features list
-ifeq ($(TARGET_USES_GAS),true)
-PRODUCT_COPY_FILES += device/qcom/msmnile_au/msmnile_au_features.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/msmnile_au_features.xml
-endif
-
 #for Emac
 PRODUCT_PACKAGES += emac_perf_settings.sh
 
