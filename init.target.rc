@@ -41,8 +41,6 @@ on early-init
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
     #mkdir /dev/socket/camera 0770 system camera
     #start ais_server
-    start vendor.adsprpcd
-    start vendor.adsprpcd_audiopd
     start esplash
 
 # Start adsp here only for pure aosp build, for va_aosp it is launched from EarlyServices
@@ -80,6 +78,8 @@ on init
     start audiod
     start acdb_loader_service
     start audio_hal_plugin_service
+    start vendor.adsprpcd
+    start vendor.adsprpcd_audiopd
 
 on late-init
     start automotive_display
@@ -266,6 +266,13 @@ service emac_rps_setting /system/vendor/bin/sh /vendor/bin/emac_rps_settings.sh 
     user root
     oneshot
 
+#emac
+service emac_buffer_setting /system/vendor/bin/sh /vendor/bin/emac_buffer_settings.sh
+    class main
+    user system
+    group system
+    oneshot
+
 service vendor.thermal-engine /vendor/bin/thermal-engine
    class main
    user root
@@ -329,6 +336,10 @@ service smcinvoked /system/bin/smcinvoked
 on boot
     start emac_rps_setting
     insmod /vendor/lib/modules/emac_dwc_eqos.ko
+
+#Start EMAC ethernet driver
+on boot
+    start emac_buffer_setting
 
 service carpowerd /vendor/bin/car_power_daemon
     user root
