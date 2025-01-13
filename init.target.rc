@@ -55,7 +55,8 @@ on property:ro.soc.model="SA8195P"
     mkdir /dev/socket/camera 0770 system camera
     start ais_server
 
-service ais_server /vendor_early_services/vendor/bin/ais_server
+# Start ais_server from vendor partition for Poipu and pure aosp
+service ais_server /vendor/bin/ais_server
     class core
     user system
     group camera input graphics
