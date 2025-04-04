@@ -370,20 +370,6 @@ TARGET_WLAN_CHIP := qca6390 qcn7605 qca6174
 include device/qcom/wlan/msmnile_au/wlan.mk
 endif
 
-PRODUCT_VENDOR_PROPERTIES += \
-                            persist.rild.nitz_long_ons_0=
-                            persist.rild.nitz_long_ons_1=
-                            persist.rild.nitz_long_ons_2=
-                            persist.rild.nitz_long_ons_3=
-                            persist.rild.nitz_short_ons_0=
-                            persist.rild.nitz_short_ons_1=
-                            persist.rild.nitz_short_ons_2=
-                            persist.rild.nitz_short_ons_3=
-                            ril.subscription.types=NV,RUIM \
-                            DEVICE_PROVISIONED=1 \
-                            dalvik.vm.heapsize=36m \
-                            dev.pm.dyn_samplingrate=1
-
 PRODUCT_VENDOR_PROPERTIES += qcom.hw.aac.encoder=true
 
 # system properties for MM modules
