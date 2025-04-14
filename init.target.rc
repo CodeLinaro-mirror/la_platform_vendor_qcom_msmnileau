@@ -43,6 +43,10 @@ on early-init
     #start ais_server
     start esplash
 
+on early-init && property:ro.boot.audio=audioreach
+    setprop ro.hardware.audio.primary "msmnile.ar"
+    setprop ro.hardware.soundtrigger.primary "msmnile.ar"
+
 # Start adsp here only for pure aosp build, for va_aosp it is launched from EarlyServices
 on early-init && property:ro.vendor.qti.va_aosp.support=0
     write /sys/kernel/boot_kpi/kpi_values "M - Start adsp"
