@@ -105,6 +105,7 @@ PRODUCT_PACKAGES += fastbootd
 # Add default implementation of fastboot AIDL.
 PRODUCT_PACKAGES += android.hardware.fastboot-service.example_recovery
 TARGET_HIBERNATION_SECURE_ENABLE := true
+TARGET_HAS_MDSPRPCD := true
 
 # Mismatch in the uses-library tags between build system and the manifest leads
 # to soong APK manifest_check tool errors. Enable the flag to fix this.
