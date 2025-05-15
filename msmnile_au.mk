@@ -388,8 +388,6 @@ PRODUCT_VENDOR_PROPERTIES += media.stagefright.enable-player=true \
 PRODUCT_VENDOR_PROPERTIES += ro.vendor.use_data_netmgrd=true \
                               persist.vendor.data.mode=concurrent
 
-# system props for time-services
-PRODUCT_VENDOR_PROPERTIES += persist.timed.enable=true
 
 # system prop for opengles version
 #
