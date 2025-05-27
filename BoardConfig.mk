@@ -334,7 +334,9 @@ endif
 
 #Flag to enable System SDK Requirements.
 #All vendor APK will be compiled against system_current API set.
+ifeq ( ,$(filter Baklava 16,$(PLATFORM_VERSION)))
 BOARD_SYSTEMSDK_VERSIONS:= $(SHIPPING_API_LEVEL)
+endif
 
 #Enable VNDK Compliance
 BOARD_VNDK_VERSION:=current
@@ -346,7 +348,9 @@ BUILD_BROKEN_USES_BUILD_HOST_EXECUTABLE := true
 BUILD_BROKEN_USES_BUILD_COPY_HEADERS := true
 BUILD_BROKEN_USES_BUILD_HOST_STATIC_LIBRARY := true
 BUILD_BROKEN_CLANG_PROPERTY := true
+ifeq ( ,$(filter Baklava 16,$(PLATFORM_VERSION)))
 BUILD_BROKEN_USES_SOONG_PYTHON2_MODULES := true
+endif
 
 #Flag for Early Ethernet
 IS_EARLY_ETH_ENABLED := 1
