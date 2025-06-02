@@ -25,14 +25,13 @@
 # OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
-# Changes from Qualcomm Innovation Center are provided under the following license:
-# Copyright (c) 2023 Qualcomm Innovation Center, Inc. All rights reserved.
+# Changes from Qualcomm Technologies, Inc. are provided under the following license:
+# Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
 # SPDX-License-Identifier: BSD-3-Clause-Clear
 
 import /vendor/etc/init/hw/init.qti.kernel.rc
 
 on early-init
-    umount /vendor_early_services/vendor/firmware_mnt
     write /proc/sys/kernel/sched_boost 1
     chown system system /sys/kernel/boot_kpi/kpi_values
     symlink /data/tombstones /tombstones
@@ -42,6 +41,22 @@ on early-init
     #mkdir /dev/socket/camera 0770 system camera
     #start ais_server
     start esplash
+    write /sys/kernel/boot_kpi/kpi_values "M - adsprpcd Start"
+    start vendor.adsprpcd
+    start vendor.adsprpcd_audiopd
+
+on early-init && property:ro.boot.audio=""
+    start audiod
+    setprop vendor.audio.card.def "/vendor/etc/card-defs-dummy.xml"
+
+on early-init && property:ro.boot.audio=elite
+    start audiod
+    setprop vendor.audio.card.def "/vendor/etc/card-defs-dummy.xml"
+
+on early-init && property:ro.boot.audio=audioreach
+    start audionxp
+    setprop ro.hardware.audio.primary "msmnile.ar"
+    setprop ro.hardware.soundtrigger.primary "msmnile.ar"
 
 # Start adsp here only for pure aosp build, for va_aosp it is launched from EarlyServices
 on early-init && property:ro.vendor.qti.va_aosp.support=0
@@ -63,6 +78,18 @@ service ais_server /vendor/bin/ais_server
     disabled
     onrestart restart evs_driver
     onrestart restart qcarcam_hal
+
+on init && property:ro.boot.audio=audioreach
+    write /sys/kernel/boot_kpi/kpi_values "M - audio ams service Start"
+    enable vendor.ams-1-0
+    start vendor.ams-1-0
+    write /sys/kernel/boot_kpi/kpi_values "M - audio agm service Start"
+    enable vendor.agm-1-0
+    start vendor.agm-1-0
+    write /sys/kernel/boot_kpi/kpi_values "M - audio audiod Start"
+    start audiod
+    write /sys/kernel/boot_kpi/kpi_values "M - audio agm play Start"
+    start agmplay
 
 on init
     write /dev/stune/foreground/schedtune.sched_boost_no_override 1
@@ -216,10 +243,11 @@ service wlan_multiko /vendor/bin/init.qcom.wlan.sh
     oneshot
 
 #pd-mapper
-service vendor.pd_mapper /vendor/bin/pd-mapper
+service vendor.pd_mapper /vendor/bin/pd-mapper 1
     class core
     user system
     group system
+	oneshot
 
 #Peripheral manager
 service vendor.per_mgr /vendor/bin/pm-service
@@ -375,6 +403,48 @@ service audio_chime /vendor/bin/audio_chime /vendor/etc/bike_bell.wav
     group system wakelock
     capabilities BLOCK_SUSPEND
     oneshot
+    disabled
+
+#audio nxp
+service audionxp /vendor/bin/audio-nxp-auto
+    class main
+    user system
+    group system wakelock
+    capabilities BLOCK_SUSPEND
+    oneshot
+    disabled
+
+#agmplay
+service agmplay /vendor/bin/agmplay /vendor/etc/bike_bell.wav -D 0 -d 100 -i TDM-LPAIF-RX-TERTIARY -sx 0xA100000A -ist 0x1 -dx 0xA2000001 -dpp 0xAC000002
+    class main
+    user system
+    group system wakelock
+    capabilities BLOCK_SUSPEND
+    oneshot
+    disabled
+
+service vendor.agm-1-0 /vendor/bin/hw/vendor.qti.hardware.AGMIPC@1.0-service
+    class hal
+    user system
+    interface vendor.qti.hardware.AGMIPC@1.0::IAGM default
+    # media gid needed for /dev/fm (radio) and for /data/misc/media (tee)
+    group system audio media mediadrm oem_2901 wakelock
+    capabilities BLOCK_SUSPEND SYS_NICE
+    ioprio rt 4
+    task_profiles ProcessCapacityHigh HighPerformance
+    writepid /dev/cpuset/foreground/tasks /dev/stune/foreground/tasks
+    disabled
+
+service vendor.ams-1-0 /vendor/bin/hw/vendor.qti.hardware.AMSIPC@1.0-service
+    class hal
+    user system
+    interface vendor.qti.hardware.AMSIPC@1.0::IAMS default
+    # media gid needed for /dev/fm (radio) and for /data/misc/media (tee)
+    group system audio media mediadrm oem_2901 wakelock
+    capabilities BLOCK_SUSPEND SYS_NICE
+    ioprio rt 4
+    task_profiles ProcessCapacityHigh HighPerformance
+    writepid /dev/cpuset/foreground/tasks /dev/stune/foreground/tasks
     disabled
 
 on property:sys.boot_completed=1
