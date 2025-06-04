@@ -5,6 +5,15 @@
 
 # Disable DLKMs compilation for msmnile_au
 TARGET_KERNEL_DLKM_DISABLE := false
+
+#We are resetting BOARD_VENDOR_KERNEL_MODULES due to BoardConfig.mk invoked twice
+#   1. From vendor/qcom/proprietary/common/config/device-vendor.mk
+#   2. From build/make/core/board_config.mk
+#which impacts duplicates found in vendor_dlkm partition while building image
+ifneq ( ,$(filter Baklava 16,$(PLATFORM_VERSION)))
+BOARD_VENDOR_KERNEL_MODULES :=
+endif
+
 #Enable legacy path for ELITE
 ENABLE_AUDIO_LEGACY_TECHPACK := true
 
@@ -211,7 +220,10 @@ endif
 
 BOARD_DO_NOT_STRIP_VENDOR_MODULES := false
 
+ifeq ( ,$(filter Baklava 16,$(PLATFORM_VERSION)))
 BOARD_VENDOR_KERNEL_MODULES += $(shell ls $(KERNEL_MODULES_OUT)/*.ko)
+endif
+
 TARGET_USES_ION := true
 TARGET_USES_NEW_ION_API :=true
 TARGET_USES_QCOM_BSP := false
@@ -366,3 +378,11 @@ IS_EARLY_ETH_ENABLED := 1
 include device/qcom/sepolicy_vndr/SEPolicy.mk
 #Enable Camera2 APIs on automotive builds
 ENABLE_CAMERA_SERVICE := true
+
+#We are sorting BOARD_VENDOR_KERNEL_MODULES due to BoardConfig.mk invoked twice
+#   1. From vendor/qcom/proprietary/common/config/device-vendor.mk
+#   2. From build/make/core/board_config.mk
+#which impacts duplicates found in vendor_dlkm partition while building image
+ifneq ( ,$(filter Baklava 16,$(PLATFORM_VERSION)))
+BOARD_VENDOR_KERNEL_MODULES := $(sort $(BOARD_VENDOR_KERNEL_MODULES))
+endif
