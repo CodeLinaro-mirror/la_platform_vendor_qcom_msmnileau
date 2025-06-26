@@ -46,11 +46,9 @@ on early-init
     start vendor.adsprpcd_audiopd
 
 on early-init && property:ro.boot.audio=""
-    start audiod
     setprop vendor.audio.card.def "/vendor/etc/card-defs-dummy.xml"
 
 on early-init && property:ro.boot.audio=elite
-    start audiod
     setprop vendor.audio.card.def "/vendor/etc/card-defs-dummy.xml"
 
 on early-init && property:ro.boot.audio=audioreach

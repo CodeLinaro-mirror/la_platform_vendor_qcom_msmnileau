@@ -512,21 +512,6 @@ TARGET_WLAN_CHIP := qca6390 qca6490 qcn7605 qca6174
 include device/qcom/wlan/msmnile_au/wlan.mk
 endif
 
-PRODUCT_PROPERTY_OVERRIDES += rild.libpath=/vendor/lib64/libril-qc-hal-qmi.so \
-                            persist.rild.nitz_plmn=
-                            persist.rild.nitz_long_ons_0=
-                            persist.rild.nitz_long_ons_1=
-                            persist.rild.nitz_long_ons_2=
-                            persist.rild.nitz_long_ons_3=
-                            persist.rild.nitz_short_ons_0=
-                            persist.rild.nitz_short_ons_1=
-                            persist.rild.nitz_short_ons_2=
-                            persist.rild.nitz_short_ons_3=
-                            ril.subscription.types=NV,RUIM \
-                            DEVICE_PROVISIONED=1 \
-                            dalvik.vm.heapsize=36m \
-                            dev.pm.dyn_samplingrate=1
-
 PRODUCT_PROPERTY_OVERRIDES += qcom.hw.aac.encoder=true
 
 # Cne module properties
