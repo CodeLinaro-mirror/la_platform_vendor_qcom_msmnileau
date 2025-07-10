@@ -62,6 +62,10 @@ while [ "$(cat /sys/class/remoteproc/remoteproc1/state)" != "offline" ]; do
         sleep 1
 done
 
+while [ "$(cat /sys/class/remoteproc/remoteproc2/state)" != "offline" ]; do
+    echo "stop" > /sys/class/remoteproc/remoteproc2/state
+        sleep 1
+done
 
 echo shutdown > /sys/power/disk
 
