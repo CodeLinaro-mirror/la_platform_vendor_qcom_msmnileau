@@ -14,4 +14,8 @@ if [ "$(cat /sys/class/remoteproc/remoteproc1/state)" != "running" ]; then
     echo start > /sys/class/remoteproc/remoteproc1/state
 fi
 
+if [ "$(cat /sys/class/remoteproc/remoteproc2/state)" != "running" ]; then
+    echo start > /sys/class/remoteproc/remoteproc2/state
+fi
+
 swapoff /dev/block/sda13
