@@ -396,9 +396,6 @@ PRODUCT_VENDOR_PROPERTIES += ro.vendor.use_data_netmgrd=true \
 #  196610 is decimal for 0x30002 to report version 3.2
 PRODUCT_VENDOR_PROPERTIES += ro.opengles.version=196610
 
-# Simulate sdcard on /data/media
-PRODUCT_VENDOR_PROPERTIES += persist.fuse_sdcard=true
-
 # System prop for Bluetooth SOC type
 PRODUCT_VENDOR_PROPERTIES += vendor.qcom.bluetooth.soc=rome
 
