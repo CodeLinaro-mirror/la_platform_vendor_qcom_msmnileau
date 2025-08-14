@@ -36,7 +36,8 @@ echo 0 > /d/tracing/tracing_on
 
 # Turn BT off. Here keyevents (23:KEYCODE_DPAD_CENTER, 22:KEYCODE_DPAD_RIGHT)
 # are used to allow this script to turn off BT.
-am start -a android.bluetooth.adapter.action.REQUEST_DISABLE && input keyevent 23 && input keyevent 22 && input keyevent 23
+# am start -a android.bluetooth.adapter.action.REQUEST_DISABLE && input keyevent 23 && input keyevent 22 && input keyevent 23
+svc bluetooth disable
 
 # Turn WLAN off.
 svc wifi disable
