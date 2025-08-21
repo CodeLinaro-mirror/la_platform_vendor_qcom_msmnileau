@@ -76,8 +76,6 @@ SYSTEMEXT_SEPARATE_PARTITION_ENABLE = true
 TARGET_USES_QSSI := true
 PRODUCT_ENFORCE_VINTF_MANIFEST := false
 
-# FR77687: Migrate AIDL interface using -ndk_platform.so to -ndk.so
-NEED_AIDL_NDK_PLATFORM_BACKEND := true
 
 TARGET_NO_QTI_WFD := true
 BOARD_HAVE_QCOM_FM := false
@@ -107,6 +105,7 @@ PRODUCT_PACKAGES += fastbootd
 # Add default implementation of fastboot AIDL.
 PRODUCT_PACKAGES += android.hardware.fastboot-service.example_recovery
 TARGET_HIBERNATION_SECURE_ENABLE := true
+TARGET_HAS_MDSPRPCD := true
 
 # Mismatch in the uses-library tags between build system and the manifest leads
 # to soong APK manifest_check tool errors. Enable the flag to fix this.
@@ -168,6 +167,8 @@ ifeq ($(TARGET_SINGLE_TREE), true)
   PRODUCT_BUILD_RAMDISK_IMAGE := true
 endif
 
+PRODUCT_SOONG_NAMESPACES += hardware/qcom/wlan/qcwcn
+
 ###########
 #QMAA flags starts
 ###########
@@ -195,7 +196,7 @@ TARGET_USES_QMAA_OVERRIDE_CAMERA  := true
 TARGET_USES_QMAA_OVERRIDE_CVP  := true
 TARGET_USES_QMAA_OVERRIDE_DATA_NET := false
 TARGET_USES_QMAA_OVERRIDE_DATA := false
-TARGET_USES_QMAA_OVERRIDE_DIAG := true
+TARGET_USES_QMAA_OVERRIDE_DIAG := false
 TARGET_USES_QMAA_OVERRIDE_DISPLAY := true
 TARGET_USES_QMAA_OVERRIDE_DPM  := true
 TARGET_USES_QMAA_OVERRIDE_DRM  := true
@@ -511,21 +512,6 @@ TARGET_WLAN_CHIP := qca6390 qca6490 qcn7605 qca6174
 include device/qcom/wlan/msmnile_au/wlan.mk
 endif
 
-PRODUCT_PROPERTY_OVERRIDES += rild.libpath=/vendor/lib64/libril-qc-hal-qmi.so \
-                            persist.rild.nitz_plmn=
-                            persist.rild.nitz_long_ons_0=
-                            persist.rild.nitz_long_ons_1=
-                            persist.rild.nitz_long_ons_2=
-                            persist.rild.nitz_long_ons_3=
-                            persist.rild.nitz_short_ons_0=
-                            persist.rild.nitz_short_ons_1=
-                            persist.rild.nitz_short_ons_2=
-                            persist.rild.nitz_short_ons_3=
-                            ril.subscription.types=NV,RUIM \
-                            DEVICE_PROVISIONED=1 \
-                            dalvik.vm.heapsize=36m \
-                            dev.pm.dyn_samplingrate=1
-
 PRODUCT_PROPERTY_OVERRIDES += qcom.hw.aac.encoder=true
 
 # Cne module properties
@@ -663,7 +649,6 @@ PRODUCT_PROPERTY_OVERRIDES += vendor.perf.gestureflingboost.enable=true
 # Enable ULMK properties
 PRODUCT_PROPERTY_OVERRIDES += ro.lmk.kill_heaviest_task=true \
                               ro.lmk.kill_timeout_ms=15 \
-                              ro.lmk.use_minfree_levels=true \
                               ro.lmk.enhance_batch_kill=true \
                               ro.lmk.enable_adaptive_lmk=true \
                               ro.lmk.vmpressure_file_min=80640
