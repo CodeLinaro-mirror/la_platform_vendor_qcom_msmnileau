@@ -365,7 +365,6 @@ endif #TARGET_ENABLE_QC_AV_ENHANCEMENTS
 
 #PRODUCT_COPY_FILES += hardware/qcom/media/conf_files/msmnile/system_properties.xml:$(TARGET_COPY_OUT_VENDOR)/etc/system_properties.xml
 
-PRODUCT_COPY_FILES += hardware/interfaces/security/keymint/aidl/default/android.hardware.hardware_keystore.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.hardware_keystore.xml
 
 #Hibernation Script
 PRODUCT_COPY_FILES += device/qcom/msmnile_au/hiber.sh:$(TARGET_COPY_OUT_VENDOR)/bin/hiber.sh
@@ -734,8 +733,14 @@ TARGET_MOUNT_POINTS_SYMLINKS := false
 
 PRODUCT_PACKAGES += android.hardware.dumpstate-service.example
 
-PRODUCT_PACKAGES += android.hardware.health-service.example \
-                    android.hardware.health-service.example_recovery
+ifeq ($(PLATFORM_SDK_VERSION),36)
+    PRODUCT_PACKAGES += android.hardware.health-service.qti \
+                        android.hardware.health-service.qti_recovery
+else
+    PRODUCT_PACKAGES += android.hardware.health-service.example \
+                        android.hardware.health-service.example_recovery
+endif
+
 
 PRODUCT_PACKAGES += android.hardware.neuralnetworks@1.0.vendor \
                     android.hardware.neuralnetworks@1.1.vendor \
