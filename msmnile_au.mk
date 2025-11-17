@@ -625,9 +625,6 @@ PRODUCT_PROPERTY_OVERRIDES += ro.lmk.kill_heaviest_task=true \
 # Property to enable scroll pre-obtain view
 PRODUCT_PROPERTY_OVERRIDES += ro.vendor.scroll.preobtain.enable=true
 
-# Expose aux camera for below packages
-PRODUCT_PROPERTY_OVERRIDES += vendor.camera.aux.packagelist=org.codeaurora.snapcam
-
 # Display mirroring
 PRODUCT_PROPERTY_OVERRIDES += vendor.display.builtin_mirroring=true
 
