@@ -733,8 +733,14 @@ TARGET_MOUNT_POINTS_SYMLINKS := false
 
 PRODUCT_PACKAGES += android.hardware.dumpstate-service.example
 
-PRODUCT_PACKAGES += android.hardware.health-service.example \
-                    android.hardware.health-service.example_recovery
+ifeq ($(PLATFORM_SDK_VERSION),36)
+    PRODUCT_PACKAGES += android.hardware.health-service.qti \
+                        android.hardware.health-service.qti_recovery
+else
+    PRODUCT_PACKAGES += android.hardware.health-service.example \
+                        android.hardware.health-service.example_recovery
+endif
+
 
 PRODUCT_PACKAGES += android.hardware.neuralnetworks@1.0.vendor \
                     android.hardware.neuralnetworks@1.1.vendor \
@@ -756,6 +762,11 @@ PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
 PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
 
 PRODUCT_PACKAGES += qcar-gsi.avbpubkey
+
+# Enable Car Telemetry
+ENABLE_CARTELEMETRY_SERVICE := true
+PRODUCT_PACKAGES += android.automotive.telemetryd@1.0
+PRODUCT_PACKAGES += ScriptExecutor
 
 ifeq ($(TARGET_SINGLE_TREE), true)
 
@@ -826,6 +837,13 @@ ifeq ($(TARGET_SINGLE_TREE), true)
   endif
 
   PRODUCT_PACKAGES += vendor.qti.qesdsys
+endif
+
+ifneq ( , $(filter bp4a cp2a, $(TARGET_RELEASE_PLATFORM)))
+AB_OTA_POSTINSTALL_CONFIG += \
+               RUN_POSTINSTALL_vendor=true \
+               FILESYSTEM_TYPE_vendor=ext4 \
+               POSTINSTALL_OPTIONAL_vendor=true
 endif
 
 ###################################################################################
