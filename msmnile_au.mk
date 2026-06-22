@@ -263,7 +263,15 @@ PRODUCT_PROPERTY_OVERRIDES  += \
 	dalvik.vm.heaptargetutilization=0.75 \
 	dalvik.vm.heapminfree=512k \
 	dalvik.vm.heapmaxfree=8m
+
+ifeq (true,$(call math_gt_or_eq,$(PLATFORM_SDK_VERSION),36))
+  $(call inherit-product, device/qcom/qssi_au/qssi_au_system_generic.mk)
+  $(call inherit-product, packages/services/Car/car_product/build/car_generic_system.mk)
+  $(call inherit-product, packages/services/Car/car_product/build/car_system_ext.mk)
+  $(call inherit-product, packages/services/Car/car_product/build/car_product.mk)
+else
 $(call inherit-product, packages/services/Car/car_product/build/car.mk)
+endif
 $(call inherit-product, $(SRC_TARGET_DIR)/product/emulated_storage.mk)
 
 PRODUCT_NAME := msmnile_au
@@ -324,7 +332,6 @@ ENABLE_MEMTRACK_AIDL_HAL := true
 #    device/qcom/msmnile/seccomp/mediacodec-seccomp.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediacodec.policy \
 #    device/qcom/msmnile/seccomp/mediaextractor-seccomp.policy:$(TARGET_COPY_OUT_VENDOR)/etc/seccomp_policy/mediaextractor.policy
 
-PRODUCT_BOOT_JARS += tcmiface
 
 ifneq ($(TARGET_NO_TELEPHONY), true)
  PRODUCT_BOOT_JARS += telephony-ext
@@ -822,8 +829,10 @@ ifeq ($(TARGET_SINGLE_TREE), true)
 
     # Include mainline components and QSSI whitelist
   ifeq (true,$(call math_gt_or_eq,$(SHIPPING_API_LEVEL),29))
+    ifeq (true,$(call math_lt,$(PLATFORM_SDK_VERSION),36))
     $(call inherit-product, device/qcom/qssi_au/qssi_au_whitelist.mk)
     PRODUCT_ARTIFACT_PATH_REQUIREMENT_IGNORE_PATHS := /system/system_ext/
+    endif
     #PRODUCT_ENFORCE_ARTIFACT_PATH_REQUIREMENTS := true
   endif
 
