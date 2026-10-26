@@ -518,8 +518,6 @@ TARGET_WLAN_CHIP := qca6390 qca6490 qcn7605 qca6174
 include device/qcom/wlan/msmnile_au/wlan.mk
 endif
 
-PRODUCT_PROPERTY_OVERRIDES += qcom.hw.aac.encoder=true
-
 # Cne module properties
 PRODUCT_PROPERTY_OVERRIDES += persist.vendor.cne.feature=1
 
@@ -531,7 +529,6 @@ PRODUCT_PROPERTY_OVERRIDES += media.stagefright.enable-player=true \
                               media.stagefright.enable-fma2dp=true \
                               media.stagefright.enable-scan=true \
                               mmp.enable.3g2=true \
-                              media.aac_51_output_enabled=true \
                               mm.enable.smoothstreaming=true \
                               persist.mm.enable.prefetch=true
 
